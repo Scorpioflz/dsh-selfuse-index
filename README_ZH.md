@@ -28,9 +28,9 @@ flowchart LR
         AgentLoop["agent-loop<br/>(插件，非特权)"]
     end
 
-    subgraph SelfDev ["自研插件（在桌宠 integrations/）"]
+    subgraph SelfDev ["自研插件（独立仓库）"]
         direction TB
-        PetMemory["@dsh-pet/memory<br/>记忆后端<br/>(基于 fish-memory 思路自研:<br/>打分 + 半衰期，按工作区隔离)"]
+        PetMemory["@dsh-cbw/memory<br/>记忆后端<br/>(基于 fish-memory 衍生:<br/>打分 + 半衰期 + P0/P1 升级)"]
     end
 
     subgraph Inherited ["继承插件（来自 MerZlin/dsh-pet-indesktop）"]
@@ -57,8 +57,8 @@ flowchart LR
 
     subgraph RefOnly ["仅参考 / 已弃（在 _plugin-references，未启用）"]
         direction TB
-        FishMem["dsh-fish-memory<br/>→ 被 @dsh-pet/memory 替代<br/>(保留作参考源)"]
-        Mnemon["dsh-mnemon<br/>→ 与 @dsh-pet/memory 冲突"]
+        FishMem["dsh-fish-memory<br/>→ 被 @dsh-cbw/memory 替代<br/>(保留作参考源)"]
+        Mnemon["dsh-mnemon<br/>→ 与 @dsh-cbw/memory 冲突"]
         OldComp["dsh-computer-use<br/>→ 被 dsh-codex-style-computer-use 替代"]
         PromptPersona["dsh-prompt-persona<br/>→ 被 dsh-persona-dafeiyu 替代"]
         WhalePersona["dsh-whale-musume-persona<br/>→ 人设候选，未启用"]
@@ -84,7 +84,7 @@ flowchart LR
 | dsh-pet-chubby_blue_whale | **桌宠前端** — 仅做视觉交互（精灵图、右键菜单、设置 UI）。不含记忆/人设/provider 逻辑，全部后端工作交由 DSH。 | 在用 | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) |
 | dsh-web-service (dsh-webapi) | **REST API 网关** — 经 HTTP/SSE 暴露 DSH 会话；桌宠接入 DSH 的唯一入口。 | 在用 | [toddpan/dsh-webapi](https://github.com/toddpan/dsh-webapi) |
 | @dsh-pet/bridge | **桌宠状态桥接**（继承自 [MerZLin/dsh-pet-indesktop](https://github.com/MerZLin/dsh-pet-indesktop)）— 在前端与 DSH 间同步桌宠屏幕/窗口状态。 | 在用 | 本地（桌宠 `integrations/dsh-pet-bridge/`） |
-| @dsh-pet/memory | **记忆后端**（自研，基于 dsh-fish-memory 思路开发）— 按工作区隔离的记忆，打分 + 半衰期，经 `systemPrompt.context` 注入。**实际在用的记忆插件是它，不是 dsh-fish-memory。** | 在用 | 本地（桌宠 `integrations/dsh-pet-memory/`） |
+| @dsh-cbw/memory | **记忆后端**（自研，基于 dsh-fish-memory 衍生）— 按工作区隔离的记忆，打分 + 半衰期 + P0/P1 升级（请求检测、bigram 去重、recall 工具、自动归档、来源标记），经 `systemPrompt.context` 注入。 | 在用 | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) |
 | dsh-persona-dafeiyu | **人设注入** — 经 `systemPrompt.section()` 注入角色人设；替代桌宠原前端人设拼接。使用上游第三方插件（v0.7.1），已放弃自研人设插件，改为配合自写的人设模板（见 `docs/大肥鱼_蓝鲸女仆人设模板.md`）。 | 在用 | [huaizhuanghub/dsh-persona-dafeiyu](https://github.com/huaizhuanghub/dsh-persona-dafeiyu) |
 | @wycto/dsh-balance-panel | 余额/额度查询面板。 | 在用 | [wycto/dsh-balance-panel](https://github.com/wycto/dsh-balance-panel) |
 | dsh-bili-scroll | B站滚动任务。 | 在用 | [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) |
@@ -98,8 +98,8 @@ flowchart LR
 | @liustack/modsearch | 模块搜索。 | 在用 | [liustack/modsearch](https://github.com/liustack/modsearch) |
 | cc-safety-net | 安全网 / 命令门控。 | 在用 | [kenryu42/cc-safety-net](https://github.com/kenryu42/cc-safety-net) |
 | dshmarket | 插件市场。 | 在用 | （npm 包，无本地参考克隆） |
-| dsh-fish-memory | 记忆后端（打分 + 30 天半衰期）。**是 @dsh-pet/memory 的参考源**，未在 profile 安装。 | 参考 / 已弃 | [Yuuyuko-uu/dsh-fish-memory](https://github.com/Yuuyuko-uu/dsh-fish-memory) |
-| dsh-mnemon | 助记记忆。与 @dsh-pet/memory 冲突，未启用。 | 参考 / 已弃 | [omdsh-dev/dsh-mnemon](https://github.com/omdsh-dev/dsh-mnemon) |
+| dsh-fish-memory | 记忆后端（打分 + 30 天半衰期）。**是 @dsh-cbw/memory 的参考源**，未在 profile 安装。 | 参考 / 已弃 | [Yuuyuko-uu/dsh-fish-memory](https://github.com/Yuuyuko-uu/dsh-fish-memory) |
+| dsh-mnemon | 助记记忆。与 @dsh-cbw/memory 冲突，未启用。 | 参考 / 已弃 | [omdsh-dev/dsh-mnemon](https://github.com/omdsh-dev/dsh-mnemon) |
 | dsh-computer-use | GUI 操作。被 dsh-codex-style-computer-use 替代。 | 参考 / 已弃 | [ltmroberthk915/dsh-computer-use](https://github.com/ltmroberthk915/dsh-computer-use) |
 | dsh-prompt-persona | 人设注入。被 dsh-persona-dafeiyu 替代。 | 参考 / 已弃 | （_plugin-references/dsh-prompt-persona） |
 | dsh-whale-musume-persona | 人设候选，未启用。 | 参考 | （_plugin-references/dsh-whale-musume-persona） |
@@ -120,6 +120,7 @@ flowchart LR
 | 名称 | 说明 | 仓库 |
 | --- | --- | --- |
 | dsh-pet-chubby_blue_whale | DSH 桌宠前端（PySide6，Python 3.14+），通过 `dsh-web-service` 会话 API 接入 DSH。 | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) |
+| dsh-cbw-memory | DSH 长期记忆插件（半衰期衰减、情感加权、按工作区隔离共享）。基于 Yuuyuko-uu/dsh-fish-memory 衍生。 | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) |
 
 > 新增子项目时，在上表追加一行，并将其文件夹加入 `.gitignore`。
 
@@ -133,6 +134,7 @@ DSH-Dev/                       # 本索引仓库
 ├── docs/                      # 跨子项目的设计与任务文档
 ├── _plugin-references/        # DSH 插件浅克隆（在用 + 仅参考，已忽略）
 ├── deepseek-harness/          # DSH 上游源码（只读，已忽略）
+├── dsh-cbw-memory/            # DSH 记忆插件（独立仓库，已忽略）
 └── dsh-pet-chubby_blue_whale/ # 桌宠前端（独立仓库，已忽略）
 ```
 

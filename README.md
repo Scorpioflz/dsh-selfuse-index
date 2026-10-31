@@ -32,9 +32,9 @@ flowchart LR
         AgentLoop["agent-loop<br/>(plugin, not privileged)"]
     end
 
-    subgraph SelfDev ["Self-developed plugins (in pet integrations/)"]
+    subgraph SelfDev ["Self-developed plugins (independent repos)"]
         direction TB
-        PetMemory["@dsh-pet/memory<br/>memory backend<br/>(built on fish-memory ideas:<br/>scoring + half-life, workspace-scoped)"]
+        PetMemory["@dsh-cbw/memory<br/>memory backend<br/>(derived from fish-memory:<br/>scoring + half-life + P0/P1 upgrades)"]
     end
 
     subgraph Inherited ["Inherited plugins (from MerZlin/dsh-pet-indesktop)"]
@@ -61,8 +61,8 @@ flowchart LR
 
     subgraph RefOnly ["Reference-only / superseded (in _plugin-references, NOT enabled)"]
         direction TB
-        FishMem["dsh-fish-memory<br/>→ superseded by @dsh-pet/memory<br/>(kept as reference source)"]
-        Mnemon["dsh-mnemon<br/>→ conflicts with @dsh-pet/memory"]
+        FishMem["dsh-fish-memory<br/>→ superseded by @dsh-cbw/memory<br/>(kept as reference source)"]
+        Mnemon["dsh-mnemon<br/>→ conflicts with @dsh-cbw/memory"]
         OldComp["dsh-computer-use<br/>→ superseded by dsh-codex-style-computer-use"]
         PromptPersona["dsh-prompt-persona<br/>→ superseded by dsh-persona-dafeiyu"]
         WhalePersona["dsh-whale-musume-persona<br/>→ persona candidate, unused"]
@@ -88,7 +88,7 @@ Status column: **in use** = enabled in the `web` profile; **ref** = cloned under
 | dsh-pet-chubby_blue_whale | **Pet front-end** — visual interaction only (sprite, right-click menu, settings UI). No memory / persona / provider logic; all backend work delegated to DSH. | in use | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) |
 | dsh-web-service (dsh-webapi) | **REST API gateway** — exposes DSH sessions over HTTP/SSE; the pet's only entry point into DSH. | in use | [toddpan/dsh-webapi](https://github.com/toddpan/dsh-webapi) |
 | @dsh-pet/bridge | **Pet state bridge** (inherited from [MerZlin/dsh-pet-indesktop](https://github.com/MerZlin/dsh-pet-indesktop)) — syncs pet screen/window state between front-end and DSH. | in use | local (pet `integrations/dsh-pet-bridge/`) |
-| @dsh-pet/memory | **Memory backend** (self-developed, built on dsh-fish-memory ideas) — workspace-scoped memory with scoring + half-life, injected via `systemPrompt.context`. This is the actual memory plugin in use, **not** dsh-fish-memory. | in use | local (pet `integrations/dsh-pet-memory/`) |
+| @dsh-cbw/memory | **Memory backend** (self-developed, derived from dsh-fish-memory) — workspace-scoped memory with scoring + half-life + P0/P1 upgrades (request detection, bigram dedup, recall tool, auto-archive, source tagging), injected via `systemPrompt.context`. | in use | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) |
 | dsh-persona-dafeiyu | **Persona injection** — injects character persona via `systemPrompt.section()`; replaces the pet's former front-end persona splicing. Uses the upstream third-party plugin (v0.7.1); self-development of a persona plugin was abandoned in favor of this plus a self-authored persona template (see `docs/大肥鱼_蓝鲸女仆人设模板.md`). | in use | [huaizhuanghub/dsh-persona-dafeiyu](https://github.com/huaizhuanghub/dsh-persona-dafeiyu) |
 | @wycto/dsh-balance-panel | Balance / quota query panel. | in use | [wycto/dsh-balance-panel](https://github.com/wycto/dsh-balance-panel) |
 | dsh-bili-scroll | Bilibili scroll duty task. | in use | [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) |
@@ -102,8 +102,8 @@ Status column: **in use** = enabled in the `web` profile; **ref** = cloned under
 | @liustack/modsearch | Module search. | in use | [liustack/modsearch](https://github.com/liustack/modsearch) |
 | cc-safety-net | Safety net / command gating. | in use | [kenryu42/cc-safety-net](https://github.com/kenryu42/cc-safety-net) |
 | dshmarket | Plugin marketplace. | in use | (npm package, no local reference clone) |
-| dsh-fish-memory | Memory backend (scoring + 30d half-life). **Reference source for @dsh-pet/memory**; not installed in profile. | ref / superseded | [Yuuyuko-uu/dsh-fish-memory](https://github.com/Yuuyuko-uu/dsh-fish-memory) |
-| dsh-mnemon | Mnemonic memory. Conflicts with @dsh-pet/memory, not enabled. | ref / superseded | [omdsh-dev/dsh-mnemon](https://github.com/omdsh-dev/dsh-mnemon) |
+| dsh-fish-memory | Memory backend (scoring + 30d half-life). **Reference source for @dsh-cbw/memory**; not installed in profile. | ref / superseded | [Yuuyuko-uu/dsh-fish-memory](https://github.com/Yuuyuko-uu/dsh-fish-memory) |
+| dsh-mnemon | Mnemonic memory. Conflicts with @dsh-cbw/memory, not enabled. | ref / superseded | [omdsh-dev/dsh-mnemon](https://github.com/omdsh-dev/dsh-mnemon) |
 | dsh-computer-use | GUI operation. Superseded by dsh-codex-style-computer-use. | ref / superseded | [ltmroberthk915/dsh-computer-use](https://github.com/ltmroberthk915/dsh-computer-use) |
 | dsh-prompt-persona | Persona injection. Superseded by dsh-persona-dafeiyu. | ref / superseded | (_plugin-references/dsh-prompt-persona) |
 | dsh-whale-musume-persona | Persona candidate, not enabled. | ref | (_plugin-references/dsh-whale-musume-persona) |
@@ -127,6 +127,7 @@ Status column: **in use** = enabled in the `web` profile; **ref** = cloned under
 | Name | Description | Repository |
 | --- | --- | --- |
 | dsh-pet-chubby_blue_whale | Desktop pet front-end for DSH (PySide6, Python 3.14+). Talks to DSH via the `dsh-web-service` session API. | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) |
+| dsh-cbw-memory | DSH long-term memory plugin (half-life decay, emotion weighting, per-workspace sharing). Derived from Yuuyuko-uu/dsh-fish-memory. | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) |
 
 > When a new sub-project is added, append a row to the table above and add its folder
 > to `.gitignore`.
@@ -141,6 +142,7 @@ DSH-Dev/                       # this index repo
 ├── docs/                      # cross-project design notes and task docs
 ├── _plugin-references/        # shallow clones of DSH plugins (in-use + reference-only, ignored)
 ├── deepseek-harness/          # upstream DSH source (read-only, ignored)
+├── dsh-cbw-memory/            # DSH memory plugin (independent repo, ignored)
 └── dsh-pet-chubby_blue_whale/ # desktop pet front-end (independent repo, ignored)
 ```
 
