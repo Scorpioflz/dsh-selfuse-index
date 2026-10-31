@@ -1,0 +1,12 @@
+# IDE / editor / tooling folders
+.codeartsdoer/
+.vscode/
+.idea/
+.merkle-snapshot.json
+
+# Reference / upstream sources (read-only, tracked in their own repos)
+_plugin-references/
+deepseek-harness/
+
+# Sub-projects (each is an independent git repo, tracked separately)
+dsh-pet-chubby_blue_whale/
