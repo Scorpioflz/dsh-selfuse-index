@@ -225,18 +225,16 @@
 - `agent_link/__init__.py`：`AgentLinkManager` 只创建 DSH monitor（移除 Claude/Cursor/OpenCode/CustomAgent monitor 实例化）
 - `uninstall_cleanup.py`：移除 Claude hooks 清理，只保留 DSH bridge 清理
 
-#### D. UI 兼容桩
-- `WebSearchSettings` 保留为禁用桩（UI 深嵌 web search 控件，直接移除会崩）；`WEB_SEARCH_KEYED_ENGINES = ()`、`WEB_SEARCH_ENGINES = ()` 保留为空元组
+#### D. UI 兼容桩（第一轮，第二轮已全部移除）
+- 第一轮保留 `WebSearchSettings` 为禁用桩；第二轮清理 UI 死代码后已全部移除（`WebSearchSettings`/`WEB_SEARCH_*`/`RoleplaySceneDialog`/roleplay 配置键/非 DSH Monitor 类）
 - `ChatSettings` 保留 `providers` dict 和 `active_provider` 骨架（UI 大量引用），但默认只有 `dsh-webapi`
-- `ai_settings_page.py`、`settings_dialog.py`：桩化断裂导入（`test_connection`、`WEB_SEARCH_KEYED_ENGINES`、`ENGINE_LABELS`）
-- `file_interpret/__init__.py`：移除 `provider.web_search` 赋值
 
 ### 7.3 设计决策
 
 | 决策 | 理由 |
 |------|------|
 | `providers.py` 不完全删除 | `_make_ssl_context`、`build_browser_headers`、`normalize_chat_endpoint` 被 `pet/island/balance.py` 和 `pet/screen_capture/translate.py` 引用 |
-| `WebSearchSettings` 保留禁用桩 | UI 文件深嵌 web search 控件，直接移除会崩；后续可清理 |
+| `WebSearchSettings` 已全部移除 | 第一轮保留禁用桩（UI 兼容），第二轮清理 UI 死代码后移除 |
 | `default_system_prompt` 保留字段但默认空串 | DSH persona 插件处理人设，桌宠不再首发 |
 | `ChatSession.system_prompt` 保留字段但始终空 | 同上 |
 | `ProviderRouter` 完全移除 | 只剩一个 provider，路由无意义 |
