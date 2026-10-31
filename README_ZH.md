@@ -32,11 +32,11 @@ flowchart LR
         direction TB
         PetBridge["@dsh-pet/bridge<br/>桌宠状态桥接<br/>(屏幕/窗口同步)"]
         PetMemory["@dsh-pet/memory<br/>记忆后端<br/>(基于 fish-memory 思路自研:<br/>打分 + 半衰期，按工作区隔离)"]
-        Persona["dsh-persona-dafeiyu<br/>人设注入<br/>(systemPrompt.section)"]
     end
 
     subgraph InUse ["在用的第三方插件（web profile）"]
         direction TB
+        Persona["dsh-persona-dafeiyu<br/>人设注入<br/>(systemPrompt.section, v0.7.1)"]
         Balance["@wycto/dsh-balance-panel<br/>余额查询"]
         Bili["dsh-bili-scroll<br/>B站滚动任务"]
         ChatMgr["dsh-chat-manager<br/>会话管理"]
@@ -80,7 +80,7 @@ flowchart LR
 | dsh-web-service (dsh-webapi) | **REST API 网关** — 经 HTTP/SSE 暴露 DSH 会话；桌宠接入 DSH 的唯一入口。 | 在用 | [toddpan/dsh-webapi](https://github.com/toddpan/dsh-webapi) |
 | @dsh-pet/bridge | **桌宠状态桥接**（自研）— 在前端与 DSH 间同步桌宠屏幕/窗口状态。 | 在用 | 本地（桌宠 `integrations/dsh-pet-bridge/`） |
 | @dsh-pet/memory | **记忆后端**（自研，基于 dsh-fish-memory 思路开发）— 按工作区隔离的记忆，打分 + 半衰期，经 `systemPrompt.context` 注入。**实际在用的记忆插件是它，不是 dsh-fish-memory。** | 在用 | 本地（桌宠 `integrations/dsh-pet-memory/`） |
-| dsh-persona-dafeiyu | **人设注入** — 经 `systemPrompt.section()` 注入角色人设；替代桌宠原前端人设拼接。 | 在用 | [Scorpioflz/dsh-persona-dafeiyu](https://github.com/Scorpioflz/dsh-persona-dafeiyu) |
+| dsh-persona-dafeiyu | **人设注入** — 经 `systemPrompt.section()` 注入角色人设；替代桌宠原前端人设拼接。使用上游第三方插件（v0.7.1），已放弃自研人设插件，改为配合自写的人设模板（见 `docs/大肥鱼_蓝鲸女仆人设模板.md`）。 | 在用 | [huaizhuanghub/dsh-persona-dafeiyu](https://github.com/huaizhuanghub/dsh-persona-dafeiyu) |
 | @wycto/dsh-balance-panel | 余额/额度查询面板。 | 在用 | [wycto/dsh-balance-panel](https://github.com/wycto/dsh-balance-panel) |
 | dsh-bili-scroll | B站滚动任务。 | 在用 | [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) |
 | dsh-chat-manager | 会话管理。 | 在用 | [WSL043/dsh-chat-manager](https://github.com/WSL043/dsh-chat-manager) |
@@ -135,4 +135,4 @@ DSH-Dev/                       # 本索引仓库
 
 - DSH 上游：[deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)
 - 作为参考的已安装插件源码清单见 `docs/DSH Reference Record.md`。
-- 插件更新每小时跟踪：`docs/plugin_updates.md`（由 `scripts/check_plugin_updates.py` 自动维护）。
+- 插件更新每小时跟踪：`docs/plugin_updates.md`（由 `scripts/check_plugin_updates.py` 自动维护）。- 桌宠人设模板（自写，喂给 `dsh-persona-dafeiyu`）：`docs/大肥鱼_蓝鲸女仆人设模板.md` ——「大肥鱼 / 蓝鲸女仆」角色卡，含社区共识区 + 自定义留白区。

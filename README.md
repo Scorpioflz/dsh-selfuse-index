@@ -36,11 +36,11 @@ flowchart LR
         direction TB
         PetBridge["@dsh-pet/bridge<br/>pet state bridge<br/>(screen / window sync)"]
         PetMemory["@dsh-pet/memory<br/>memory backend<br/>(built on fish-memory ideas:<br/>scoring + half-life, workspace-scoped)"]
-        Persona["dsh-persona-dafeiyu<br/>persona injection<br/>(systemPrompt.section)"]
     end
 
     subgraph InUse ["Third-party plugins in use (web profile)"]
         direction TB
+        Persona["dsh-persona-dafeiyu<br/>persona injection<br/>(systemPrompt.section, v0.7.1)"]
         Balance["@wycto/dsh-balance-panel<br/>balance query"]
         Bili["dsh-bili-scroll<br/>Bilibili scroll duty"]
         ChatMgr["dsh-chat-manager<br/>session management"]
@@ -84,7 +84,7 @@ Status column: **in use** = enabled in the `web` profile; **ref** = cloned under
 | dsh-web-service (dsh-webapi) | **REST API gateway** — exposes DSH sessions over HTTP/SSE; the pet's only entry point into DSH. | in use | [toddpan/dsh-webapi](https://github.com/toddpan/dsh-webapi) |
 | @dsh-pet/bridge | **Pet state bridge** (self-developed) — syncs pet screen/window state between front-end and DSH. | in use | local (pet `integrations/dsh-pet-bridge/`) |
 | @dsh-pet/memory | **Memory backend** (self-developed, built on dsh-fish-memory ideas) — workspace-scoped memory with scoring + half-life, injected via `systemPrompt.context`. This is the actual memory plugin in use, **not** dsh-fish-memory. | in use | local (pet `integrations/dsh-pet-memory/`) |
-| dsh-persona-dafeiyu | **Persona injection** — injects character persona via `systemPrompt.section()`; replaces the pet's former front-end persona splicing. | in use | [Scorpioflz/dsh-persona-dafeiyu](https://github.com/Scorpioflz/dsh-persona-dafeiyu) |
+| dsh-persona-dafeiyu | **Persona injection** — injects character persona via `systemPrompt.section()`; replaces the pet's former front-end persona splicing. Uses the upstream third-party plugin (v0.7.1); self-development of a persona plugin was abandoned in favor of this plus a self-authored persona template (see `docs/大肥鱼_蓝鲸女仆人设模板.md`). | in use | [huaizhuanghub/dsh-persona-dafeiyu](https://github.com/huaizhuanghub/dsh-persona-dafeiyu) |
 | @wycto/dsh-balance-panel | Balance / quota query panel. | in use | [wycto/dsh-balance-panel](https://github.com/wycto/dsh-balance-panel) |
 | dsh-bili-scroll | Bilibili scroll duty task. | in use | [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) |
 | dsh-chat-manager | Session management. | in use | [WSL043/dsh-chat-manager](https://github.com/WSL043/dsh-chat-manager) |
@@ -143,4 +143,4 @@ DSH-Dev/                       # this index repo
 
 - DSH upstream: [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)
 - Installed plugin sources used as reference are listed in `docs/DSH Reference Record.md`.
-- Hourly plugin update tracking: `docs/plugin_updates.md` (auto-maintained by `scripts/check_plugin_updates.py`).
+- Hourly plugin update tracking: `docs/plugin_updates.md` (auto-maintained by `scripts/check_plugin_updates.py`).- Pet persona template (self-authored, fed into `dsh-persona-dafeiyu`): `docs/大肥鱼_蓝鲸女仆人设模板.md` — "大肥鱼 / 蓝鲸女仆" character card with community-consensus fields + customizable blanks.
