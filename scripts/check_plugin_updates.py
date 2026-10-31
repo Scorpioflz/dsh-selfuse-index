@@ -1,12 +1,51 @@
 import subprocess
 import json
+import re
 from pathlib import Path
 from datetime import datetime
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGINS = ROOT / "_plugin-references"
-OUT = ROOT / "docs" / ".plugin_updates_last.json"
+OUT_JSON = ROOT / "docs" / ".plugin_updates_last.json"
+OUT_MD = ROOT / "docs" / "plugin_updates.md"
 TIMEOUT = 180
+
+IN_USE = {
+    "dsh-webapi", "dsh-balance-panel", "dsh-bili-scroll", "dsh-chat-manager",
+    "dsh-skills-manager", "dsh-custom-reasoning", "billion-context",
+    "dsh-univer-office", "dsh-preset-bridge", "modsearch", "cc-safety-net",
+    "dsh-persona-dafeiyu",
+}
+REFERENCE = {
+    "dsh-fish-memory", "dsh-mnemon", "dsh-computer-use", "dsh-prompt-persona",
+    "dsh-whale-musume-persona", "dsh-soul", "dsh-pet-indesktop-upstream",
+    "hermes-pet-bridge",
+}
+
+HEADER = """# DSH 插件更新跟踪
+
+本文件由定时任务（每小时）**覆盖式**维护，只保留**尚未执行**的建议操作。
+已实施的变更（建议行标记 ✅）在下次运行时自动清除，避免文件无限增长。
+完整检查快照见 `docs/.plugin_updates_last.json`。
+
+检查脚本：`scripts/check_plugin_updates.py`（遍历每个插件浅克隆，`git fetch` 比较
+远程 HEAD，有更新则 `git pull --ff-only` 并记录 commit 列表与文件变动）。
+
+## 分类处理规则
+
+- **在用插件** → **影响评估**：只分析变更是否影响自研部分
+  （`@dsh-pet/bridge`、`@dsh-pet/memory`、桌宠前端、人设模板）依赖的 API/契约/配置面。
+  无影响则写「无影响」。不写整合建议——直接安装的插件，更新即更新。
+- **参考/已弃插件** → **整合建议**：分析上游变更中哪些有用部分可整合进对应自研插件
+  （如 dsh-fish-memory → @dsh-pet/memory、dsh-pet-indesktop-upstream → 桌宠前端等）。
+
+## 状态图例
+
+- `updated` — 远程有新提交，已拉取
+- `up_to_date` — 已是最新
+- `fetch_error` / `pull_failed` — 网络或非快进更新，需人工介入
+- `not_a_repo` / `no_head` — 目录非 git 仓库
+"""
 
 
 def git(args, cwd):
@@ -76,20 +115,129 @@ def check_one(d):
     }
 
 
+def parse_pending_advice(md_text):
+    """从旧 plugin_updates.md 提取未完成建议，返回 {plugin_name: advice_text}。
+    含 ✅ 的插件块视为已完成，丢弃。"""
+    pending = {}
+    blocks = re.split(r'(?=^- \*\*)', md_text, flags=re.MULTILINE)
+    for block in blocks:
+        m = re.match(r'- \*\*(.+?)\*\*', block)
+        if not m:
+            continue
+        name = m.group(1)
+        if "✅" in block:
+            continue
+        advice_match = re.search(
+            r'  - (?:影响评估|整合建议):\s*(.+)', block, re.DOTALL
+        )
+        if advice_match:
+            advice = advice_match.group(1).strip()
+            advice = advice.split("\n")[0].strip()
+            if not advice or "✅" in advice or advice == "[待分析]":
+                continue
+            if advice.startswith("**无影响**"):
+                continue
+            pending[name] = advice
+    return pending
+
+
+def summarize_commits(commits):
+    if not commits:
+        return ""
+    n = len(commits)
+    first = commits[0].split("|")
+    last = commits[-1].split("|")
+    subj_first = first[2] if len(first) > 2 else ""
+    return f"{n} commits，最近: {subj_first[:80]}"
+
+
+def render_md(timestamp, results, pending):
+    updated = {r["name"]: r for r in results if r["status"] == "updated"}
+    uptodate = sum(1 for r in results if r["status"] == "up_to_date")
+    errors = [r for r in results if r["status"] not in ("updated", "up_to_date")]
+
+    names_to_show = set(updated.keys()) | set(pending.keys())
+
+    in_use_items = []
+    ref_items = []
+    for name in sorted(names_to_show):
+        r = updated.get(name)
+        is_in_use = name in IN_USE
+        is_ref = name in REFERENCE
+        if not is_in_use and not is_ref:
+            continue
+        advice = pending.get(name, "")
+        label = "影响评估" if is_in_use else "整合建议"
+        if r:
+            summary = summarize_commits(r.get("commits", []))
+            head_line = f"- **{name}**: `{r['old']}` → `{r['new']}`（{summary}）"
+        else:
+            head_line = f"- **{name}**: （无新更新，仍有未完成建议）"
+        advice_text = advice if advice else "[待分析]"
+        item = f"{head_line}\n  - {label}: {advice_text}"
+        if is_in_use:
+            in_use_items.append(item)
+        else:
+            ref_items.append(item)
+
+    lines = [HEADER.rstrip(), ""]
+    lines.append("## 当前待处理建议")
+    lines.append("")
+    lines.append(
+        f"> 最后检查：{timestamp} | "
+        f"{len(updated)} 个有更新，{uptodate} 个已最新"
+        + (f"，{len(errors)} 个异常" if errors else "")
+    )
+    lines.append("")
+
+    lines.append("### 在用插件 · 影响评估")
+    lines.append("")
+    if in_use_items:
+        lines.extend(in_use_items)
+    else:
+        lines.append("（无待处理项）")
+    lines.append("")
+
+    lines.append("### 参考插件 · 整合建议")
+    lines.append("")
+    if ref_items:
+        lines.extend(ref_items)
+    else:
+        lines.append("（无待处理项）")
+    lines.append("")
+
+    if errors:
+        lines.append("### 异常")
+        lines.append("")
+        for r in errors:
+            err = r.get("error", r["status"])
+            lines.append(f"- **{r['name']}**: {err}")
+        lines.append("")
+
+    return "\n".join(lines)
+
+
 def main():
     results = []
     if PLUGINS.is_dir():
         for d in sorted(PLUGINS.iterdir()):
             if d.is_dir():
                 results.append(check_one(d))
-    payload = {
-        "timestamp": datetime.now().isoformat(timespec="seconds"),
-        "root": str(ROOT),
-        "results": results,
-    }
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps(payload, ensure_ascii=False, indent=2))
+    timestamp = datetime.now().isoformat(timespec="seconds")
+    payload = {"timestamp": timestamp, "root": str(ROOT), "results": results}
+    OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
+    OUT_JSON.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+    pending = {}
+    if OUT_MD.exists():
+        pending = parse_pending_advice(OUT_MD.read_text(encoding="utf-8"))
+
+    md = render_md(timestamp, results, pending)
+    OUT_MD.write_text(md, encoding="utf-8")
+
+    print(f"Checked {len(results)} plugins, {len([r for r in results if r['status']=='updated'])} updated. md rewritten.")
 
 
 if __name__ == "__main__":
