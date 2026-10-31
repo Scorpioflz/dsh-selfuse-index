@@ -145,4 +145,4 @@ DSH-Dev/                       # 本索引仓库
 
 - DSH 上游：[deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)
 - 作为参考的已安装插件源码清单见 `docs/DSH Reference Record.md`。
-- 插件更新每小时跟踪：`docs/plugin_updates.md`（由 `scripts/check_plugin_updates.py` 自动维护）。- 桌宠人设模板（自写，喂给 `dsh-persona-dafeiyu`）：`docs/大肥鱼_蓝鲸女仆人设模板.md` ——「大肥鱼 / 蓝鲸女仆」角色卡，含社区共识区 + 自定义留白区。
+- 插件更新每天跟踪：`docs/plugin_updates.md`（由 `scripts/check_plugin_updates.py` 自动维护）。- 桌宠人设模板（自写，喂给 `dsh-persona-dafeiyu`）：`docs/大肥鱼_蓝鲸女仆人设模板.md` ——「大肥鱼 / 蓝鲸女仆」角色卡，含社区共识区 + 自定义留白区。

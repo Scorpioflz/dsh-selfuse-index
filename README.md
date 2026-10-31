@@ -155,4 +155,4 @@ DSH-Dev/                       # this index repo
 
 - DSH upstream: [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)
 - Installed plugin sources used as reference are listed in `docs/DSH Reference Record.md`.
-- Hourly plugin update tracking: `docs/plugin_updates.md` (auto-maintained by `scripts/check_plugin_updates.py`).- Pet persona template (self-authored, fed into `dsh-persona-dafeiyu`): `docs/大肥鱼_蓝鲸女仆人设模板.md` — "大肥鱼 / 蓝鲸女仆" character card with community-consensus fields + customizable blanks.
+- Daily plugin update tracking: `docs/plugin_updates.md` (auto-maintained by `scripts/check_plugin_updates.py`).- Pet persona template (self-authored, fed into `dsh-persona-dafeiyu`): `docs/大肥鱼_蓝鲸女仆人设模板.md` — "大肥鱼 / 蓝鲸女仆" character card with community-consensus fields + customizable blanks.
