@@ -24,12 +24,12 @@
 
 ## 当前待处理建议
 
-> 最后检查：2026-10-31T15:02:52 | 1 个有更新，18 个已最新
+> 最后检查：2026-10-31T16:02:47 | 1 个有更新，18 个已最新
 
 ### 在用插件 · 影响评估
 
-- **billion-context**: `a34a65a931ce` → `afdf889cf701`（18 commits，最近: Merge pull request #5305 from ranxianglei/2026-10-31_codex-catalog-window）
-  - 影响评估: **无影响**。本次 18 个提交均为 billion-context 内部代理管道优化与 bug 修复（codex 模型目录对齐 #5243/#5305、代理热路径性能优化 #5130、relay/loop 修复、孪生持久化门控 #4977/#5004、测试补齐），变更文件全部在 `src/` 和 `tests/` 下，未触及 `package.json` exports / `CONFIGURATION.md` / `dsh.bundle.patch.yml` 等对外 API/配置面/DSH 集成接口。自研部分（@dsh-pet/bridge、@dsh-pet/memory、桌宠前端、人设模板）不直接 import billion-context 内部模块，仅依赖其作为 DSH 插件的上下文压缩行为契约，该契约未变。
+- **billion-context**: `afdf889cf701` → `2a499c1564bc`（30 commits，关键文件: src/fold-reconcile.ts、src/durable-message-guards.ts、src/chat-pack.ts、src/decompress-shared.ts、src/tunnel-guard.ts、CONFIGURATION.md）
+  - 影响评估: 无影响。变更均为内部实现修复——折叠对账（#5142 fold-drift expected-rebase）、隧道 DNS 楔形诊断（#5224）、搜索折叠原文（#4154）、claude title sidecar 识别（#5135/#5136）、持久化消息守卫加固；唯一对外表面变化是 `compress.promptPack` 新增内置 `chat` 选项（#5319，向后兼容扩展，默认仍 `default`）。自研部分（@dsh-pet/bridge、@dsh-pet/memory、桌宠前端、人设模板）均不直接 import billion-context，也未在其配置中设置 compress.promptPack（使用默认值），不触及本次变更的任何对外表面。
 
 ### 参考插件 · 整合建议
 
