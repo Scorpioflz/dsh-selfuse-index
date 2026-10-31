@@ -34,8 +34,12 @@ flowchart LR
 
     subgraph SelfDev ["Self-developed plugins (in pet integrations/)"]
         direction TB
-        PetBridge["@dsh-pet/bridge<br/>pet state bridge<br/>(screen / window sync)"]
         PetMemory["@dsh-pet/memory<br/>memory backend<br/>(built on fish-memory ideas:<br/>scoring + half-life, workspace-scoped)"]
+    end
+
+    subgraph Inherited ["Inherited plugins (from MerZlin/dsh-pet-indesktop)"]
+        direction TB
+        PetBridge["@dsh-pet/bridge<br/>pet state bridge<br/>(screen / window sync)"]
     end
 
     subgraph InUse ["Third-party plugins in use (web profile)"]
@@ -70,6 +74,7 @@ flowchart LR
     Pet -- "HTTP / SSE<br/>session API" --> Web
     Web --> AgentLoop
     AgentLoop --> SelfDev
+    AgentLoop --> Inherited
     AgentLoop --> InUse
 ```
 
@@ -82,7 +87,7 @@ Status column: **in use** = enabled in the `web` profile; **ref** = cloned under
 | --- | --- | --- | --- |
 | dsh-pet-chubby_blue_whale | **Pet front-end** — visual interaction only (sprite, right-click menu, settings UI). No memory / persona / provider logic; all backend work delegated to DSH. | in use | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) |
 | dsh-web-service (dsh-webapi) | **REST API gateway** — exposes DSH sessions over HTTP/SSE; the pet's only entry point into DSH. | in use | [toddpan/dsh-webapi](https://github.com/toddpan/dsh-webapi) |
-| @dsh-pet/bridge | **Pet state bridge** (self-developed) — syncs pet screen/window state between front-end and DSH. | in use | local (pet `integrations/dsh-pet-bridge/`) |
+| @dsh-pet/bridge | **Pet state bridge** (inherited from [MerZlin/dsh-pet-indesktop](https://github.com/MerZlin/dsh-pet-indesktop)) — syncs pet screen/window state between front-end and DSH. | in use | local (pet `integrations/dsh-pet-bridge/`) |
 | @dsh-pet/memory | **Memory backend** (self-developed, built on dsh-fish-memory ideas) — workspace-scoped memory with scoring + half-life, injected via `systemPrompt.context`. This is the actual memory plugin in use, **not** dsh-fish-memory. | in use | local (pet `integrations/dsh-pet-memory/`) |
 | dsh-persona-dafeiyu | **Persona injection** — injects character persona via `systemPrompt.section()`; replaces the pet's former front-end persona splicing. Uses the upstream third-party plugin (v0.7.1); self-development of a persona plugin was abandoned in favor of this plus a self-authored persona template (see `docs/大肥鱼_蓝鲸女仆人设模板.md`). | in use | [huaizhuanghub/dsh-persona-dafeiyu](https://github.com/huaizhuanghub/dsh-persona-dafeiyu) |
 | @wycto/dsh-balance-panel | Balance / quota query panel. | in use | [wycto/dsh-balance-panel](https://github.com/wycto/dsh-balance-panel) |

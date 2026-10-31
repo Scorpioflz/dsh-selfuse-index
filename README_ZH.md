@@ -30,8 +30,12 @@ flowchart LR
 
     subgraph SelfDev ["自研插件（在桌宠 integrations/）"]
         direction TB
-        PetBridge["@dsh-pet/bridge<br/>桌宠状态桥接<br/>(屏幕/窗口同步)"]
         PetMemory["@dsh-pet/memory<br/>记忆后端<br/>(基于 fish-memory 思路自研:<br/>打分 + 半衰期，按工作区隔离)"]
+    end
+
+    subgraph Inherited ["继承插件（来自 MerZlin/dsh-pet-indesktop）"]
+        direction TB
+        PetBridge["@dsh-pet/bridge<br/>桌宠状态桥接<br/>(屏幕/窗口同步)"]
     end
 
     subgraph InUse ["在用的第三方插件（web profile）"]
@@ -66,6 +70,7 @@ flowchart LR
     Pet -- "HTTP / SSE<br/>会话 API" --> Web
     Web --> AgentLoop
     AgentLoop --> SelfDev
+    AgentLoop --> Inherited
     AgentLoop --> InUse
 ```
 
@@ -78,7 +83,7 @@ flowchart LR
 | --- | --- | --- | --- |
 | dsh-pet-chubby_blue_whale | **桌宠前端** — 仅做视觉交互（精灵图、右键菜单、设置 UI）。不含记忆/人设/provider 逻辑，全部后端工作交由 DSH。 | 在用 | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) |
 | dsh-web-service (dsh-webapi) | **REST API 网关** — 经 HTTP/SSE 暴露 DSH 会话；桌宠接入 DSH 的唯一入口。 | 在用 | [toddpan/dsh-webapi](https://github.com/toddpan/dsh-webapi) |
-| @dsh-pet/bridge | **桌宠状态桥接**（自研）— 在前端与 DSH 间同步桌宠屏幕/窗口状态。 | 在用 | 本地（桌宠 `integrations/dsh-pet-bridge/`） |
+| @dsh-pet/bridge | **桌宠状态桥接**（继承自 [MerZLin/dsh-pet-indesktop](https://github.com/MerZLin/dsh-pet-indesktop)）— 在前端与 DSH 间同步桌宠屏幕/窗口状态。 | 在用 | 本地（桌宠 `integrations/dsh-pet-bridge/`） |
 | @dsh-pet/memory | **记忆后端**（自研，基于 dsh-fish-memory 思路开发）— 按工作区隔离的记忆，打分 + 半衰期，经 `systemPrompt.context` 注入。**实际在用的记忆插件是它，不是 dsh-fish-memory。** | 在用 | 本地（桌宠 `integrations/dsh-pet-memory/`） |
 | dsh-persona-dafeiyu | **人设注入** — 经 `systemPrompt.section()` 注入角色人设；替代桌宠原前端人设拼接。使用上游第三方插件（v0.7.1），已放弃自研人设插件，改为配合自写的人设模板（见 `docs/大肥鱼_蓝鲸女仆人设模板.md`）。 | 在用 | [huaizhuanghub/dsh-persona-dafeiyu](https://github.com/huaizhuanghub/dsh-persona-dafeiyu) |
 | @wycto/dsh-balance-panel | 余额/额度查询面板。 | 在用 | [wycto/dsh-balance-panel](https://github.com/wycto/dsh-balance-panel) |
