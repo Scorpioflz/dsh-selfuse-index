@@ -31,7 +31,7 @@
 - **billion-context**: `d108df320978` → `1876186c9912`（57 commits，最近: Merge pull request #5147 from ranxianglei/2026-10-29_5146-bili-upstreams-endpoin）
   - 影响评估: 无影响（对自研代码）。billion-context 是 DSH 平台层上下文压缩代理（npm `bili` CLI），自研部分（@dsh-pet/bridge、@dsh-cbw/memory、桌宠前端、人设模板）不直接调用其 API/CLI/配置面（grep 确认三个自研仓库均无 `billion-context` 引用）。57 commits 均为插件内部改进（pack editor #5345、estimate safety clamp #5291、CI runner queue optimize #5333、foreign block sweep #5343、cost USD restore #5338、zod bump #4880、launcher test xdg isolation #4960 等），不触及自研部分依赖的对外契约。
 - **dsh-bili-scroll**: `a093f559e08d` → `398e4724a481`（3 commits，最近: fix: 合入社区 PR #150 + #162）
-  - 影响评估: 无影响（对自研代码）。核心 commit `3bd4868` 新增四项功能：(1) 值班轮可指定模型（`modelProvider`/`modelName` 配置字段 + `GET /api/bili-duty/models` 路由 + 设置页下拉）；(2) 「刷过的视频」按工作区显示（`GET /api/bili-duty/session-scope` + 隐藏探针）；(3) **会话归工作区 + 兜底归档**（`runDuty` 的 cwd 用设置里的 workspace，会话落在该工作区桶里；没配 workspace 时跑完归档）；(4) 超时看门狗（`runTimeoutMinutes` 默认 20，SIGTERM→5s→SIGKILL）。新增 Config 字段 `runTimeoutMinutes`/`modelProvider`/`modelName`（均 volatile，向后兼容），`bili_config` 工具描述扩展。自研部分（@dsh-pet/bridge、@dsh-cbw/memory、桌宠前端、人设模板）不调用 dsh-bili-scroll 的 HTTP API 或工具，不依赖其 Config/类型，不触及本次变更的任何表面对外契约。
+  - 影响评估: **需关注**——已 fork 为 `@dsh-cbw/bilibili`（`D:\DSH-Dev\dsh-cbw-bilibili`，v2.3.1 已发布到插件市场）。上游 commit `3bd4868` 新增四项功能：(1) 值班轮可指定模型；(2) 「刷过的视频」按工作区显示；(3) 会话归工作区 + 兜底归档；(4) 超时看门狗。fork 已合入这些功能（基于 `a093f559e08d` fork），并额外实现四项改进（人设开关/兴趣整合/画像查看/数据路径分离）。**后续上游若有新提交，需评估是否值得 rebase 合入 fork**。fork 仓库：github.com/Scorpioflz/dsh-cbw-bilibili
 
 ### 参考插件 · 整合建议
 

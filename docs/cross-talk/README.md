@@ -25,4 +25,4 @@
 | --- | --- |
 | `root.md` | 根项目整体协调（本对话） |
 | `dsh-pet.md` | 桌宠前端开发 |
-| `dsh-cbw-memory.md` | 记忆插件开发 |
+| `dsh-cbw-memory.md` | 记忆插件开发 || `dsh-cbw-bilibili.md` | B站值班插件（CBW 分支） |

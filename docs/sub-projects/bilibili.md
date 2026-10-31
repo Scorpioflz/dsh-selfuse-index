@@ -29,6 +29,10 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 | 帧图 | 单帧 bili_frames | 分镜多格 bili_storyboard（6 帧一次） |
 | 评论闸门 | 语感 + autoComment | + 三层硬禁区（政治/政府/前沿，force 不可越过） |
 | 报告 | full/brief/off | + 观看统计段（完成度/时间分布/深夜比例）+ 收件箱段（回复/@/点赞分类） |
+| 人设 | 始终注入 | personaEnabled 开关（默认关，因人设插件已全局注入） |
+| 兴趣来源 | 手填 keywords | 手填 + 画像 primaryInterests + 学习兴趣 三来源去重合并 |
+| 画像持久化 | 无 | hobby-profile.json 持久化 + 设置页查看（标注「上次分析」） |
+| 数据路径 | `$DSH_HOME/bili-duty/` | `$DSH_HOME/dsh-cbw-bilibili/`（含一次性迁移，与上游分离） |
 
 ## 借鉴源
 
@@ -66,6 +70,7 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 | `watchedStatsDays` | `7` | 统计回看天数（1–30） |
 | `inboxScanEnabled` | `false` | 收件箱扫描开关（分类回复/@/点赞通知） |
 | `inboxScanPerRound` | `5` | 每轮最多处理几条收件箱通知（1–20） |
+| `personaEnabled` | `false` | 人设提示词开关（默认关，因人设插件已全局注入） |
 
 ## 实施计划
 
@@ -75,6 +80,15 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 | P1 | 爱好分析 + 画像 + 刷新周期 | ✅ 已完成（commit `19ca8cf`） |
 | P2 | 兴趣学习+半衰期、分镜图、评论闸门 | ✅ 已完成（commit `4539076`） |
 | P3 | 观看统计报告、收件箱分类 | ✅ 已完成（commit `9d8aa4a`） |
+| 改进 | 人设开关/兴趣整合/画像查看/数据路径分离 | ✅ 已完成（commit `951e620`） |
+
+## 插件市场发布
+
+- **版本**：v2.3.1
+- **GitHub Pages**：`https://scorpioflz.github.io/dsh-cbw-bilibili/index.json`（从 `/docs` 目录提供）
+- **topic**：`dsh-plugin` 已打
+- **安装方式**：`dsh plugin --profile web add "https://gh-proxy.com/https://codeload.github.com/Scorpioflz/dsh-cbw-bilibili/tar.gz/refs/heads/main"`（国内需镜像）
+- **数据目录**：`$DSH_HOME/dsh-cbw-bilibili/`（与上游 `bili-duty/` 分离，含一次性迁移）
 
 ## 方案文档
 
