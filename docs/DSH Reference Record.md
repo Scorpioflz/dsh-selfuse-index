@@ -141,7 +141,7 @@
 | 人设上限 | 64,000 字符 |
 | 依赖 | peer(optional): `@deepseek-ai/cordis^4.0.1`/`@deepseek-ai/dsh-system-prompt^0.2.0-rc.2`/`@deepseek-ai/schemastery^3.18.4`；node>=20 |
 | inject | `['systemPrompt']`（host）+ `['@deepseek-ai/dsh-client-ui-renderer','@deepseek-ai/dsh-client-locale']`（client） |
-| 与桌宠关系 | **推荐替代当前 prompt_sync 人设注入方式**。安装后桌宠前端删掉 `dsh_provider.py:305-315` 的 prompt_sync，人设改由插件通过 `systemPrompt.section()` 注入（可被 prompt caching 缓存） |
+| 与桌宠关系 | **推荐替代当前 prompt_sync 人设注入方式**。桌宠前端已于 2026-10-31（commit `cc881933`）移除 `dsh_provider.py` 的 `prompt_sync`/`system_sent` 逻辑，`PromptBuilder.build_messages()` 只返回用户消息，`default_system_prompt` 默认空串。安装本插件后人设由 `systemPrompt.section()` 注入（可被 prompt caching 缓存） |
 | 关键文件 | `lib/index.js`（1177 行）、`lib/client.js`、`cordis.patch.yml`、`README.md` |
 
 ### 15. dsh-whale-musume-persona — `dsh-whale-musume-persona`

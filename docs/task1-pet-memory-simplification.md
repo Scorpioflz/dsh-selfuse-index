@@ -1,6 +1,6 @@
 # 任务1：桌宠记忆下沉 DSH 插件层方案
 
-> 状态：实施完成（待迁移旧数据）
+> 状态：实施完成（待迁移旧数据）；2026-10-31 进一步移除非 DSH 后端（provider/persona/agent link）
 > 目标：简化 dsh-pet-chubby_blue_whale 前端，让记忆的实现/记录/调整/遗忘全部下沉到 DSH 插件层，桌宠只做纯前端。
 
 ---
@@ -189,10 +189,61 @@
 | 1. fish-memory vs 自研 | 直接用 fish-memory 改造为 dsh-pet-memory |
 | 2. 多角色记忆隔离 | 每角色一个工作区，工作区内共享记忆（非每角色独立 sessionId） |
 | 3. 迁移时机 | 先部署新架构，旧数据迁移待做 |
-| 5. prompt.py 边界 | system prompt 仍由桌宠首发，记忆由插件通过 context 注入 |
+| 5. prompt.py 边界 | **已变更（2026-10-31）**：system prompt 改由 DSH persona 插件（`dsh-persona-dafeiyu`）通过 `systemPrompt.section()` 注入，桌宠不再首发；`PromptBuilder.build_messages()` 只返回用户消息，`default_system_prompt` 默认空串 |
 
 ### 6.3 待完成
 
 - 旧记忆数据迁移脚本（§三）
 - fish-memory 配置权重校准（§2.4，需实际对话数据）
 - system prompt 引导段（§2.5，建议追加 remember 工具引导）
+
+---
+
+## 七、实施记录（2026-10-31）：非 DSH 后端移除
+
+> commit `cc881933`，已推送至 `github.com/Scorpioflz/dsh-pet-chubby_blue_whale`。
+> 净删除 683 行，12 文件修改 + 1 文件删除。模块导入验证通过（`pet.app` 及全部子模块）。
+
+### 7.1 动机
+
+桌宠只保留 DSH 作为唯一后端。移除：非 DSH provider 支持、桌宠侧人设拼接、联网搜索、非 DSH agent 联动。人设改由 DSH persona 插件（`dsh-persona-dafeiyu`）通过 `systemPrompt.section()` 注入。
+
+### 7.2 已完成
+
+#### A. 非 DSH Provider 移除
+- `providers.py`：精简为 HTTP 工具模块（保留 `_make_ssl_context`、`build_browser_headers`、`normalize_chat_endpoint`，re-export `ProviderError`/`StreamEvent`）；移除 `OpenAICompatibleProvider`、`SSEParser`、`test_connection`
+- `web_search.py`：**删除**（225 行）
+- `dsh_provider.py`：移除 `ProviderRouter`；移除 `prompt_sync`/`system_sent` 逻辑
+- `service.py`：直接用 `DshWebApiProvider`，不再经 `ProviderRouter`
+- `models.py`：`ProviderError`/`StreamEvent` 迁入；`ProviderConfig` 移除 `web_search` 字段；`active_provider` 默认→`dsh-webapi`
+
+#### B. 桌宠侧人设移除
+- `prompt.py`：移除 `ROLEPLAY_GUIDE`、`MEMORY_GUIDE`、`roleplay_context`、`time_context`、`stamp_message`；`build_messages()` 只返回 `[{'role': 'user', 'content': user_text}]`；`effective_system_prompt` 返回空串
+- `config.py`：`default_system_prompt` 默认→空串；只保留 `dsh-webapi` provider，移除 `openai-main` 和 `web_search` 默认值
+
+#### C. 非 DSH Agent 联动移除
+- `agent_link/__init__.py`：`AgentLinkManager` 只创建 DSH monitor（移除 Claude/Cursor/OpenCode/CustomAgent monitor 实例化）
+- `uninstall_cleanup.py`：移除 Claude hooks 清理，只保留 DSH bridge 清理
+
+#### D. UI 兼容桩
+- `WebSearchSettings` 保留为禁用桩（UI 深嵌 web search 控件，直接移除会崩）；`WEB_SEARCH_KEYED_ENGINES = ()`、`WEB_SEARCH_ENGINES = ()` 保留为空元组
+- `ChatSettings` 保留 `providers` dict 和 `active_provider` 骨架（UI 大量引用），但默认只有 `dsh-webapi`
+- `ai_settings_page.py`、`settings_dialog.py`：桩化断裂导入（`test_connection`、`WEB_SEARCH_KEYED_ENGINES`、`ENGINE_LABELS`）
+- `file_interpret/__init__.py`：移除 `provider.web_search` 赋值
+
+### 7.3 设计决策
+
+| 决策 | 理由 |
+|------|------|
+| `providers.py` 不完全删除 | `_make_ssl_context`、`build_browser_headers`、`normalize_chat_endpoint` 被 `pet/island/balance.py` 和 `pet/screen_capture/translate.py` 引用 |
+| `WebSearchSettings` 保留禁用桩 | UI 文件深嵌 web search 控件，直接移除会崩；后续可清理 |
+| `default_system_prompt` 保留字段但默认空串 | DSH persona 插件处理人设，桌宠不再首发 |
+| `ChatSession.system_prompt` 保留字段但始终空 | 同上 |
+| `ProviderRouter` 完全移除 | 只剩一个 provider，路由无意义 |
+
+### 7.4 遗留（后续可清理）
+
+- UI 文件中多 provider 管理/联网搜索/人设编辑控件仍存在（已桩化导入，不会崩溃，但控件是死代码）
+- `agent_link/__init__.py` 中非 DSH Monitor 类定义仍存在（6335 行，未实例化的死代码）
+- 未安装 `dsh-persona-dafeiyu` 插件（推荐后续安装并导入最终人设文档）
+- 未跑全量 pytest 套件（仅验证模块导入通过）
