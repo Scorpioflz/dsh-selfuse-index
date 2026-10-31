@@ -33,5 +33,4 @@
 
 ### 参考插件 · 整合建议
 
-- **dsh-mnemon**: （无新更新，仍有未完成建议）
-  - 整合建议: dsh-mnemon 与 @dsh-pet/memory 职责重叠但未启用。本次修复 evolution scroll boundary——可**对比 dsh-mnemon 的 evolution/scroll 边界处理**，评估 @dsh-pet/memory 是否需要类似机制（若 @dsh-pet/memory 有记忆演化/滚动逻辑）。低优先，仅思路参考。
+（无待处理项）

@@ -17,7 +17,7 @@ IN_USE = {
     "dsh-persona-dafeiyu",
 }
 REFERENCE = {
-    "dsh-fish-memory", "dsh-mnemon", "dsh-computer-use", "dsh-prompt-persona",
+    "dsh-fish-memory", "dsh-computer-use", "dsh-prompt-persona",
     "dsh-whale-musume-persona", "dsh-soul", "dsh-pet-indesktop-upstream",
     "hermes-pet-bridge",
 }
