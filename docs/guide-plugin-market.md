@@ -82,7 +82,22 @@
 
 > **验证**：`curl -s -o /dev/null -w "%{http_code}" "https://<owner>.github.io/<repo>/index.json"` 应返回 `200`。
 
-## 第四步：在 DSH 中添加索引源
+## 第四步：给仓库打上 `dsh-plugin` topic
+
+在 GitHub 仓库上添加 `dsh-plugin` topic（`https://github.com/topics/dsh-plugin`），让插件可被按 topic 检索发现。
+
+**方式 A（网页）**：仓库主页右上角齿轮 → Topics → 输入 `dsh-plugin` → Save。
+
+**方式 B（API）**：
+```bash
+TOKEN=$(printf "protocol=https\nhost=github.com\n" | git credential fill 2>&1 | grep "^password=" | cut -d= -f2)
+curl -s -X PUT "https://api.github.com/repos/<owner>/<repo>/topics" \
+  -H "Authorization: token $TOKEN" \
+  -H "Accept: application/vnd.github.mercy-preview+json" \
+  -d '{"names":["dsh-plugin"]}'
+```
+
+## 第五步：在 DSH 中添加索引源
 
 1. 打开 DSH → **Plugins** 页面
 2. 找到 **Custom plugin indexes**（在 Experimental plugins 下，需先开启实验性功能）
@@ -90,7 +105,7 @@
 4. 输入索引 URL：`https://<owner>.github.io/<repo>/index.json`
 5. 确认后切换到 **Discover** 标签页，应能看到插件
 
-## 第五步：通过市场安装
+## 第六步：通过市场安装
 
 在 Discover 标签页找到插件后，点击安装。DSH 会通过 `pluginManager.installBundle` 安装，保留审批/兼容性检查。
 

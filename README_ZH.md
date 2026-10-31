@@ -30,7 +30,7 @@ flowchart LR
 
     subgraph SelfDev ["自研插件（独立仓库）"]
         direction TB
-        PetMemory["@dsh-cbw/memory<br/>记忆后端<br/>(基于 fish-memory 衍生:<br/>打分 + 半衰期 + P0/P1 升级)"]
+        PetMemory["@dsh-cbw/memory<br/>记忆后端<br/>(基于 fish-memory 衍生:<br/>打分 + 半衰期 + P0-P3 升级)"]
     end
 
     subgraph Inherited ["继承插件（来自 MerZlin/dsh-pet-indesktop）"]
@@ -84,7 +84,7 @@ flowchart LR
 | dsh-pet-chubby_blue_whale | **桌宠前端** — 仅做视觉交互（精灵图、右键菜单、设置 UI）。不含记忆/人设/provider 逻辑，全部后端工作交由 DSH。 | 在用 | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) |
 | dsh-web-service (dsh-webapi) | **REST API 网关** — 经 HTTP/SSE 暴露 DSH 会话；桌宠接入 DSH 的唯一入口。 | 在用 | [toddpan/dsh-webapi](https://github.com/toddpan/dsh-webapi) |
 | @dsh-pet/bridge | **桌宠状态桥接**（继承自 [MerZLin/dsh-pet-indesktop](https://github.com/MerZLin/dsh-pet-indesktop)）— 在前端与 DSH 间同步桌宠屏幕/窗口状态。 | 在用 | 本地（桌宠 `integrations/dsh-pet-bridge/`） |
-| @dsh-cbw/memory | **记忆后端**（自研，基于 dsh-fish-memory 衍生）— 按工作区隔离的记忆，打分 + 半衰期 + P0/P1 升级（请求检测、bigram 去重、recall 工具、自动归档、来源标记），经 `systemPrompt.context` 注入。 | 在用 | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) |
+| @dsh-cbw/memory | **记忆后端**（自研，基于 dsh-fish-memory 衍生）— 按工作区隔离的记忆，打分 + 半衰期 + P0-P3 升级（请求检测、bigram 去重、recall 工具、自动归档、来源标记、JSONL+category、定时沉淀、安全模型、归档索引、CJK bigram），经 `systemPrompt.context` 注入。 | 在用 | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) |
 | dsh-persona-dafeiyu | **人设注入** — 经 `systemPrompt.section()` 注入角色人设；替代桌宠原前端人设拼接。使用上游第三方插件（v0.7.1），已放弃自研人设插件，改为配合自写的人设模板（见 `docs/大肥鱼_蓝鲸女仆人设模板.md`）。 | 在用 | [huaizhuanghub/dsh-persona-dafeiyu](https://github.com/huaizhuanghub/dsh-persona-dafeiyu) |
 | @wycto/dsh-balance-panel | 余额/额度查询面板。 | 在用 | [wycto/dsh-balance-panel](https://github.com/wycto/dsh-balance-panel) |
 | dsh-bili-scroll | B站滚动任务。 | 在用 | [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) |

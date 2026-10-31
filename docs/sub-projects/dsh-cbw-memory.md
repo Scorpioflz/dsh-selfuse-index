@@ -4,7 +4,7 @@
 
 ## 基本信息
 
-- **本地路径**：`D:\DSH-Dev\dsh-cbw-memory`（独立仓库）+ 桌宠 `integrations/dsh-pet-memory/`（打包目录）
+- **本地路径**：`D:\DSH-Dev\dsh-cbw-memory`（独立仓库）
 - **仓库**：[Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory)
 - **npm 包名**：`@dsh-cbw/memory`（注册名 `memory`）
 - **许可证**：Yuuyuko-uu 插件许可 1.2（派生自 dsh-fish-memory）
@@ -23,16 +23,20 @@ DSH 长期记忆后端，按工作区共享记忆（同一工作区多会话共�
 - 打包目录编码损坏修复
 - 包名改为 `@dsh-cbw/memory`，注册名仍为 `memory`
 
-## P0/P1 升级
+## P0-P3 升级
 
-请求检测、bigram 去重、recall 工具、自动归档、来源标记。
+- **P0**：请求检测、bigram 去重、双重预算+truncated 标记
+- **P1**：recall 工具、自动归档、来源标记
+- **P2**：JSONL 存储+category 字段、增量定时沉淀
+- **P3**：安全模型（source 验证）、归档索引、LRU 阈值上调（200→500）、归档去重、CJK bigram 检索
+- **v0.4.1**：路由前缀统一（`/dsh-pet-memory/` → `/dsh-cbw-memory/`）、插件市场索引
 
 ## 许可证合规
 
-- `integrations/dsh-pet-memory/LICENSE`：逐字复制上游许可 + 派生声明附录
-- `package.json`：license = `SEE LICENSE IN LICENSE`
-- 桌宠 README 致谢段：含派生声明 + 改动清单
-- `THIRD_PARTY_NOTICES.md`：第 0 节登记
+- `LICENSE`：逐字复制上游许可 + 派生声明附录
+- `package.json`：license = `SEE LICENSE IN LICENSE`，files 含 LICENSE + THIRD_PARTY_NOTICES.md
+- README/README_ZH 致谢段：含派生声明 + 改动清单 + 借鉴思路来源
+- `THIRD_PARTY_NOTICES.md`：第 0 节登记派生关系，第 1 节登记借鉴来源
 
 ## 参考源
 

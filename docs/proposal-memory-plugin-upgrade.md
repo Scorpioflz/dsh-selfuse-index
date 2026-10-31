@@ -300,10 +300,11 @@ while (map.size > 128) map.delete(map.keys().next().value!)
 - **成本**：全局字符串替换（index.js 42 处 + client.js 1 处 + dsh_provider.py 1 处）
 - **版本**：v0.4.1
 
-#### 4.17 实机测试 + 插件市场索引 ✅
+#### 4.17 实机测试 + 插件市场安装 ✅
 - **实机测试**：v0.4.1 通过 `dsh plugin add link:` 部署到 DSH web profile，全部通过（插件加载、32 路由、管理面板、记忆写入、跨对话召回、版本检查、策略配置）
 - **repository 修复**：package.json 缺 `repository` 字段导致版本检查报"查不到"，已添加（commit `cd4d5b5`）
-- **插件市场索引**：`docs/index.json` 已创建并托管在 GitHub Pages（`https://scorpioflz.github.io/dsh-cbw-memory/index.json`），用户可在 DSH Discover 标签页添加此 URL 安装插件
+- **插件市场索引**：`docs/index.json` 已创建并托管在 GitHub Pages（`https://scorpioflz.github.io/dsh-cbw-memory/index.json`）
+- **市场安装**：Discover 标签页直装遇 `ERR_PNPM_TARBALL_DECODE_GZIP`（GitHub tarball 下载损坏，国内网络不稳定）；改用 gh-proxy 镜像 tarball URL 通过 CLI 安装成功：`dsh plugin --profile web add "https://gh-proxy.com/https://github.com/Scorpioflz/dsh-cbw-memory/archive/refs/heads/main.tar.gz" --config.package-import-method=copy`，插件热加载后全部路由正常（list/page/policy 均 200）
 - **版本**：v0.4.1（commit `4211c0b`）
 
 ---
