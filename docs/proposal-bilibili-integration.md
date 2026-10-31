@@ -3,11 +3,12 @@
 > 状态：分析完成，待讨论
 > 日期：2026-10-31
 > 分析对象：dsh-bili-scroll（当前插件）+ 社区 B站插件综合评估
-> 目标：补充 task2 方案 + 评估"根据主人 B站 ID 访问收藏夹/观看历史/分析爱好"的可行性
+> 目标：固定会话方案 + 评估"根据主人 B站 ID 访问收藏夹/观看历史/分析爱好"的可行性
+> 历史背景：原 task2（固定会话方案）已整合至 §六
 
 ---
 
-## 一、dsh-bili-scroll 当前能力补充（task2 补充）
+## 一、dsh-bili-scroll 当前能力补充
 
 ### 1.1 当前插件能做什么
 
@@ -151,7 +152,7 @@ B站观看历史 API：
 - 昵称→UID 解析复用已有 `lib/uid.mjs`
 - API 调用复用已有凭证（值班号 SESSDATA）
 - 分析逻辑在宿主侧做（不花模型 token），输出结构化画像
-- 画像可存入 @dsh-pet/memory 作为长期事实
+- 画像可存入 @dsh-cbw/memory 作为长期事实
 
 **优点**：改动最小，复用已有基础设施
 **缺点**：dsh-bili-scroll 职责膨胀
@@ -224,7 +225,7 @@ dsh-bili-profile/
 - **三层评论闸门**：政治/政府/前沿科学硬禁区
 
 **借鉴建议**：
-1. **兴趣学习 + 半衰期**：dsh-bili-scroll 的 `keywords` 是死配置，可以借鉴 whale-panel 的兴趣学习机制——从值班轮挑的视频中自动提取兴趣词，按半衰期淡忘。这与 @dsh-pet/memory 的半衰期机制异曲同工。
+1. **兴趣学习 + 半衰期**：dsh-bili-scroll 的 `keywords` 是死配置，可以借鉴 whale-panel 的兴趣学习机制——从值班轮挑的视频中自动提取兴趣词，按半衰期淡忘。这与 @dsh-cbw/memory 的半衰期机制异曲同工。
 2. **token 额度**：dsh-bili-scroll 用 `perDay`（每天几条），可以借鉴 token 额度思路——但这对桌宠场景可能过重。
 3. **评论闸门**：dsh-bili-scroll 已有语感闸门 + autoComment 闸门，可以借鉴三层硬禁区（政治/政府/前沿）。
 
@@ -247,12 +248,12 @@ dsh-bili-profile/
 
 ## 四、综合建议
 
-### 4.1 短期（与 task2 固定会话方案一起做）
+### 4.1 短期（与固定会话方案一起做）
 
-1. **固定会话**（task2 方案 A）：先解决值班轮无上下文的问题
+1. **固定会话**（§六方案 A）：先解决值班轮无上下文的问题
 2. **收藏夹访问**：在 dsh-bili-scroll 新增 `bili_user_favorites` 工具，用值班号登录访问主人公开收藏夹
 3. **爱好分析**：新增 `bili_analyze_hobby` 工具，从收藏夹 + 关注列表推断爱好画像
-4. **画像注入记忆**：将爱好画像作为长期事实存入 @dsh-pet/memory
+4. **画像注入记忆**：将爱好画像作为长期事实存入 @dsh-cbw/memory
 
 ### 4.2 中期（提升值班质量）
 
@@ -332,7 +333,7 @@ bili_analyze_hobby(uid?: number, nickname?: string) → {
 
 ### 5.3 画像注入记忆
 
-将爱好画像存入 @dsh-pet/memory 作为长期事实：
+将爱好画像存入 @dsh-cbw/memory 作为长期事实：
 
 ```json
 {
@@ -350,14 +351,66 @@ bili_analyze_hobby(uid?: number, nickname?: string) → {
 
 ---
 
-## 六、与 task2 方案的关系
+## 六、固定会话方案（原 task2 整合）
 
-task2（`docs/task2-bili-scroll-fixed-session.md`）解决"固定会话 + 上下文留存"问题。本方案是 task2 的扩展：
+> 原 task2（`docs/task2-bili-scroll-fixed-session.md`）已整合至此。
+> 目标：让 dsh-bili-scroll 在固定对话中运行，有上下文，更好留存记忆，不让对话工作区混乱。
 
-1. **task2**：让值班轮有上下文（固定会话）
-2. **本方案**：让值班轮更懂主人（爱好分析 → 关键词生成 → 更精准的推荐）
+### 6.1 当前会话机制根因
 
-两者独立但互补：task2 可以先做（解决上下文问题），本方案的爱好分析可以后做（提升推荐质量）。
+值班轮通过 `child_process.spawn` 起新 dsh CLI 进程（`index.js:1600-1632`）：
+
+```js
+spawn('dsh', ['-p', 'bili-duty', '--print', prompt], { cwd: pluginHome })
+```
+
+- **纯 CLI 一次性模式**：prompt 作为命令行参数传入，进程结束即会话结束
+- **非 API 复用会话**：不调用 webapi，无 sessionId 复用
+- **每轮独立会话**：无上下文延续
+
+跨轮记忆靠三个文件：`seen.md`（判重）、`digest/`（月归档）、`out/`（日报）。文件记忆无法提供对话上下文，模型每轮"失忆"。
+
+### 6.2 四个候选方案
+
+| 方案 | 描述 | 上下文 | 记忆 | 改动量 | 风险 |
+|------|------|--------|------|--------|------|
+| **A** 固定会话复用 sessionId | 首次建会话，后续续写 | ✅ 完整 | ✅ remember 持久化 | 中 | ⚠️ 会话无限增长，需 compaction |
+| B 固定工作区+每天新会话+注入记忆 | 每天新会话，systemPrompt 含昨日摘要 | ⚠️ 仅当日 | ⚠️ 需手动注入 | 中 | 低 |
+| C 固定会话+超阈值归档换新 | 会话超限时归档+摘要+新建 | ✅ 强 | ✅ | 高 | 中 |
+| D CLI 不变仅加 workspace 归组 | spawn 时加 --workspace | ❌ | ❌ | 极小 | 极低 |
+
+### 6.3 推荐：方案 A（固定会话复用 sessionId）
+
+```
+首次：POST /sessions { sessionId: "bili-duty-fixed", workspaceId: "bili-duty-ws", ... }
+后续：POST /sessions/bili-duty-fixed/prompt-stream { prompt }
+```
+
+理由：改动量适中，完整对话上下文最符合目标，记忆插件在固定会话下自然生效。compaction 兜底：DSH 有会话 compaction 机制。若验证 compaction 在 bili-duty profile 下不生效，则退到方案 C。
+
+### 6.4 待验证未知项
+
+1. **bili-duty profile 下 compaction 是否自动生效**（关掉了多数工具，compaction 若依赖某工具可能被禁）
+2. **会话级 permission 与 profile disabled 的叠加语义**（固定会话的权限是会话级还是 profile 级？）
+
+### 6.5 风险与注意事项
+
+| 风险 | 影响 | 缓解 |
+|------|------|------|
+| 固定会话无限增长导致 token 爆炸 | 高 | compaction 兜底 / 方案 C 归档 |
+| bili-duty profile 下 compaction 不生效 | 高 | 验证后选方案 C |
+| webapi 不可用时值班中断 | 中 | 保留 CLI fallback；webapi 重试 |
+| 多值班轮并发写同一会话 | 中 | 加锁或每轮串行 |
+| 权限泄露（固定会话权限叠加） | 高 | 验证叠加语义；保持 profile 级禁用 |
+
+### 6.6 待讨论决策点
+
+1. 固定 sessionId 命名（`bili-duty-fixed`？带日期/版本？）
+2. workspaceId 命名与是否新建
+3. compaction 不生效时的降级策略
+4. 并发控制（多值班轮是否允许并发写同一会话？）
+5. webapi 地址与认证（bili-scroll 插件如何获知 webapi 的 host:port？）
+6. CLI fallback 保留与否
 
 ---
 
