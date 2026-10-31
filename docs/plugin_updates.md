@@ -24,13 +24,12 @@
 
 ## 当前待处理建议
 
-> 最后检查：2026-10-31T14:04:35 | 0 个有更新，19 个已最新
+> 最后检查：2026-10-31T15:02:52 | 1 个有更新，18 个已最新
 
 ### 在用插件 · 影响评估
 
-- **billion-context**: （无新更新，仍有未完成建议）
-  - 影响评估: ✅ **已验证通过**（2026-10-31 桌宠对话测试正常）。schema v10 引入 `messages.ts` 列（probe-first ALTER、不回填、timestamps 默认关闭），`@dsh-pet/memory` 经 `systemPrompt.context` 注入记忆不直接依赖存储 schema。保留 90 天作参考，若期间出现会话加载/记忆注入异常可回查。
-  <!-- keep-until: 2027-01-29 -->
+- **billion-context**: `a34a65a931ce` → `afdf889cf701`（18 commits，最近: Merge pull request #5305 from ranxianglei/2026-10-31_codex-catalog-window）
+  - 影响评估: **无影响**。本次 18 个提交均为 billion-context 内部代理管道优化与 bug 修复（codex 模型目录对齐 #5243/#5305、代理热路径性能优化 #5130、relay/loop 修复、孪生持久化门控 #4977/#5004、测试补齐），变更文件全部在 `src/` 和 `tests/` 下，未触及 `package.json` exports / `CONFIGURATION.md` / `dsh.bundle.patch.yml` 等对外 API/配置面/DSH 集成接口。自研部分（@dsh-pet/bridge、@dsh-pet/memory、桌宠前端、人设模板）不直接 import billion-context 内部模块，仅依赖其作为 DSH 插件的上下文压缩行为契约，该契约未变。
 
 ### 参考插件 · 整合建议
 
