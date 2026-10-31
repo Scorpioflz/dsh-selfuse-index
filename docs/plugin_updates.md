@@ -51,5 +51,6 @@ HEAD，有更新则 `git pull --ff-only` 并记录 commit 列表与文件变动�
 
 - **dsh-fish-memory**: `2bb9be7b83ba` → `edc723d63809`（8 commits；**许可证变更 MIT → Yuuyuko-uu 1.2**：要求署名、禁止声称原创、违约须删除衍生作品）
   - 整合建议: `@dsh-pet/memory` 借鉴了 fish-memory 的打分公式思路，本次许可证变更需**同步更新 @dsh-pet/memory 的许可证声明**（若 redistribute，保留 fish-memory 署名引用）。功能层面无新可整合思路；后续持续关注 fish-memory 的打分公式/半衰期算法变更，若有优化可同步到 @dsh-pet/memory。
+  - ✅ **许可证已处理（2026-10-31）**：`@dsh-pet/memory` 已完成 Yuuyuko-uu 插件许可 1.2 合规——新增 `integrations/dsh-pet-memory/LICENSE`（逐字复制上游许可+派生声明）、`package.json` license 改为 `SEE LICENSE IN LICENSE`、README/README_ZH 致谢段扩展派生声明+改动清单、`THIRD_PARTY_NOTICES.md` 加第 0 节登记。桌宠仓库提交 `ba24d6b3`（`Scorpioflz/dsh-pet-chubby_blue_whale`）。
 - **dsh-mnemon**: `fa4950616f8c` → `7cbdefc64c01`（8 commits，v0.5.37；evolution scroll boundary 修复）
   - 整合建议: dsh-mnemon 与 @dsh-pet/memory 职责重叠但未启用。本次修复 evolution scroll boundary——可**对比 dsh-mnemon 的 evolution/scroll 边界处理**，评估 @dsh-pet/memory 是否需要类似机制（若 @dsh-pet/memory 有记忆演化/滚动逻辑）。低优先，仅思路参考。
