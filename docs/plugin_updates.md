@@ -1,10 +1,21 @@
 # DSH 插件更新跟踪
 
-本文件由定时任务（每小时）自动维护，记录 `_plugin-references/` 下各已安装 DSH 插件
-上游仓库的更新情况与整合建议。每次检查的结果快照见 `docs/.plugin_updates_last.json`。
+本文件由定时任务（每小时）自动维护，记录 `_plugin-references/` 下各 DSH 插件上游仓库的
+更新情况。每次检查的结果快照见 `docs/.plugin_updates_last.json`。
 
 检查脚本：`scripts/check_plugin_updates.py`（遍历每个插件浅克隆，`git fetch` 比较远程
 HEAD，有更新则 `git pull --ff-only` 并记录 commit 列表与文件变动）。
+
+## 分类处理规则
+
+更新记录按插件状态（见 README.md 插件职责表「状态」列）分两类，**处理目的不同**：
+
+- **在用插件**（状态 = 在用 / in use）→ **影响评估**：只分析变更是否影响自研部分
+  （`@dsh-pet/bridge`、`@dsh-pet/memory`、桌宠前端、人设模板）依赖的 API/契约/配置面。
+  无影响则写「无影响」。**不写整合建议**——直接安装的插件，更新即更新。
+- **参考/已弃插件**（状态含 ref / superseded / 参考 / 已弃）→ **整合建议**：分析上游
+  变更中哪些有用部分可整合进对应自研插件（如 dsh-fish-memory → @dsh-pet/memory、
+  dsh-pet-indesktop-upstream → 桌宠前端/@dsh-pet/bridge 等）。
 
 ## 状态图例
 
@@ -17,43 +28,28 @@ HEAD，有更新则 `git pull --ff-only` 并记录 commit 列表与文件变动�
 
 > 最新的更新记录追加在下方。无更新的检查轮次不在此记录。
 
+<!-- NEW_ENTRIES_BELOW -->
+
 ### 2026-10-31 13:14 检查轮次
 
-本轮 7 个插件有更新，13 个已最新。
+本轮 7 个插件有更新，13 个已最新。按状态分两组处理。
 
-- **billion-context**: `226c33893d33` → `fb5b91611a07`
-  - 提交: 7294 个（v0.1.209 发布；主要含存储完整性 refuse-to-start、index.db quarantine、event-loop watchdog、session-resident 内存封顶、schema v10 + message timestamps 默认关闭、subagent lane token、prompt_cache_key 默认关闭等）
-  - 变动文件: 270 个（`.claude-plugin/plugin.json`、`marketplace.json`、CI workflows、storage kernel 等）
-  - 整合建议: 此为 DSH 存储/长上下文核心 fork，更新极频繁。本次引入 **schema v10 迁移**（messages.ts 列）与多项存储稳定性修复。升级后需**重启 DSH** 并观察 sessions 目录迁移；schema 迁移为 probe-first ALTER、不回填，对桌宠无直接前端影响，但 DSH 重启后应确认桌宠会话能正常加载。建议关注 v0.1.209 release notes 中 `promptCache.routing` 默认关闭的升级提示。
+#### 在用插件 · 影响评估
 
-- **cc-safety-net**: `a84eb80e5e93` → `24b5e018d20f`
-  - 提交: 23 个（v2.7.1；`fix(gate): retry Remove-Item and cmd deletes past a disabled home-cwd rule` 等）
-  - 变动文件: 43 个（`plugin.json`、`dist/amp/cc-safety-net/` 等）
-  - 整合建议: 安全网/命令门控插件。本次修复 workdir anchor 与删除重试逻辑。若 DSH 已安装此插件，需**重新 pnpm 安装**（`--config.package-import-method=copy`）以更新；变更涉及 gate 判定，建议复查桌宠经 DSH 执行的命令门控规则是否仍符合预期。
+- **billion-context**: `226c33893d33` → `fb5b91611a07`（7294 commits，v0.1.209；schema v10 迁移 + 存储稳定性 + event-loop watchdog + promptCache 默认关闭）
+  - 影响评估: ⚠️ **可能影响**。schema v10 引入 `messages.ts` 列（probe-first ALTER、不回填、timestamps 默认关闭）。`@dsh-pet/memory` 经 `systemPrompt.context` 注入记忆，不直接依赖存储 schema，但 DSH 重启后 sessions 迁移若失败会影响桌宠会话加载。`promptCache.routing` 默认关闭不影响自研。建议：重启 DSH 后确认桌宠会话正常加载、记忆注入未异常。
+- **cc-safety-net**: `a84eb80e5e93` → `24b5e018d20f`（23 commits，v2.7.1；gate 删除重试 + workdir anchor 修复）
+  - 影响评估: **无影响**。自研部分不依赖 cc-safety-net 的 gate 内部逻辑；它只做命令门控，桌宠/自研插件不直接调用其 API。重新 pnpm 安装即可。
+- **dsh-chat-manager**: `bbec76df9878` → `f9840bf66ef9`（2 commits，仅 CI/文档：stable compatibility）
+  - 影响评估: **无影响**。纯 CI/兼容性维护，无功能变更。
+- **dsh-skills-manager**: `b69e64296ead` → `93f0c49acf33`（10 commits，1.2.23；error translation + dryRun 修复）
+  - 影响评估: **无影响**。自研部分不依赖 skills-manager 的内部 API；变更在 core/client 错误翻译，不影响外部契约。重启 DSH 生效。
+- **dsh-univer-office**: `8f85ce4074fd` → `c59332186fbd`（15 commits，0.3.9；浮动窗口修复 + Univer SDK 构建去重）
+  - 影响评估: **无影响**。自研部分不使用 Univer 办公功能；变更多为构建产物 + 浮动窗口交互。重新 pnpm 安装即可。
 
-- **dsh-chat-manager**: `bbec76df9878` → `f9840bf66ef9`
-  - 提交: 2 个（仅 CI/文档：`ci: maintain stable compatibility independently of next`）
-  - 变动文件: 10 个（`.github/workflows/`、`AGENTS.md` 等）
-  - 整合建议: 纯 CI/兼容性维护，**无功能变更**，无需跟进改造桌宠前端；本地参考源码已自动拉取，择机重启 DSH 即可。
+#### 参考插件 · 整合建议
 
-- **dsh-fish-memory**: `2bb9be7b83ba` → `edc723d63809`
-  - 提交: 8 个（**许可证变更**：改用 Yuuyuko-uu 插件许可 1.2，要求署名、禁止声称原创、违约须删除衍生作品）
-  - 变动文件: 8 个（`LICENSE`、`CHANGELOG.md`、`README.md`、`lib/client.js`、`lib/index.js`、`package.json`）
-  - 整合建议: ⚠️ **许可证从 MIT 改为自定义 Yuuyuko-uu 许可 1.2**。若在桌宠/DSH 集成中 redistribute 此插件或其衍生作品，须更新许可证声明并保留署名。功能层面无破坏性变更，记忆打分/半衰期逻辑未动；建议同步更新 README 中对该插件的许可证引用说明。
-
-- **dsh-mnemon**: `fa4950616f8c` → `7cbdefc64c01`
-  - 提交: 8 个（v0.5.37；`fix-516-evolution-scroll-boundary` 等）
-  - 变动文件: 73 个（`.changeset/`、`docs/en/`、release-notes 等）
-  - 整合建议: 助记记忆插件 v0.5.37。若 DSH 启用 mnemon，更新版本即可；注意与 **dsh-fish-memory 二选一**，避免双记忆后端造成注入冲突。
-
-- **dsh-skills-manager**: `b69e64296ead` → `93f0c49acf33`
-  - 提交: 10 个（1.2.23；`fix(core): harden error translation and verify dryRun` 等）
-  - 变动文件: 29 个（`CHANGELOG.md`、`lib/core.js`、`lib/client.js`、`README.md` 等）
-  - 整合建议: 技能管理插件 1.2.23，修复错误翻译与 dryRun。若 DSH 启用技能管理，更新版本并**重启 DSH** 生效；对桌宠无前端影响。
-
-- **dsh-univer-office**: `8f85ce4074fd` → `c59332186fbd`
-  - 提交: 15 个（0.3.9；`fix(client): folded floating window point/resize/move`、`remove duplicated Univer SDK copies`）
-  - 变动文件: 304 个（多为构建产物；`README.md`、`docs/architecture.md` 等）
-  - 整合建议: Univer 办公插件 0.3.9，修复浮动窗口交互与构建去重。若桌宠/DSH 使用 Univer 办公功能，**重新 pnpm 安装**更新版本；304 文件多为 dist 产物，源码逻辑变更较小。
-
-<!-- NEW_ENTRIES_BELOW -->
+- **dsh-fish-memory**: `2bb9be7b83ba` → `edc723d63809`（8 commits；**许可证变更 MIT → Yuuyuko-uu 1.2**：要求署名、禁止声称原创、违约须删除衍生作品）
+  - 整合建议: `@dsh-pet/memory` 借鉴了 fish-memory 的打分公式思路，本次许可证变更需**同步更新 @dsh-pet/memory 的许可证声明**（若 redistribute，保留 fish-memory 署名引用）。功能层面无新可整合思路；后续持续关注 fish-memory 的打分公式/半衰期算法变更，若有优化可同步到 @dsh-pet/memory。
+- **dsh-mnemon**: `fa4950616f8c` → `7cbdefc64c01`（8 commits，v0.5.37；evolution scroll boundary 修复）
+  - 整合建议: dsh-mnemon 与 @dsh-pet/memory 职责重叠但未启用。本次修复 evolution scroll boundary——可**对比 dsh-mnemon 的 evolution/scroll 边界处理**，评估 @dsh-pet/memory 是否需要类似机制（若 @dsh-pet/memory 有记忆演化/滚动逻辑）。低优先，仅思路参考。
