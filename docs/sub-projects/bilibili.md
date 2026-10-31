@@ -22,8 +22,8 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 
 | 方面 | 上游 | 本 fork |
 |---|---|---|
-| 值班会话 | 一次性 CLI spawn，无上下文 | 固定 sessionId 复用（经 dsh-web-service），不可用时回退 CLI |
-| 主人识别 | mentionName（昵称单个）+ dmUid | masterUid（UID）+ mentionNames[]（昵称）+ dmRecipients[] |
+| 值班会话 | 一次性 CLI spawn，无上下文 | 固定 sessionId 复用（CLI `--session-id`），固定会话下跳过归档 |
+| 主人识别 | mentionName（昵称单个）+ dmUid | masterUid（UID）+ mentionNames[]（昵称）+ dmRecipientUids[]（UID） |
 | 爱好分析 | 无 | bili_user_favorites / bili_user_profile / bili_analyze_hobby |
 | 搜索关键词 | 死配置 keywords[] | 自动学习兴趣词 + 半衰期淡忘 |
 | 帧图 | 单帧 bili_frames | 分镜多格拼图 |
@@ -41,7 +41,7 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 
 ## 功能依赖
 
-- **[dsh-web-service](https://github.com/toddpan/dsh-webapi)** — 固定会话 REST/SSE API，不可用时回退 CLI
+- **[dsh-web-service](https://github.com/toddpan/dsh-webapi)** — P1 爱好分析工具的 REST/SSE API（P0 固定会话用 CLI `--session-id`，不依赖 web-service）
 - **[@dsh-cbw/memory](https://github.com/Scorpioflz/dsh-cbw-memory)** — 爱好画像和兴趣词存储（可选但推荐）
 
 ## 新增 Config 字段
@@ -50,10 +50,11 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 |---|---|---|
 | `masterUid` | `0` | 主人 B站 UID |
 | `mentionNames` | `[]` | 评论 @ 昵称清单（可多个） |
-| `dmRecipients` | `[]` | 私信收件人清单（可多个） |
-| `fixedSession` | `true` | 固定会话开关 |
-| `sessionId` | `'bili-duty-fixed'` | 固定会话 ID |
-| `webapiBase` | `''` | web-service 地址（空=自动探测） |
+| `dmRecipientUids` | `[]` | 私信收件人 UID 清单（可多个） |
+| `fixedSession` | `false` | 固定会话开关 |
+| `dutySessionId` | `''` | 值班固定会话 ID（传给 dsh CLI `--session-id`） |
+| `dmSessionId` | `''` | 私信固定会话 ID |
+| `webapiBase` | `''` | web-service 地址（P1 爱好分析工具用） |
 | `webapiKey` | `''` | API Key |
 | `hobbyRefreshDays` | `30` | 画像刷新周期（天） |
 | `hobbyMaxVideos` | `500` | 单次分析最多视频数 |
@@ -62,7 +63,7 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 
 | 阶段 | 内容 | 状态 |
 |---|---|---|
-| P0 | 固定会话 + 主人识别拆分 | 待实施 |
+| P0 | 固定会话 + 主人识别拆分 | ✅ 已完成（commit `681c17d`） |
 | P1 | 爱好分析 + 画像 + 刷新周期 | 待实施 |
 | P2 | 兴趣学习+半衰期、分镜图、评论闸门 | 待实施 |
 | P3 | 观看统计报告、收件箱分类 | 待实施 |
