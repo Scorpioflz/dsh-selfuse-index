@@ -24,12 +24,13 @@
 
 ## 当前待处理建议
 
-> 最后检查：2026-10-31T13:53:36 | 0 个有更新，19 个已最新
+> 最后检查：2026-10-31T14:04:35 | 0 个有更新，19 个已最新
 
 ### 在用插件 · 影响评估
 
 - **billion-context**: （无新更新，仍有未完成建议）
-  - 影响评估: ⚠️ **可能影响**。schema v10 引入 `messages.ts` 列（probe-first ALTER、不回填、timestamps 默认关闭）。`@dsh-pet/memory` 经 `systemPrompt.context` 注入记忆，不直接依赖存储 schema，但 DSH 重启后 sessions 迁移若失败会影响桌宠会话加载。`promptCache.routing` 默认关闭不影响自研。建议：重启 DSH 后确认桌宠会话正常加载、记忆注入未异常。
+  - 影响评估: ✅ **已验证通过**（2026-10-31 桌宠对话测试正常）。schema v10 引入 `messages.ts` 列（probe-first ALTER、不回填、timestamps 默认关闭），`@dsh-pet/memory` 经 `systemPrompt.context` 注入记忆不直接依赖存储 schema。保留 90 天作参考，若期间出现会话加载/记忆注入异常可回查。
+  <!-- keep-until: 2027-01-29 -->
 
 ### 参考插件 · 整合建议
 

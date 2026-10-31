@@ -116,28 +116,40 @@ def check_one(d):
 
 
 def parse_pending_advice(md_text):
-    """从旧 plugin_updates.md 提取未完成建议，返回 {plugin_name: advice_text}。
-    含 ✅ 的插件块视为已完成，丢弃。"""
+    """从旧 plugin_updates.md 提取未完成建议，返回 {plugin_name: {advice, keep_until}}。
+    - 含 <!-- keep-until: YYYY-MM-DD --> 且未过期 → 保留（即使含 ✅，长期参考记忆）
+    - 含 keep-until 且已过期 → 丢弃
+    - 无 keep-until：含 ✅ 或「无影响」→ 丢弃"""
     pending = {}
+    today = datetime.now().strftime("%Y-%m-%d")
     blocks = re.split(r'(?=^- \*\*)', md_text, flags=re.MULTILINE)
     for block in blocks:
         m = re.match(r'- \*\*(.+?)\*\*', block)
         if not m:
             continue
         name = m.group(1)
-        if "✅" in block:
+
+        keep_until = None
+        keep_match = re.search(r'<!-- keep-until: (\d{4}-\d{2}-\d{2}) -->', block)
+        if keep_match:
+            keep_until = keep_match.group(1)
+            if today > keep_until:
+                continue
+        elif "✅" in block:
             continue
+
         advice_match = re.search(
             r'  - (?:影响评估|整合建议):\s*(.+)', block, re.DOTALL
         )
         if advice_match:
             advice = advice_match.group(1).strip()
             advice = advice.split("\n")[0].strip()
-            if not advice or "✅" in advice or advice == "[待分析]":
+            if not advice or advice == "[待分析]":
                 continue
-            if advice.startswith("**无影响**"):
-                continue
-            pending[name] = advice
+            if not keep_until:
+                if "✅" in advice or advice.startswith("**无影响**"):
+                    continue
+            pending[name] = {"advice": advice, "keep_until": keep_until}
     return pending
 
 
@@ -166,15 +178,23 @@ def render_md(timestamp, results, pending):
         is_ref = name in REFERENCE
         if not is_in_use and not is_ref:
             continue
-        advice = pending.get(name, "")
+        entry = pending.get(name)
+        if isinstance(entry, dict):
+            advice_text = entry["advice"]
+            keep_until = entry["keep_until"]
+        else:
+            advice_text = entry if entry else ""
+            keep_until = None
         label = "影响评估" if is_in_use else "整合建议"
         if r:
             summary = summarize_commits(r.get("commits", []))
             head_line = f"- **{name}**: `{r['old']}` → `{r['new']}`（{summary}）"
         else:
             head_line = f"- **{name}**: （无新更新，仍有未完成建议）"
-        advice_text = advice if advice else "[待分析]"
+        advice_text = advice_text if advice_text else "[待分析]"
         item = f"{head_line}\n  - {label}: {advice_text}"
+        if keep_until:
+            item += f"\n  <!-- keep-until: {keep_until} -->"
         if is_in_use:
             in_use_items.append(item)
         else:
