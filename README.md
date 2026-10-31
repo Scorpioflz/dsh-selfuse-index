@@ -46,7 +46,7 @@ flowchart LR
         direction TB
         Persona["dsh-persona-dafeiyu<br/>persona injection<br/>(systemPrompt.section, v0.7.1)"]
         Balance["@wycto/dsh-balance-panel<br/>balance query"]
-        Bili["dsh-bili-scroll<br/>Bilibili scroll duty"]
+        Bili["dsh-bili-scroll<br/>Bilibili scroll duty<br/>(workspace sessions + archive)"]
         ChatMgr["dsh-chat-manager<br/>session management"]
         Skills["@michengai/dsh-skills-manager<br/>skill management"]
         Reason["dsh-custom-reasoning<br/>custom reasoning"]
@@ -91,7 +91,7 @@ Status column: **in use** = enabled in the `web` profile; **ref** = cloned under
 | @dsh-cbw/memory | **Memory backend** (self-developed, derived from dsh-fish-memory) — workspace-scoped memory with scoring + half-life + P0-P3 upgrades (request detection, bigram dedup, recall tool, auto-archive, source tagging, JSONL+category, idle review, security model, archive index, CJK bigram), injected via `systemPrompt.context`. | in use | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) |
 | dsh-persona-dafeiyu | **Persona injection** — injects character persona via `systemPrompt.section()`; replaces the pet's former front-end persona splicing. Uses the upstream third-party plugin (v0.7.1); self-development of a persona plugin was abandoned in favor of this plus a self-authored persona template (see `docs/大肥鱼_蓝鲸女仆人设模板.md`). | in use | [huaizhuanghub/dsh-persona-dafeiyu](https://github.com/huaizhuanghub/dsh-persona-dafeiyu) |
 | @wycto/dsh-balance-panel | Balance / quota query panel. | in use | [wycto/dsh-balance-panel](https://github.com/wycto/dsh-balance-panel) |
-| dsh-bili-scroll | Bilibili scroll duty task. | in use | [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) |
+| dsh-bili-scroll | **Bilibili scroll duty** — automated Bilibili content scrolling with workspace-scoped sessions + fallback archive, per-duty model selection (`modelProvider`/`modelName`), workspace-scoped "scrolled videos" view, and timeout watchdog (`runTimeoutMinutes`, default 20). Upstream commit `3bd4868` (2026-10-30) resolved the fixed-session problem natively; no self-developed patch needed. | in use | [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) |
 | dsh-chat-manager | Session management. | in use | [WSL043/dsh-chat-manager](https://github.com/WSL043/dsh-chat-manager) |
 | @michengai/dsh-skills-manager | Skill management. | in use | [MichengAI/dsh-skills-manager](https://github.com/MichengAI/dsh-skills-manager) |
 | dsh-custom-reasoning | Custom reasoning. | in use | [3likofj/dsh-custom-reasoning](https://github.com/3likofj/dsh-custom-reasoning) |
@@ -155,4 +155,4 @@ DSH-Dev/                       # this index repo
 
 - DSH upstream: [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)
 - Installed plugin sources used as reference are listed in `docs/DSH Reference Record.md`.
-- Daily plugin update tracking: `docs/plugin_updates.md` (auto-maintained by `scripts/check_plugin_updates.py`).- Pet persona template (self-authored, fed into `dsh-persona-dafeiyu`): `docs/大肥鱼_蓝鲸女仆人设模板.md` — "大肥鱼 / 蓝鲸女仆" character card with community-consensus fields + customizable blanks.
+- Hourly plugin update tracking: `docs/plugin_updates.md` (auto-maintained by `scripts/check_plugin_updates.py`, cron task `DSH-PluginUpdateCheck`).- Pet persona template (self-authored, fed into `dsh-persona-dafeiyu`): `docs/大肥鱼_蓝鲸女仆人设模板.md` — "大肥鱼 / 蓝鲸女仆" character card with community-consensus fields + customizable blanks.
