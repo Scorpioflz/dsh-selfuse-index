@@ -1,28 +1,43 @@
 {
-  "timestamp": "2026-10-31T17:02:49",
+  "timestamp": "2026-10-31T18:02:29",
   "root": "D:\\DSH-Dev",
   "results": [
     {
       "name": "billion-context",
       "status": "updated",
-      "old": "2a499c1564bc",
-      "new": "f6e69aee195c",
+      "old": "f6e69aee195c",
+      "new": "d108df320978",
       "commits": [
-        "f6e69aee|2026-10-31 16:02:33 +0800|Merge pull request #4954 from jianzhangg/2026-10-27_zcode-memory-isolation",
-        "4d40b38a|2026-10-31 14:14:23 +0800|Merge remote-tracking branch 'refs/remotes/gh/master' into sync-4954",
-        "efab43ab|2026-10-31 11:19:43 +0800|Merge remote-tracking branch 'refs/remotes/gh/master' into sync-4954",
-        "21219c6e|2026-10-30 20:18:22 +0800|Merge remote-tracking branch 'origin/ci-fixes' into sync-4954",
-        "3b4dbff3|2026-10-30 20:05:56 +0800|Merge remote-tracking branch 'origin/master' into sync-4954",
-        "998f9f7e|2026-10-30 01:30:46 +0800|Merge remote-tracking branch 'origin/master' into sync-4954",
-        "26b5d4ca|2026-10-27 19:01:16 +0800|Merge remote-tracking branch 'origin/master' into sync-4954",
-        "aa479bc2|2026-10-27 18:38:13 +0800|fix(zcode): isolate project memory extraction sessions (#4952)"
+        "d108df32|2026-10-31 17:35:38 +0800|Merge pull request #5331 from ranxianglei/2026-10-31_web-user-packs",
+        "b5e3155f|2026-10-31 17:35:20 +0800|Merge pull request #5325 from ranxianglei/2026-10-31_web-pack-picker",
+        "b9218e85|2026-10-31 17:30:20 +0800|feat(cli): bili pack install|remove|list — npm-distributable prompt packs (#5340)",
+        "f70055c7|2026-10-31 17:28:01 +0800|Merge pull request #5227 from ranxianglei/2026-10-30_external-summary-scan-log-noise",
+        "164b10eb|2026-10-31 16:24:01 +0800|feat(web): manage user-dir prompt packs from the panel (#5328)",
+        "171417cd|2026-10-31 16:07:43 +0800|feat(web): prompt-pack picker lists the full resolved pack inventory (#5319)",
+        "6ae12c49|2026-10-31 13:01:59 +0800|Merge origin/master into pr-5227 (resolve inherited #5140-test comment/format conflicts)",
+        "034b1535|2026-10-30 22:44:30 +0800|fix(test): pin the #5140 cold-restore snapshot test to unified-full — under the global legacy test baseline its sidecar never opens and the index reconstruction gate can never pass",
+        "cbe89166|2026-10-30 21:48:37 +0800|Merge remote-tracking branch 'origin/master' into pr-5227",
+        "7b4f062c|2026-10-30 17:35:26 +0800|fix: quiet the #2749 stub scan's re-parse of past compress calls (#5161)"
       ],
       "changed_files": [
-        "src/server/handle.ts",
-        "src/session-id.ts",
-        "tests/zcode-memory-isolation.test.ts"
+        "CONFIGURATION.md",
+        "CONFIGURATION.zh-CN.md",
+        "src/cli.ts",
+        "src/compress-settings.ts",
+        "src/compress-tool.ts",
+        "src/pack-install.ts",
+        "src/server/admin.ts",
+        "src/stream.ts",
+        "src/web/api.ts",
+        "src/web/client.ts",
+        "src/web/i18n.ts",
+        "src/web/index.ts",
+        "tests/issue5161-compress-scan-log-noise.test.ts",
+        "tests/pack-install.test.ts",
+        "tests/web-pack-picker.test.ts",
+        "tests/web-user-packs.test.ts"
       ],
-      "diffstat": "src/server/handle.ts                 |  34 ++++--\n src/session-id.ts                    |  11 ++\n tests/zcode-memory-isolation.test.ts | 227 +++++++++++++++++++++++++++++++++++\n 3 files changed, 262 insertions(+), 10 deletions(-)"
+      "diffstat": "CONFIGURATION.md                                |  20 ++-\n CONFIGURATION.zh-CN.md                          |  20 ++-\n src/cli.ts                                      |  64 +++++++++-\n src/compress-settings.ts                        |  36 ++++--\n src/compress-tool.ts                            |  19 ++-\n src/pack-install.ts                             | 161 ++++++++++++++++++++++++\n src/server/admin.ts                             |  26 +++-\n src/stream.ts                                   |   6 +-\n src/web/api.ts                                  |  77 +++++++++++-\n src/web/client.ts                               | 154 ++++++++++++++++++++++-\n src/web/i18n.ts                                 |  32 +++++\n src/web/index.ts                                |   3 +\n tests/issue5161-compress-scan-log-noise.test.ts | 139 ++++++++++++++++++++\n tests/pack-install.test.ts                      |  74 +++++++++++\n tests/web-pack-picker.test.ts                   | 107 ++++++++++++++++\n tests/web-user-packs.test.ts                    | 143 +++++++++++++++++++++\n 16 files changed, 1051 insertions(+), 30 deletions(-)"
     },
     {
       "name": "cc-safety-net",
@@ -36,8 +51,18 @@
     },
     {
       "name": "dsh-bili-scroll",
-      "status": "up_to_date",
-      "head": "2c7b3f14f525"
+      "status": "updated",
+      "old": "2c7b3f14f525",
+      "new": "a093f559e08d",
+      "commits": [
+        "a093f55|2026-10-31 17:39:15 +0800|Merge pull request #111 from pentyum/feat/duty-model-scope-timeout",
+        "3bd4868|2026-10-30 18:12:32 +1100|feat: 值班轮可指定模型 / 会话归工作区 / 超时收尾 + 「刷过的视频」按工作区显示"
+      ],
+      "changed_files": [
+        "client.js",
+        "index.js"
+      ],
+      "diffstat": "client.js | 232 ++++++++++++++++++++++++++++++++++++++---\n index.js  | 352 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---\n 2 files changed, 557 insertions(+), 27 deletions(-)"
     },
     {
       "name": "dsh-chat-manager",
@@ -86,39 +111,8 @@
     },
     {
       "name": "dsh-skills-manager",
-      "status": "updated",
-      "old": "93f0c49acf33",
-      "new": "3e7dc3a6e7cc",
-      "commits": [
-        "3e7dc3a|2026-10-31 16:40:48 +0800|chore(release): 1.2.24",
-        "df7b6de|2026-10-31 16:31:34 +0800|test(core): ensure custom source state cleanup test writes data before removal",
-        "12b0ced|2026-10-31 15:31:05 +0800|fix(core): ensure custom source state cleanup operates directly on raw document",
-        "bda8036|2026-10-31 15:00:46 +0800|fix(core): prevent fail-closed on historical custom source notes and cleanup on removal",
-        "c7150a9|2026-10-31 14:42:26 +0800|fix(core): protect active skill notes on trash purge and harden schema validation",
-        "03496d1|2026-10-31 14:34:38 +0800|feat(core): add custom skill notes without modifying SKILL.md (#73)"
-      ],
-      "changed_files": [
-        ".gitignore",
-        "CHANGELOG.md",
-        "CHANGELOG.zh-CN.md",
-        "README.md",
-        "README.zh-CN.md",
-        "lib/client.js",
-        "lib/core.js",
-        "lib/index.js",
-        "package.json",
-        "src/client-types.ts",
-        "src/client.ts",
-        "src/core.ts",
-        "src/index.ts",
-        "src/types.ts",
-        "test/categories-ui.test.mjs",
-        "test/custom-sources.test.mjs",
-        "test/fetch-routes.test.mjs",
-        "test/skill-notes.test.mjs",
-        "test/workspace-routes.test.mjs"
-      ],
-      "diffstat": ".gitignore                     |   1 +\n CHANGELOG.md                   |   9 +++\n CHANGELOG.zh-CN.md             |   9 +++\n README.md                      |   4 +-\n README.zh-CN.md                |   4 +-\n lib/client.js                  |  15 +++--\n lib/core.js                    |  96 ++++++++++++++++++++++++++-\n lib/index.js                   |   6 ++\n package.json                   |   4 +-\n src/client-types.ts            |   1 +\n src/client.ts                  |  65 +++++++++++++++---\n src/core.ts                    | 106 +++++++++++++++++++++++++++++-\n src/index.ts                   |   8 ++-\n src/types.ts                   |   4 ++\n test/categories-ui.test.mjs    |  25 +++++++\n test/custom-sources.test.mjs   |  13 ++++\n test/fetch-routes.test.mjs     |   1 +\n test/skill-notes.test.mjs      | 145 +++++++++++++++++++++++++++++++++++++++++\n test/workspace-routes.test.mjs |  12 ++++\n 19 files changed, 502 insertions(+), 26 deletions(-)"
+      "status": "up_to_date",
+      "head": "3e7dc3a6e7cc"
     },
     {
       "name": "dsh-soul",
