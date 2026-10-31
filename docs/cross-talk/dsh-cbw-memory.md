@@ -1,35 +1,29 @@
 # dsh-cbw-memory — 记忆插件开发
 
-> 最后更新：2026-10-31 | 会话焦点：分类半衰期差异化（v0.5.0）
+> 最后更新：2026-10-31 | 会话焦点：上游缺陷排查修复（v0.5.1）
 
 ## 正在进行
 
-- v0.5.0 实现分类半衰期差异化：`project_context` ×3、`fact`/`user_preference`/`task_state` ×2、其余 ×1
-- 代码改动：`lib/index.js` 新增 `CATEGORY_HALF_LIFE_MULT` 常量 + `categoryHalfLifeMult()` 辅助函数，修改 3 处 H 计算
-- 文档同步：CHANGELOG、README/README_ZH、proposal、sub-projects 分片均已更新
-- 待提交推送
+- 无进行中任务
 
 ## 已完成
 
-- v0.4.1 已通过 gh-proxy 镜像 tarball URL 安装到 DSH web profile，插件热加载正常
-- 安装命令：`dsh plugin --profile web add "https://gh-proxy.com/https://github.com/Scorpioflz/dsh-cbw-memory/archive/refs/heads/main.tar.gz" --config.package-import-method=copy`
-- 验证：list/page/policy 路由均返回 200，记忆数据正常捕获
-- GitHub topic `dsh-plugin` 已添加到仓库
-- 所有文件记录（LICENSE/THIRD_PARTY_NOTICES/README/CHANGELOG）标注和鸣谢已检查修复
+- v0.5.1 修复来源头吞正文缺陷（上游 dsh-fish-memory 1.4.7 同款）：`清掉注入上下文()` 仅 `【你记得的事】` 整块跳，外部来源头只跳那一行
+- v0.5.0 分类半衰期差异化：`project_context` ×3、`fact`/`user_preference`/`task_state` ×2、其余 ×1
+- v0.5.0/v0.5.1 均已安装到 DSH web profile 并验证路由正常
+- 上游三缺陷排查完成：缺陷1（来源头吞正文）存在并已修复；缺陷2（/mode GET/POST）不存在；缺陷3（提示词缺「写我」规则）不存在
+- `docs/plugin_updates.md` 已标 ✅
 
 ## 遇到的困难
 
-- Discover 标签页直装遇 `ERR_PNPM_TARBALL_DECODE_GZIP`（pnpm 从 GitHub 下载 tarball 时 gzip 数据损坏，国内网络不稳定）
-- DSH 的 `accelerate.js` 有区域代理机制可代理 GitHub ref 解析，但 tarball 下载仍走 codeload.github.com 直连
-- 旧版市场用镜像前缀 tarball URL 会导致 `ERR_PNPM_MISSING_TARBALL_INTEGRITY`（pnpm 无法识别为 GitHub 源），但 pnpm 12.11.2 已能处理
+- Discover 标签页直装遇 `ERR_PNPM_TARBALL_DECODE_GZIP`，改用 gh-proxy tarball URL CLI 安装
 
 ## 发现的经验
 
-- DSH 插件市场去中心化：index.json 托管在 GitHub Pages，用户添加索引 URL 后可搜索安装
-- `dshmarket` 的 `installTargetFor` 只接受 `https://github.com/owner/repo` 格式的 source URL
-- `codeloadTarball(repo, sha, proxy)` 支持代理前缀，但仅用于区域加速内部
-- pnpm 12.11.2 能正确处理 gh-proxy tarball URL 安装，无需 integrity hash
-- 插件路由在端口 3080（web app）响应，非 31800（web service）
+- DSH 插件市场去中心化：index.json 托管在 GitHub Pages
+- `dshmarket` 的 `installTargetFor` 只接受 `https://github.com/owner/repo` 格式
+- pnpm 12.11.2 能正确处理 gh-proxy tarball URL 安装
+- 插件路由在端口 3080（web app）响应
 
 ## 对其他会话的通知/请求
 
