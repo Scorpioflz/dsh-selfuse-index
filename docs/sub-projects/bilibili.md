@@ -25,9 +25,9 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 | 值班会话 | 一次性 CLI spawn，无上下文 | 固定 sessionId 复用（CLI `--session-id`），固定会话下跳过归档 |
 | 主人识别 | mentionName（昵称单个）+ dmUid | masterUid（UID）+ mentionNames[]（昵称）+ dmRecipientUids[]（UID） |
 | 爱好分析 | 无 | bili_user_favorites / bili_user_profile / bili_analyze_hobby |
-| 搜索关键词 | 死配置 keywords[] | 自动学习兴趣词 + 半衰期淡忘 |
-| 帧图 | 单帧 bili_frames | 分镜多格拼图 |
-| 评论闸门 | 语感 + autoComment | + 三层硬禁区（政治/政府/前沿） |
+| 搜索关键词 | 死配置 keywords[] | 自动学习兴趣词 + 半衰期淡忘（learned-interests.json） |
+| 帧图 | 单帧 bili_frames | 分镜多格 bili_storyboard（6 帧一次） |
+| 评论闸门 | 语感 + autoComment | + 三层硬禁区（政治/政府/前沿，force 不可越过） |
 | 报告 | full/brief/off | + 统计维度（完成度、时间分布） |
 
 ## 借鉴源
@@ -59,6 +59,9 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 | `hobbyRefreshDays` | `30` | 画像刷新周期（天） |
 | `hobbyMaxVideos` | `500` | 单次分析最多视频数 |
 | `hobbyLastRefresh` | `0` | 上次分析时间戳（自动更新） |
+| `interestLearnEnabled` | `true` | 兴趣学习开关（从值班轮提取关键词+半衰期淡忘） |
+| `interestHalfLifeDays` | `14` | 兴趣词半衰期（天） |
+| `commentHardGate` | `true` | 评论三层硬禁区开关（政治/政府/前沿） |
 
 ## 实施计划
 
@@ -66,7 +69,7 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 |---|---|---|
 | P0 | 固定会话 + 主人识别拆分 | ✅ 已完成（commit `681c17d`） |
 | P1 | 爱好分析 + 画像 + 刷新周期 | ✅ 已完成（commit `19ca8cf`） |
-| P2 | 兴趣学习+半衰期、分镜图、评论闸门 | 待实施 |
+| P2 | 兴趣学习+半衰期、分镜图、评论闸门 | ✅ 已完成（commit `4539076`） |
 | P3 | 观看统计报告、收件箱分类 | 待实施 |
 
 ## 方案文档
