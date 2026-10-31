@@ -35,6 +35,7 @@ flowchart LR
     subgraph SelfDev ["Self-developed plugins (independent repos)"]
         direction TB
         PetMemory["@dsh-cbw/memory<br/>memory backend<br/>(derived from fish-memory:<br/>scoring + half-life + P0-P3 upgrades)"]
+        BiliFork["@dsh-cbw/bilibili<br/>Bilibili duty fork<br/>(fixed session + hobby analysis<br/>+ interest learning + comment gate)"]
     end
 
     subgraph Inherited ["Inherited plugins (from MerZlin/dsh-pet-indesktop)"]
@@ -46,7 +47,7 @@ flowchart LR
         direction TB
         Persona["dsh-persona-dafeiyu<br/>persona injection<br/>(systemPrompt.section, v0.7.1)"]
         Balance["@wycto/dsh-balance-panel<br/>balance query"]
-        Bili["dsh-bili-scroll<br/>Bilibili scroll duty<br/>(workspace sessions + archive)"]
+
         ChatMgr["dsh-chat-manager<br/>session management"]
         Skills["@michengai/dsh-skills-manager<br/>skill management"]
         Reason["dsh-custom-reasoning<br/>custom reasoning"]
@@ -61,6 +62,7 @@ flowchart LR
 
     subgraph RefOnly ["Reference-only / superseded (in _plugin-references, NOT enabled)"]
         direction TB
+        BiliScroll["dsh-bili-scroll<br/>→ fork base for @dsh-cbw/bilibili<br/>(v2.3.1, upstream sync)"]
         FishMem["dsh-fish-memory<br/>→ superseded by @dsh-cbw/memory<br/>(kept as reference source)"]
         Mnemon["dsh-mnemon<br/>→ conflicts with @dsh-cbw/memory"]
         OldComp["dsh-computer-use<br/>→ superseded by dsh-codex-style-computer-use"]
@@ -89,9 +91,10 @@ Status column: **in use** = enabled in the `web` profile; **ref** = cloned under
 | dsh-web-service (dsh-webapi) | **REST API gateway** — exposes DSH sessions over HTTP/SSE; the pet's only entry point into DSH. | in use | [toddpan/dsh-webapi](https://github.com/toddpan/dsh-webapi) |
 | @dsh-pet/bridge | **Pet state bridge** (inherited from [MerZlin/dsh-pet-indesktop](https://github.com/MerZlin/dsh-pet-indesktop)) — syncs pet screen/window state between front-end and DSH. | in use | local (pet `integrations/dsh-pet-bridge/`) |
 | @dsh-cbw/memory | **Memory backend** (self-developed, derived from dsh-fish-memory) — workspace-scoped memory with scoring + half-life + P0-P3 upgrades (request detection, bigram dedup, recall tool, auto-archive, source tagging, JSONL+category, idle review, security model, archive index, CJK bigram), injected via `systemPrompt.context`. | in use | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) |
+| @dsh-cbw/bilibili | **Bilibili duty** (self-developed, forked from dsh-bili-scroll v2.3.1) — fixed session reuse (`--session-id`), master profile analysis, interest learning with half-life decay, multi-frame storyboard, 3-layer comment hard gate, watch statistics, inbox classification. P0-P3 all complete. | in use | [Scorpioflz/dsh-cbw-bilibili](https://github.com/Scorpioflz/dsh-cbw-bilibili) |
 | dsh-persona-dafeiyu | **Persona injection** — injects character persona via `systemPrompt.section()`; replaces the pet's former front-end persona splicing. Uses the upstream third-party plugin (v0.7.1); self-development of a persona plugin was abandoned in favor of this plus a self-authored persona template (see `docs/大肥鱼_蓝鲸女仆人设模板.md`). | in use | [huaizhuanghub/dsh-persona-dafeiyu](https://github.com/huaizhuanghub/dsh-persona-dafeiyu) |
 | @wycto/dsh-balance-panel | Balance / quota query panel. | in use | [wycto/dsh-balance-panel](https://github.com/wycto/dsh-balance-panel) |
-| dsh-bili-scroll | **Bilibili scroll duty** — automated Bilibili content scrolling with workspace-scoped sessions + fallback archive, per-duty model selection (`modelProvider`/`modelName`), workspace-scoped "scrolled videos" view, and timeout watchdog (`runTimeoutMinutes`, default 20). Upstream commit `3bd4868` (2026-10-30) resolved the fixed-session problem natively; no self-developed patch needed. | in use | [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) |
+| dsh-bili-scroll | Bilibili scroll duty. **Fork base for @dsh-cbw/bilibili** (v2.3.1); not installed in profile — superseded by the fork. Upstream commit `3bd4868` added workspace-scoped sessions + fallback archive, per-duty model selection, and timeout watchdog. | ref / superseded | [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) |
 | dsh-chat-manager | Session management. | in use | [WSL043/dsh-chat-manager](https://github.com/WSL043/dsh-chat-manager) |
 | @michengai/dsh-skills-manager | Skill management. | in use | [MichengAI/dsh-skills-manager](https://github.com/MichengAI/dsh-skills-manager) |
 | dsh-custom-reasoning | Custom reasoning. | in use | [3likofj/dsh-custom-reasoning](https://github.com/3likofj/dsh-custom-reasoning) |
@@ -133,6 +136,7 @@ Status column: **in use** = enabled in the `web` profile; **ref** = cloned under
 | --- | --- | --- | --- |
 | dsh-pet-chubby_blue_whale | Desktop pet front-end for DSH (PySide6, Python 3.14+). Talks to DSH via the `dsh-web-service` session API. | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) | [shard](docs/sub-projects/dsh-pet-chubby_blue_whale.md) |
 | dsh-cbw-memory | DSH long-term memory plugin (half-life decay, emotion weighting, per-workspace sharing). Derived from Yuuyuko-uu/dsh-fish-memory. | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) | [shard](docs/sub-projects/dsh-cbw-memory.md) |
+| dsh-cbw-bilibili | DSH Bilibili duty plugin (forked from dsh-bili-scroll v2.3.1). Fixed session reuse, master profile analysis, interest learning, comment gate, watch statistics. | [Scorpioflz/dsh-cbw-bilibili](https://github.com/Scorpioflz/dsh-cbw-bilibili) | [shard](docs/sub-projects/bilibili.md) |
 
 > When a new sub-project is added: append a row above, create `docs/sub-projects/<name>.md`,
 > and add its folder to `.gitignore`.
@@ -147,6 +151,7 @@ DSH-Dev/                       # this index repo
 ├── docs/                      # cross-project design notes and task docs
 ├── _plugin-references/        # shallow clones of DSH plugins (in-use + reference-only, ignored)
 ├── deepseek-harness/          # upstream DSH source (read-only, ignored)
+├── dsh-cbw-bilibili/          # DSH Bilibili duty plugin (independent repo, ignored)
 ├── dsh-cbw-memory/            # DSH memory plugin (independent repo, ignored)
 └── dsh-pet-chubby_blue_whale/ # desktop pet front-end (independent repo, ignored)
 ```
