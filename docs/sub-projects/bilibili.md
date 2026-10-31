@@ -1,0 +1,72 @@
+# dsh-cbw-bilibili — DSH B站值班插件
+
+> 本分片由 bilibili 插件开发会话维护。更新本插件时改本文件，不碰根项目 README 主体。
+
+## 基本信息
+
+- **本地路径**：`D:\DSH-Dev\dsh-cbw-bilibili`（独立仓库）
+- **仓库**：[Scorpioflz/dsh-cbw-bilibili](https://github.com/Scorpioflz/dsh-cbw-bilibili)
+- **npm 包名**：`@dsh-cbw/bilibili`
+- **许可证**：MIT（双版权：c1overzz + Scorpioflz）
+- **派生自**：[c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) v2.3.1（commit `a093f55`）
+
+## 定位
+
+Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分析 + 兴趣学习 + 分镜图 + 评论闸门 + 观看统计。
+
+## 派生关系
+
+派生自 [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) v2.3.1，继承 `index.js`/`client.js`/`lib/`/`prompts`/`vendor`/`profile-template` 全部代码，在其上叠加改动。`upstream` remote 保留用于同步上游更新。
+
+## 与上游差异
+
+| 方面 | 上游 | 本 fork |
+|---|---|---|
+| 值班会话 | 一次性 CLI spawn，无上下文 | 固定 sessionId 复用（经 dsh-web-service），不可用时回退 CLI |
+| 主人识别 | mentionName（昵称单个）+ dmUid | masterUid（UID）+ mentionNames[]（昵称）+ dmRecipients[] |
+| 爱好分析 | 无 | bili_user_favorites / bili_user_profile / bili_analyze_hobby |
+| 搜索关键词 | 死配置 keywords[] | 自动学习兴趣词 + 半衰期淡忘 |
+| 帧图 | 单帧 bili_frames | 分镜多格拼图 |
+| 评论闸门 | 语感 + autoComment | + 三层硬禁区（政治/政府/前沿） |
+| 报告 | full/brief/off | + 统计维度（完成度、时间分布） |
+
+## 借鉴源
+
+| 项目 | 借鉴内容 |
+|---|---|
+| [apiaoapiao/dsh-bili-statistics](https://github.com/apiaoapiao/dsh-bili-statistics) | 观看历史 API、统计维度 |
+| [bilihave/dsh-whale-panel](https://github.com/bilihave/dsh-whale-panel) | 兴趣学习+半衰期、评论三层闸门 |
+| [QiuYeDx/dsh-bili-eyes](https://github.com/QiuYeDx/dsh-bili-eyes) | 分镜多格拼图、收件箱分类 |
+| [Yuuyuko-uu/dsh-fish-memory](https://github.com/Yuuyuko-uu/dsh-fish-memory) | 半衰期打分公式思路 |
+
+## 功能依赖
+
+- **[dsh-web-service](https://github.com/toddpan/dsh-webapi)** — 固定会话 REST/SSE API，不可用时回退 CLI
+- **[@dsh-cbw/memory](https://github.com/Scorpioflz/dsh-cbw-memory)** — 爱好画像和兴趣词存储（可选但推荐）
+
+## 新增 Config 字段
+
+| 字段 | 默认 | 说明 |
+|---|---|---|
+| `masterUid` | `0` | 主人 B站 UID |
+| `mentionNames` | `[]` | 评论 @ 昵称清单（可多个） |
+| `dmRecipients` | `[]` | 私信收件人清单（可多个） |
+| `fixedSession` | `true` | 固定会话开关 |
+| `sessionId` | `'bili-duty-fixed'` | 固定会话 ID |
+| `webapiBase` | `''` | web-service 地址（空=自动探测） |
+| `webapiKey` | `''` | API Key |
+| `hobbyRefreshDays` | `30` | 画像刷新周期（天） |
+| `hobbyMaxVideos` | `500` | 单次分析最多视频数 |
+
+## 实施计划
+
+| 阶段 | 内容 | 状态 |
+|---|---|---|
+| P0 | 固定会话 + 主人识别拆分 | 待实施 |
+| P1 | 爱好分析 + 画像 + 刷新周期 | 待实施 |
+| P2 | 兴趣学习+半衰期、分镜图、评论闸门 | 待实施 |
+| P3 | 观看统计报告、收件箱分类 | 待实施 |
+
+## 方案文档
+
+- `docs/proposal-bilibili-integration.md` — 完整方案（§二爱好分析、§五详细设计、§六固定会话）

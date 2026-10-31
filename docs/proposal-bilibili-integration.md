@@ -355,6 +355,7 @@ bili_analyze_hobby(uid?: number, nickname?: string) → {
 
 > 原 task2（`docs/task2-bili-scroll-fixed-session.md`）已整合至此。
 > 目标：让 dsh-bili-scroll 在固定对话中运行，有上下文，更好留存记忆，不让对话工作区混乱。
+> ⚠️ 2026-10-31 更新：**工作区归组**部分已由上游 commit `3bd4868`（v2.3.x）实现；**固定会话复用**部分由 fork [@dsh-cbw/bilibili](https://github.com/Scorpioflz/dsh-cbw-bilibili) 实现（走 dsh-web-service REST/SSE 复用 sessionId，不可用时回退 CLI）。
 
 ### 6.1 当前会话机制根因
 
