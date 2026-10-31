@@ -20,7 +20,7 @@
 | 插件 | 职责 | 来源 |
 | --- | --- | --- |
 | @dsh-pet/bridge | 桌宠状态桥接（屏幕/窗口同步） | 继承自 MerZLin/dsh-pet-indesktop，本地 `integrations/dsh-pet-bridge/` |
-| @dsh-cbw/memory | 记忆后端（自研，派生自 fish-memory） | 独立仓库 [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory)，本地 `integrations/dsh-pet-memory/` |
+| @dsh-cbw/memory | 记忆后端（自研，派生自 fish-memory） | 独立仓库 [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) |
 | hermes-pet-bridge | 桌宠桥接变体，未启用 | 本地 `integrations/hermes-pet-bridge/` |
 
 ## 架构要点
@@ -38,7 +38,7 @@
 
 ## 许可证合规
 
-- @dsh-cbw/memory 派生自 Yuuyuko-uu/dsh-fish-memory（Yuuyuko-uu 插件许可 1.2），`integrations/dsh-pet-memory/LICENSE` + README 致谢段已合规
+- @dsh-cbw/memory 派生自 Yuuyuko-uu/dsh-fish-memory（Yuuyuko-uu 插件许可 1.2），独立仓库内 LICENSE + README 致谢段已合规
 - @dsh-pet/bridge 继承自 MerZLin/dsh-pet-indesktop（MIT）
 
 ## 变更记录约定

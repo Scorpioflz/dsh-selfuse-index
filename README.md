@@ -135,7 +135,7 @@ Status column: **in use** = enabled in the `web` profile; **ref** = cloned under
 | Name | Description | Repository | Details |
 | --- | --- | --- | --- |
 | dsh-pet-chubby_blue_whale | Desktop pet front-end for DSH (PySide6, Python 3.14+). Talks to DSH via the `dsh-web-service` session API. | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) | [shard](docs/sub-projects/dsh-pet-chubby_blue_whale.md) |
-| dsh-cbw-memory | DSH long-term memory plugin (half-life decay, emotion weighting, per-workspace sharing). Derived from Yuuyuko-uu/dsh-fish-memory. | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) | [shard](docs/sub-projects/dsh-cbw-memory.md) |
+| dsh-cbw-memory | DSH long-term memory plugin (half-life decay, emotion weighting, per-workspace sharing, category-based half-life differentiation). Derived from Yuuyuko-uu/dsh-fish-memory. v0.5.1. | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) | [shard](docs/sub-projects/dsh-cbw-memory.md) |
 | dsh-cbw-bilibili | DSH Bilibili duty plugin (forked from dsh-bili-scroll v2.3.1). Fixed session reuse, master profile analysis, interest learning, comment gate, watch statistics. | [Scorpioflz/dsh-cbw-bilibili](https://github.com/Scorpioflz/dsh-cbw-bilibili) | [shard](docs/sub-projects/bilibili.md) |
 
 > When a new sub-project is added: append a row above, create `docs/sub-projects/<name>.md`,

@@ -1,34 +1,32 @@
 # root — 根项目整体协调
 
-> 最后更新：2026-10-31T22:02 | 会话焦点：插件更新跟踪分发 + 许可证合规收尾
+> 最后更新：2026-10-31T23:30 | 会话焦点：全局审计 + 经验总结
 
 ## 正在进行
 
 - 文档分片机制已建立（`docs/sub-projects/<name>.md`）
 - 会话沟通区已建立（本目录）
 - 插件更新跟踪运行中（cron `cac53447`，每小时，覆盖式 + keep-until TTL）
-- @dsh-cbw/memory 许可证合规已完成并推送（commit `9caac3e`，Yuuyuko-uu 插件许可 1.2）
+
+## 各子项目当前状态
+
+- **dsh-pet-chubby_blue_whale**：测试全通过（371+ passed），碎碎念已修复，可封装发布。非 DSH backend 已全部移除（commit `cc881933`）
+- **dsh-cbw-memory**：v0.5.1 已推送（分类半衰期差异化 + 来源头吞正文修复），上游三缺陷排查完成（缺陷1已修，缺陷2/3不存在），许可证合规完成
+- **dsh-cbw-bilibili**：P0-P3 全部完成，bili_comment 工具 name 字段缺失已修复（commit `ec2ed73`），四项功能改进已推送（人设开关/兴趣整合/画像查看/数据路径分离）
 
 ## 遇到的困难
 
-（无）
+- fgit push 偶发超时（300s），但实际推送通常已完成（下次 fgit 显示 up-to-date）
+- index 仓库 git status 因大量未跟踪文件超时，提交时直接 git add 指定文件跳过 status
 
 ## 发现的经验
 
 - 子项目更新常涉及根项目文档同步，分片 + rebase 兜底可有效避免冲突
 - 覆盖式更新比追加式更适合状态类文档（不会无限增长）
+- **推送时每个 git 指令逐条在 cmd 中执行更快**（而非 chained && ），尤其在大仓库
+- **defineTool 工具必须含 name 字段**：缺失会导致 ToolSchema.name = undefined，DSH 的 snapshotJsonValue 比 JSON.stringify 更严格（拒绝含 undefined 字段的对象），session.append('request/header') 抛 "non-JSON-serializable" 错误。宿主 tools.register 不验证 name 是字符串，是防御缺口
 
 ## 对其他会话的通知/请求
 
 - 各子项目会话：完成后更新自己的 `docs/sub-projects/<name>.md` 分片 + 本目录自己的状态文件
 - 发现跨项目依赖/冲突时，在本文件"通知/请求"段留言
-
-### → dsh-cbw-memory 会话（2026-10-31T22:02 派发）
-
-**来源**：`docs/plugin_updates.md` 最新检查 2026-10-31T22:02:19，dsh-fish-memory 上游 `edc723d63809` → `44f3db3b1c43`（1.4.7）修了三个缺陷。作为 fish-memory 的衍生作品，需确认这三个缺陷是否同样存在于 @dsh-cbw/memory，若存在则修复并发布新版本：
-
-1. **来源头吞正文**——【QQ私聊】等来源头后紧跟正文（无空行），若整块跳过会把正文一起跳掉，导致 query 为空、不召回。fish-memory 修复方式：自己的【你记得的事】整块跳，别人的来源头只丢表头那一行。
-2. **/mode 路由 GET/POST 不分**——界面读状态用 GET 无请求体，被当 POST 写回配置，导致切到「按工作区」后一刷新就弹回去。修复方式：只有 POST 改配置。
-3. **提示词缺「讲助手自己的要写『我』」规则**——补上此规则，避免助手条目被标成 ta.
-
-三个均为 bug 修复非新功能。请逐条核对 @dsh-cbw/memory 的 `lib/index.js` 是否有相同代码路径（来源头过滤、/mode 路由处理、remember 工具 prompt）。处理后在 `docs/plugin_updates.md` 对应条目标 ✅，并更新本目录 `dsh-cbw-memory.md` 状态。
