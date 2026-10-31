@@ -1,10 +1,11 @@
 # 方案二：Bilibili 相关方案
 
-> 状态：分析完成，待讨论
+> 状态：✅ 全部实施完成（P0–P3，commits `681c17d` / `19ca8cf` / `4539076` / `9d8aa4a`）
 > 日期：2026-10-31
 > 分析对象：dsh-bili-scroll（当前插件）+ 社区 B站插件综合评估
 > 目标：固定会话方案 + 评估"根据主人 B站 ID 访问收藏夹/观看历史/分析爱好"的可行性
 > 历史背景：原 task2（固定会话方案）已整合至 §六
+> 实施仓库：[Scorpioflz/dsh-cbw-bilibili](https://github.com/Scorpioflz/dsh-cbw-bilibili)（fork 自 c1overzz/dsh-bili-scroll v2.3.1）
 
 ---
 
@@ -50,7 +51,7 @@
 | 收藏夹列表 | ❌ 不在白名单 | ✅ `favops.py` | 宿主侧自动收藏用，模型拿不到 |
 | 收藏夹内容 | ❌ 不在白名单 | ❌ | MCP 工具存在但未使用 |
 | 收藏视频动作 | ❌ | ✅ `favops.py add` | 宿主侧，模型拿不到 |
-| **观看历史** | ❌ | ❌ | **完全不能访问，无此功能** |
+| **观看历史** | ❌ → ✅ P3-A 已实现 | ❌ → ✅ | **P3-A 新增 `bili_watched_history` MCP 工具**（用值班号凭证调 `bilibili_api.history`，只能看值班号自己的历史） |
 
 **结论**：
 1. 插件**能访问用户收藏夹**（列清单 + 收藏视频），但走宿主侧 `favops.py`，值班轮模型用不了
@@ -248,19 +249,19 @@ dsh-bili-profile/
 
 ## 四、综合建议
 
-### 4.1 短期（与固定会话方案一起做）
+### 4.1 短期（与固定会话方案一起做）— ✅ 全部完成（P0, commit `681c17d`）
 
-1. **固定会话**（§六方案 A）：先解决值班轮无上下文的问题
-2. **收藏夹访问**：在 dsh-bili-scroll 新增 `bili_user_favorites` 工具，用值班号登录访问主人公开收藏夹
-3. **爱好分析**：新增 `bili_analyze_hobby` 工具，从收藏夹 + 关注列表推断爱好画像
-4. **画像注入记忆**：将爱好画像作为长期事实存入 @dsh-cbw/memory
+1. ✅ **固定会话**（§六方案 A）：CLI `--session-id` 复用固定 sessionId
+2. ✅ **收藏夹访问**：新增 `bili_user_favorites` 工具，用值班号登录访问主人公开收藏夹
+3. ✅ **爱好分析**：新增 `bili_analyze_hobby` 工具，从收藏夹 + 关注列表推断爱好画像
+4. ✅ **画像注入记忆**：将爱好画像作为长期事实存入 @dsh-cbw/memory
 
-### 4.2 中期（提升值班质量）
+### 4.2 中期（提升值班质量）— ✅ 全部完成（P2+P3, commits `4539076` / `9d8aa4a`）
 
-5. **兴趣学习 + 半衰期**（借鉴 bilihave/dsh-whale-panel）：从值班轮挑的视频中自动提取兴趣词，按半衰期淡忘，替代死配置 `keywords`
-6. **分镜图**（借鉴 QiuYeDx/dsh-bili-eyes）：用多格拼图替代单帧，token 效率更高
-7. **评论三层闸门**（借鉴 bilihave/dsh-whale-panel）：政治/政府/前沿科学硬禁区
-8. **观看统计报告**（借鉴 apiaoapiao/dsh-bili-statistics）：在日报中加入统计维度（完成度、时间分布等）
+5. ✅ **兴趣学习 + 半衰期**（借鉴 bilihave/dsh-whale-panel）：从值班轮挑的视频中自动提取兴趣词，按半衰期淡忘，替代死配置 `keywords`
+6. ✅ **分镜图**（借鉴 QiuYeDx/dsh-bili-eyes）：用多格拼图替代单帧，token 效率更高
+7. ✅ **评论三层闸门**（借鉴 bilihave/dsh-whale-panel）：政治/政府/前沿科学硬禁区
+8. ✅ **观看统计报告**（借鉴 apiaoapiao/dsh-bili-statistics）：在日报中加入统计维度（完成度、时间分布、深夜比例等）+ 收件箱分类（回复/@/点赞）
 
 ### 4.3 长期（可选）
 
@@ -358,7 +359,7 @@ bili_analyze_hobby(uid?: number, nickname?: string) → {
 
 > 原 task2（`docs/task2-bili-scroll-fixed-session.md`）已整合至此。
 > 目标：让 dsh-bili-scroll 在固定对话中运行，有上下文，更好留存记忆，不让对话工作区混乱。
-> ⚠️ 2026-10-31 更新：**工作区归组**部分已由上游 commit `3bd4868`（v2.3.x）实现；**固定会话复用**部分由 fork [@dsh-cbw/bilibili](https://github.com/Scorpioflz/dsh-cbw-bilibili) 实现（走 dsh-web-service REST/SSE 复用 sessionId，不可用时回退 CLI）。
+> ⚠️ 2026-10-31 更新：**工作区归组**部分已由上游 commit `3bd4868`（v2.3.x）实现；**固定会话复用**部分由 fork [@dsh-cbw/bilibili](https://github.com/Scorpioflz/dsh-cbw-bilibili) 实现（走 CLI `--session-id` 参数复用 sessionId，固定会话下跳过桶归档）。**P0 已完成**（commit `681c17d`）。
 
 ### 6.1 当前会话机制根因
 
