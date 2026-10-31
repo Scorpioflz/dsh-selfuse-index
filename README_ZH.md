@@ -15,8 +15,8 @@
 ## 整体架构
 
 桌宠是面向用户的入口，通过 `dsh-web-service` 会话 API 经 HTTP/SSE 接入 DSH 核心。DSH 核心是
-all-plugin Cordis harness——每个能力（含 agent loop）都是插件。下图展示桌宠相关插件与其他已
-安装插件。
+all-plugin Cordis harness——每个能力（含 agent loop）都是插件。下图反映 `web` profile
+（`~/.dsh/profiles/web/`）中**实际启用的插件**，以及 `_plugin-references/` 下仅参考/已弃的插件。
 
 ```mermaid
 flowchart LR
@@ -24,66 +24,88 @@ flowchart LR
 
     subgraph Core ["DSH 核心 — deepseek-harness (Cordis all-plugin)"]
         direction TB
-        Web["dsh-webapi<br/>REST API 网关<br/>(桌宠接入点)"]
+        Web["dsh-web-service<br/>(dsh-webapi) REST API 网关<br/>桌宠接入点"]
         AgentLoop["agent-loop<br/>(插件，非特权)"]
     end
 
-    subgraph PetPlugins ["桌宠相关插件"]
+    subgraph SelfDev ["自研插件（在桌宠 integrations/）"]
         direction TB
-        Bridge["dsh-pet-bridge<br/>桌宠状态桥接<br/>(屏幕/窗口同步)"]
-        Memory["dsh-fish-memory<br/>记忆后端<br/>(打分 + 30天半衰期)"]
+        PetBridge["@dsh-pet/bridge<br/>桌宠状态桥接<br/>(屏幕/窗口同步)"]
+        PetMemory["@dsh-pet/memory<br/>记忆后端<br/>(基于 fish-memory 思路自研:<br/>打分 + 半衰期，按工作区隔离)"]
         Persona["dsh-persona-dafeiyu<br/>人设注入<br/>(systemPrompt.section)"]
-        Balance["dsh-balance-panel<br/>余额查询"]
     end
 
-    subgraph OtherPlugins ["其他已安装插件"]
+    subgraph InUse ["在用的第三方插件（web profile）"]
         direction TB
+        Balance["@wycto/dsh-balance-panel<br/>余额查询"]
         Bili["dsh-bili-scroll<br/>B站滚动任务"]
         ChatMgr["dsh-chat-manager<br/>会话管理"]
-        Skills["dsh-skills-manager<br/>技能管理"]
+        Skills["@michengai/dsh-skills-manager<br/>技能管理"]
         Reason["dsh-custom-reasoning<br/>自定义推理"]
-        CompUse["dsh-computer-use<br/>GUI 操作"]
-        BigCtx["billion-context<br/>长上下文"]
+        CompUse["dsh-codex-style-computer-use<br/>GUI 操作"]
+        BigCtx["billion-context<br/>长上下文 / 存储"]
         Univer["dsh-univer-office<br/>Univer 办公"]
         Preset["dsh-preset-bridge<br/>预设桥接"]
-        Mnemon["dsh-mnemon<br/>助记记忆"]
-        ModSearch["modsearch<br/>模块搜索"]
+        ModSearch["@liustack/modsearch<br/>模块搜索"]
         Safety["cc-safety-net<br/>安全网"]
+        Market["dshmarket<br/>插件市场"]
+    end
+
+    subgraph RefOnly ["仅参考 / 已弃（在 _plugin-references，未启用）"]
+        direction TB
+        FishMem["dsh-fish-memory<br/>→ 被 @dsh-pet/memory 替代<br/>(保留作参考源)"]
+        Mnemon["dsh-mnemon<br/>→ 与 @dsh-pet/memory 冲突"]
+        OldComp["dsh-computer-use<br/>→ 被 dsh-codex-style-computer-use 替代"]
+        PromptPersona["dsh-prompt-persona<br/>→ 被 dsh-persona-dafeiyu 替代"]
+        WhalePersona["dsh-whale-musume-persona<br/>→ 人设候选，未启用"]
+        Soul["dsh-soul<br/>→ 评估后未整合"]
+        PetUpstream["dsh-pet-indesktop-upstream<br/>→ 桌宠上游参考 (MerZlin)"]
+        Hermes["hermes-pet-bridge<br/>→ 在 integrations/，未启用"]
     end
 
     Pet -- "HTTP / SSE<br/>会话 API" --> Web
     Web --> AgentLoop
-    AgentLoop --> Bridge
-    AgentLoop --> Memory
-    AgentLoop --> Persona
-    AgentLoop --> Balance
-    AgentLoop --> OtherPlugins
+    AgentLoop --> SelfDev
+    AgentLoop --> InUse
 ```
 
 ### 各插件职责
 
-| 插件 | 职责 | 来源 |
-| --- | --- | --- |
-| dsh-pet-chubby_blue_whale | **桌宠前端** — 仅做视觉交互（精灵图、右键菜单、设置 UI）。不含记忆/人设/provider 逻辑，全部后端工作交由 DSH。 | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) |
-| dsh-webapi | **REST API 网关** — 经 HTTP/SSE 暴露 DSH 会话；桌宠接入 DSH 的唯一入口。 | [toddpan/dsh-webapi](https://github.com/toddpan/dsh-webapi) |
-| dsh-pet-bridge | **桌宠状态桥接** — 在前端与 DSH 间同步桌宠屏幕/窗口状态。 | 本地（pet integrations/） |
-| dsh-fish-memory | **记忆后端** — 打分公式 `P = C × (baseline + activation·A + importance·I + emotion·E)`，30 天半衰期，长期事实常驻，经 `systemPrompt.context` 注入。 | [Yuuyuko-uu/dsh-fish-memory](https://github.com/Yuuyuko-uu/dsh-fish-memory) |
-| dsh-persona-dafeiyu | **人设注入** — 经 `systemPrompt.section()` 注入角色人设；替代桌宠原前端人设拼接。 | 本地（规划中） |
-| dsh-balance-panel | **余额查询** — API 余额/额度面板。 | [wycto/dsh-balance-panel](https://github.com/wycto/dsh-balance-panel) |
-| dsh-bili-scroll | B站滚动任务。 | [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) |
-| dsh-chat-manager | 会话管理。 | [WSL043/dsh-chat-manager](https://github.com/WSL043/dsh-chat-manager) |
-| dsh-skills-manager | 技能管理。 | [MichengAI/dsh-skills-manager](https://github.com/MichengAI/dsh-skills-manager) |
-| dsh-custom-reasoning | 自定义推理。 | [3likofj/dsh-custom-reasoning](https://github.com/3likofj/dsh-custom-reasoning) |
-| dsh-computer-use | GUI 操作（鼠标/键盘/屏幕）。 | [ltmroberthk915/dsh-computer-use](https://github.com/ltmroberthk915/dsh-computer-use) |
-| billion-context | 长上下文处理。 | [ranxianglei/billion-context](https://github.com/ranxianglei/billion-context) |
-| dsh-univer-office | Univer 办公集成。 | [dream-num/dsh-univer-office](https://github.com/dream-num/dsh-univer-office) |
-| dsh-preset-bridge | 预设桥接。 | [Lyrissonare/dsh-preset-bridge](https://github.com/Lyrissonare/dsh-preset-bridge) |
-| dsh-mnemon | 助记记忆。 | [omdsh-dev/dsh-mnemon](https://github.com/omdsh-dev/dsh-mnemon) |
-| modsearch | 模块搜索。 | [liustack/modsearch](https://github.com/liustack/modsearch) |
-| cc-safety-net | 安全网。 | [kenryu42/cc-safety-net](https://github.com/kenryu42/cc-safety-net) |
+状态列：**在用** = 在 `web` profile 启用；**参考** = 在 `_plugin-references/` 浅克隆仅参考；
+**已弃** = 被其他插件替代。
+
+| 插件 | 职责 | 状态 | 来源 |
+| --- | --- | --- | --- |
+| dsh-pet-chubby_blue_whale | **桌宠前端** — 仅做视觉交互（精灵图、右键菜单、设置 UI）。不含记忆/人设/provider 逻辑，全部后端工作交由 DSH。 | 在用 | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) |
+| dsh-web-service (dsh-webapi) | **REST API 网关** — 经 HTTP/SSE 暴露 DSH 会话；桌宠接入 DSH 的唯一入口。 | 在用 | [toddpan/dsh-webapi](https://github.com/toddpan/dsh-webapi) |
+| @dsh-pet/bridge | **桌宠状态桥接**（自研）— 在前端与 DSH 间同步桌宠屏幕/窗口状态。 | 在用 | 本地（桌宠 `integrations/dsh-pet-bridge/`） |
+| @dsh-pet/memory | **记忆后端**（自研，基于 dsh-fish-memory 思路开发）— 按工作区隔离的记忆，打分 + 半衰期，经 `systemPrompt.context` 注入。**实际在用的记忆插件是它，不是 dsh-fish-memory。** | 在用 | 本地（桌宠 `integrations/dsh-pet-memory/`） |
+| dsh-persona-dafeiyu | **人设注入** — 经 `systemPrompt.section()` 注入角色人设；替代桌宠原前端人设拼接。 | 在用 | [Scorpioflz/dsh-persona-dafeiyu](https://github.com/Scorpioflz/dsh-persona-dafeiyu) |
+| @wycto/dsh-balance-panel | 余额/额度查询面板。 | 在用 | [wycto/dsh-balance-panel](https://github.com/wycto/dsh-balance-panel) |
+| dsh-bili-scroll | B站滚动任务。 | 在用 | [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) |
+| dsh-chat-manager | 会话管理。 | 在用 | [WSL043/dsh-chat-manager](https://github.com/WSL043/dsh-chat-manager) |
+| @michengai/dsh-skills-manager | 技能管理。 | 在用 | [MichengAI/dsh-skills-manager](https://github.com/MichengAI/dsh-skills-manager) |
+| dsh-custom-reasoning | 自定义推理。 | 在用 | [3likofj/dsh-custom-reasoning](https://github.com/3likofj/dsh-custom-reasoning) |
+| dsh-codex-style-computer-use | GUI 操作（鼠标/键盘/屏幕）。 | 在用 | （npm 包，无本地参考克隆） |
+| billion-context | 长上下文 / 存储核心。 | 在用 | [ranxianglei/billion-context](https://github.com/ranxianglei/billion-context) |
+| dsh-univer-office | Univer 办公集成。 | 在用 | [dream-num/dsh-univer-office](https://github.com/dream-num/dsh-univer-office) |
+| dsh-preset-bridge | 预设桥接。 | 在用 | [Lyrissonare/dsh-preset-bridge](https://github.com/Lyrissonare/dsh-preset-bridge) |
+| @liustack/modsearch | 模块搜索。 | 在用 | [liustack/modsearch](https://github.com/liustack/modsearch) |
+| cc-safety-net | 安全网 / 命令门控。 | 在用 | [kenryu42/cc-safety-net](https://github.com/kenryu42/cc-safety-net) |
+| dshmarket | 插件市场。 | 在用 | （npm 包，无本地参考克隆） |
+| dsh-fish-memory | 记忆后端（打分 + 30 天半衰期）。**是 @dsh-pet/memory 的参考源**，未在 profile 安装。 | 参考 / 已弃 | [Yuuyuko-uu/dsh-fish-memory](https://github.com/Yuuyuko-uu/dsh-fish-memory) |
+| dsh-mnemon | 助记记忆。与 @dsh-pet/memory 冲突，未启用。 | 参考 / 已弃 | [omdsh-dev/dsh-mnemon](https://github.com/omdsh-dev/dsh-mnemon) |
+| dsh-computer-use | GUI 操作。被 dsh-codex-style-computer-use 替代。 | 参考 / 已弃 | [ltmroberthk915/dsh-computer-use](https://github.com/ltmroberthk915/dsh-computer-use) |
+| dsh-prompt-persona | 人设注入。被 dsh-persona-dafeiyu 替代。 | 参考 / 已弃 | （_plugin-references/dsh-prompt-persona） |
+| dsh-whale-musume-persona | 人设候选，未启用。 | 参考 | （_plugin-references/dsh-whale-musume-persona） |
+| dsh-soul | 2026-10-29 评估后未整合（仅借鉴骨架思路）。 | 参考 | （_plugin-references/dsh-soul） |
+| dsh-pet-indesktop-upstream | 桌宠上游参考（MerZlin/dsh-pet-indesktop, MIT）。 | 参考 | （_plugin-references/dsh-pet-indesktop-upstream） |
+| hermes-pet-bridge | 桌宠桥接变体，在 integrations/ 但未在 profile 启用。 | 参考 / 已弃 | 本地（桌宠 `integrations/hermes-pet-bridge/`） |
 
 > 桌宠前端刻意保持精简：**仅做视觉交互**。记忆、人设、provider 路由、联网搜索均已从桌宠
-> 移入 DSH 插件（见 `docs/task1-pet-memory-simplification.md`）。
+> 移入 DSH 插件（见 `docs/task1-pet-memory-simplification.md`）。`_plugin-references/` 存放
+> 在用与仅参考插件的浅克隆——**出现在该目录不等于插件已启用**。权威来源是 `web` profile 的
+> `cordis.patch.yml` + `package.json` bundles。
 
 ## 子项目
 
@@ -104,7 +126,7 @@ DSH-Dev/                       # 本索引仓库
 ├── README_ZH.md               # 中文说明（本文件）
 ├── .gitignore
 ├── docs/                      # 跨子项目的设计与任务文档
-├── _plugin-references/        # 已安装 DSH 插件的浅克隆源码（只读，已忽略）
+├── _plugin-references/        # DSH 插件浅克隆（在用 + 仅参考，已忽略）
 ├── deepseek-harness/          # DSH 上游源码（只读，已忽略）
 └── dsh-pet-chubby_blue_whale/ # 桌宠前端（独立仓库，已忽略）
 ```
@@ -113,3 +135,4 @@ DSH-Dev/                       # 本索引仓库
 
 - DSH 上游：[deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)
 - 作为参考的已安装插件源码清单见 `docs/DSH Reference Record.md`。
+- 插件更新每小时跟踪：`docs/plugin_updates.md`（由 `scripts/check_plugin_updates.py` 自动维护）。
