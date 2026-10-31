@@ -113,7 +113,7 @@ Status column: **in use** = enabled in the `web` profile; **ref** = cloned under
 
 > The pet front-end is intentionally thin: **visual interaction only**. Memory, persona,
 > provider routing, and web search have all been moved out of the pet into DSH plugins
-> (see `docs/task1-pet-memory-simplification.md`). The `_plugin-references/` folder holds
+> (see `docs/proposal-memory-plugin-upgrade.md` §七). The `_plugin-references/` folder holds
 > shallow clones of both in-use and reference-only plugins — presence there does **not**
 > mean a plugin is enabled. The authoritative source is the `web` profile's
 > `cordis.patch.yml` + `package.json` bundles.
@@ -123,14 +123,19 @@ Status column: **in use** = enabled in the `web` profile; **ref** = cloned under
 > Each sub-project lives in its own folder under the workspace root and is an independent
 > git repository. The folders themselves are git-ignored here — only this index repo and
 > `docs/` are tracked.
+>
+> **Sharded docs**: each sub-project's detailed description lives in
+> `docs/sub-projects/<name>.md`. When updating a sub-project, edit **only its shard** —
+> do not touch the README body or other shards. This avoids conflicts when multiple
+> sessions develop different sub-projects in parallel.
 
-| Name | Description | Repository |
-| --- | --- | --- |
-| dsh-pet-chubby_blue_whale | Desktop pet front-end for DSH (PySide6, Python 3.14+). Talks to DSH via the `dsh-web-service` session API. | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) |
-| dsh-cbw-memory | DSH long-term memory plugin (half-life decay, emotion weighting, per-workspace sharing). Derived from Yuuyuko-uu/dsh-fish-memory. | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) |
+| Name | Description | Repository | Details |
+| --- | --- | --- | --- |
+| dsh-pet-chubby_blue_whale | Desktop pet front-end for DSH (PySide6, Python 3.14+). Talks to DSH via the `dsh-web-service` session API. | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) | [shard](docs/sub-projects/dsh-pet-chubby_blue_whale.md) |
+| dsh-cbw-memory | DSH long-term memory plugin (half-life decay, emotion weighting, per-workspace sharing). Derived from Yuuyuko-uu/dsh-fish-memory. | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) | [shard](docs/sub-projects/dsh-cbw-memory.md) |
 
-> When a new sub-project is added, append a row to the table above and add its folder
-> to `.gitignore`.
+> When a new sub-project is added: append a row above, create `docs/sub-projects/<name>.md`,
+> and add its folder to `.gitignore`.
 
 ## Workspace layout
 

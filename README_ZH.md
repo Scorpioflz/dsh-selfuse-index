@@ -108,7 +108,7 @@ flowchart LR
 | hermes-pet-bridge | 桌宠桥接变体，在 integrations/ 但未在 profile 启用。 | 参考 / 已弃 | 本地（桌宠 `integrations/hermes-pet-bridge/`） |
 
 > 桌宠前端刻意保持精简：**仅做视觉交互**。记忆、人设、provider 路由、联网搜索均已从桌宠
-> 移入 DSH 插件（见 `docs/task1-pet-memory-simplification.md`）。`_plugin-references/` 存放
+> 移入 DSH 插件（见 `docs/proposal-memory-plugin-upgrade.md` §七）。`_plugin-references/` 存放
 > 在用与仅参考插件的浅克隆——**出现在该目录不等于插件已启用**。权威来源是 `web` profile 的
 > `cordis.patch.yml` + `package.json` bundles。
 
@@ -116,13 +116,16 @@ flowchart LR
 
 > 每个子项目位于工作区根目录下各自的文件夹中，是独立的 git 仓库。这些文件夹在本索引
 > 仓库中被 git-ignore，仅本索引仓库与 `docs/` 被跟踪。
+>
+> **分片文档**：各子项目的详细描述放在 `docs/sub-projects/<name>.md`。更新子项目时
+> **只改自己的分片**——不碰 README 主体或其他分片。这样多会话并行开发不同子项目时不会冲突。
 
-| 名称 | 说明 | 仓库 |
-| --- | --- | --- |
-| dsh-pet-chubby_blue_whale | DSH 桌宠前端（PySide6，Python 3.14+），通过 `dsh-web-service` 会话 API 接入 DSH。 | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) |
-| dsh-cbw-memory | DSH 长期记忆插件（半衰期衰减、情感加权、按工作区隔离共享）。基于 Yuuyuko-uu/dsh-fish-memory 衍生。 | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) |
+| 名称 | 说明 | 仓库 | 详情 |
+| --- | --- | --- | --- |
+| dsh-pet-chubby_blue_whale | DSH 桌宠前端（PySide6，Python 3.14+），通过 `dsh-web-service` 会话 API 接入 DSH。 | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) | [分片](docs/sub-projects/dsh-pet-chubby_blue_whale.md) |
+| dsh-cbw-memory | DSH 长期记忆插件（半衰期衰减、情感加权、按工作区隔离共享）。基于 Yuuyuko-uu/dsh-fish-memory 衍生。 | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) | [分片](docs/sub-projects/dsh-cbw-memory.md) |
 
-> 新增子项目时，在上表追加一行，并将其文件夹加入 `.gitignore`。
+> 新增子项目时：在上表追加一行，创建 `docs/sub-projects/<name>.md`，并将其文件夹加入 `.gitignore`。
 
 ## 工作区结构
 
