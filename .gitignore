@@ -10,3 +10,5 @@ deepseek-harness/
 
 # Sub-projects (each is an independent git repo, tracked separately)
 dsh-pet-chubby_blue_whale/
+# Local-only docs (not tracked, for AI reference)
+docs/github-operations.md
