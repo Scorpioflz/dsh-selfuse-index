@@ -237,7 +237,42 @@ def render_md(timestamp, results, pending):
     return "\n".join(lines)
 
 
+def auto_commit_push():
+    """git add + commit + push（用于 --commit 模式，系统定时任务调用）。"""
+    r = git(["add", "docs/plugin_updates.md", "docs/.plugin_updates_last.json"], ROOT)
+    if r.returncode != 0:
+        print(f"git add failed: {r.stderr}")
+        return
+    r = git(["diff", "--cached", "--quiet"], ROOT)
+    if r.returncode == 0:
+        print("No changes to commit.")
+        return
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+    r = git(["commit", "-m", f"chore: plugin update check {timestamp}"], ROOT)
+    if r.returncode != 0:
+        print(f"git commit failed: {r.stderr}")
+        return
+    fgit = ROOT / "D:" / "Tool" / "fgit" / "fgit.exe"
+    fgit_path = r"D:\Tool\fgit\fgit.exe"
+    push_cmd = subprocess.run(
+        [fgit_path, "push"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        timeout=120,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if push_cmd.returncode == 0:
+        print("Pushed via fgit.")
+    else:
+        print(f"fgit push failed: {push_cmd.stderr[:200]}")
+
+
 def main():
+    import sys
+    do_commit = "--commit" in sys.argv
+
     results = []
     if PLUGINS.is_dir():
         for d in sorted(PLUGINS.iterdir()):
@@ -257,7 +292,11 @@ def main():
     md = render_md(timestamp, results, pending)
     OUT_MD.write_text(md, encoding="utf-8")
 
-    print(f"Checked {len(results)} plugins, {len([r for r in results if r['status']=='updated'])} updated. md rewritten.")
+    n_updated = len([r for r in results if r["status"] == "updated"])
+    print(f"Checked {len(results)} plugins, {n_updated} updated. md rewritten.")
+
+    if do_commit:
+        auto_commit_push()
 
 
 if __name__ == "__main__":

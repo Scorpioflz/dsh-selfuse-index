@@ -7,6 +7,7 @@
 1. **读取 `docs/cross-talk/` 全目录**：了解其他会话在做什么、有无对自己的通知/请求
 2. **读取自己的 `docs/cross-talk/<sub-project>.md`**：确认上次状态，准备更新
 3. **读取 `docs/github-operations.md`**：GitHub 操作规范（认证/克隆/推送/提交）
+4. **检查 `docs/plugin_updates.md` 有无 `[待分析]` 条目**：系统定时任务（每天 22:00）自动检查插件更新并生成待分析占位，会话启动时若有 `[待分析]` 条目需主动分析填写（影响评估/整合建议），填写后提交推送
 
 ## 工作中必须执行（强制）
 
@@ -29,9 +30,15 @@
 docs/
   cross-talk/          ← 会话沟通区（动态状态，各会话只改自己的文件）
   sub-projects/        ← 子项目分片（静态描述，各会话只改自己的分片）
-  plugin_updates.md    ← 插件更新跟踪（脚本自动生成，覆盖式）
+  plugin_updates.md    ← 插件更新跟踪（系统定时任务自动生成，覆盖式）
   github-operations.md ← GitHub 操作指南（本地不追踪）
 ```
+
+## 定时任务
+
+- **插件更新检查**：Windows 定时任务 `DSH-PluginUpdateCheck`，每天 22:00 运行 `python scripts/check_plugin_updates.py --commit`（纯脚本，不创建 AI 对话）
+- 脚本自动 git 检查 + 生成 `plugin_updates.md` + commit + fgit push
+- 有更新时留 `[待分析]` 占位，会话启动时 AI 主动分析填写
 
 ## 仓库
 
