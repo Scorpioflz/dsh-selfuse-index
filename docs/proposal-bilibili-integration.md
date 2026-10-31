@@ -281,6 +281,9 @@ dsh-bili-profile/
 
 ## 五、爱好分析功能详细设计
 
+> 状态：✅ 已实施（commit `19ca8cf`，2026-10-31）
+> 实现：3 个宿主工具 + HTTP 路由 + 画像注入 @dsh-cbw/memory + 刷新周期 Config
+
 ### 5.1 工具定义
 
 ```

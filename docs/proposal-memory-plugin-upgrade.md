@@ -300,6 +300,12 @@ while (map.size > 128) map.delete(map.keys().next().value!)
 - **成本**：全局字符串替换（index.js 42 处 + client.js 1 处 + dsh_provider.py 1 处）
 - **版本**：v0.4.1
 
+#### 4.17 实机测试 + 插件市场索引 ✅
+- **实机测试**：v0.4.1 通过 `dsh plugin add link:` 部署到 DSH web profile，全部通过（插件加载、32 路由、管理面板、记忆写入、跨对话召回、版本检查、策略配置）
+- **repository 修复**：package.json 缺 `repository` 字段导致版本检查报"查不到"，已添加（commit `cd4d5b5`）
+- **插件市场索引**：`docs/index.json` 已创建并托管在 GitHub Pages（`https://scorpioflz.github.io/dsh-cbw-memory/index.json`），用户可在 DSH Discover 标签页添加此 URL 安装插件
+- **版本**：v0.4.1（commit `4211c0b`）
+
 ---
 
 ## 五、不建议做的升级
@@ -327,7 +333,7 @@ Phase 3 (P2): 4.8 JSONL+category ✅ | 4.7 增量定时沉淀 ✅ | 4.9 管理�
   ↓
 Phase 4 (P3): 4.10 CJK bigram ✅（已有）| 4.11 安全模型增强 ✅ | 4.12 归档索引 ✅ | 4.13 LRU 上调 ✅ | 4.14 归档去重 ✅ | 4.15 FTS5 暂缓
   ↓
-Phase 5 (维护): 4.16 路由前缀统一 ✅（v0.4.1）
+Phase 5 (维护): 4.16 路由前缀统一 ✅（v0.4.1）| 4.17 实机测试 + 插件市场索引 ✅（v0.4.1）
 ```
 
 每个 Phase 独立可交付，不依赖下一个 Phase。P3 各项也相互独立，可按需挑选实施。
