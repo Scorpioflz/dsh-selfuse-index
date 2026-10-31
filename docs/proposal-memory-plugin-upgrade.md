@@ -294,6 +294,12 @@ while (map.size > 128) map.delete(map.keys().next().value!)
 - **决策**：暂不实施。先实施 4.10 CJK bigram + 4.12 归档索引，若线性扫描 + bigram 在 1000+ 条时性能不足再引入 FTS5
 - **理由**：FTS5 需要引入 SQLite 依赖 + 同步索引维护，当前 JSONL + bigram + 归档索引的方案更轻量
 
+#### 4.16 路由前缀统一 ✅
+- **改动**：所有 HTTP 路由前缀 `/dsh-pet-memory/` → `/dsh-cbw-memory/`，数据目录 `~/.dsh/dsh-pet-memory` → `~/.dsh/dsh-cbw-memory`，客户端前缀常量、plugin source 标识、桌宠 toggle URL 同步更新
+- **效果**：插件从 `dsh-pet` 提取为独立 `@dsh-cbw/memory` 包后，路由前缀与包名一致
+- **成本**：全局字符串替换（index.js 42 处 + client.js 1 处 + dsh_provider.py 1 处）
+- **版本**：v0.4.1
+
 ---
 
 ## 五、不建议做的升级
@@ -320,6 +326,8 @@ Phase 2 (P1): recall 工具 + 容量管理 + 来源标记 ✅ 已完成
 Phase 3 (P2): 4.8 JSONL+category ✅ | 4.7 增量定时沉淀 ✅ | 4.9 管理面板 ✅（已有）
   ↓
 Phase 4 (P3): 4.10 CJK bigram ✅（已有）| 4.11 安全模型增强 ✅ | 4.12 归档索引 ✅ | 4.13 LRU 上调 ✅ | 4.14 归档去重 ✅ | 4.15 FTS5 暂缓
+  ↓
+Phase 5 (维护): 4.16 路由前缀统一 ✅（v0.4.1）
 ```
 
 每个 Phase 独立可交付，不依赖下一个 Phase。P3 各项也相互独立，可按需挑选实施。
