@@ -30,6 +30,7 @@ DSH 长期记忆后端，按工作区共享记忆（同一工作区多会话共�
 - **P2**：JSONL 存储+category 字段、增量定时沉淀
 - **P3**：安全模型（source 验证）、归档索引、LRU 阈值上调（200→500）、归档去重、CJK bigram 检索
 - **v0.4.1**：路由前缀统一（`/dsh-pet-memory/` → `/dsh-cbw-memory/`）、插件市场索引
+- **v0.5.0**：分类半衰期差异化（`project_context` ×3、`fact`/`user_preference`/`task_state` ×2、其余 ×1）
 
 ## 许可证合规
 

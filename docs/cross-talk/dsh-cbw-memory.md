@@ -1,12 +1,21 @@
 # dsh-cbw-memory — 记忆插件开发
 
-> 最后更新：2026-10-31 | 会话焦点：插件市场安装成功
+> 最后更新：2026-10-31 | 会话焦点：分类半衰期差异化（v0.5.0）
 
 ## 正在进行
+
+- v0.5.0 实现分类半衰期差异化：`project_context` ×3、`fact`/`user_preference`/`task_state` ×2、其余 ×1
+- 代码改动：`lib/index.js` 新增 `CATEGORY_HALF_LIFE_MULT` 常量 + `categoryHalfLifeMult()` 辅助函数，修改 3 处 H 计算
+- 文档同步：CHANGELOG、README/README_ZH、proposal、sub-projects 分片均已更新
+- 待提交推送
+
+## 已完成
 
 - v0.4.1 已通过 gh-proxy 镜像 tarball URL 安装到 DSH web profile，插件热加载正常
 - 安装命令：`dsh plugin --profile web add "https://gh-proxy.com/https://github.com/Scorpioflz/dsh-cbw-memory/archive/refs/heads/main.tar.gz" --config.package-import-method=copy`
 - 验证：list/page/policy 路由均返回 200，记忆数据正常捕获
+- GitHub topic `dsh-plugin` 已添加到仓库
+- 所有文件记录（LICENSE/THIRD_PARTY_NOTICES/README/CHANGELOG）标注和鸣谢已检查修复
 
 ## 遇到的困难
 

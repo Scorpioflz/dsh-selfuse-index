@@ -307,6 +307,12 @@ while (map.size > 128) map.delete(map.keys().next().value!)
 - **市场安装**：Discover 标签页直装遇 `ERR_PNPM_TARBALL_DECODE_GZIP`（GitHub tarball 下载损坏，国内网络不稳定）；改用 gh-proxy 镜像 tarball URL 通过 CLI 安装成功：`dsh plugin --profile web add "https://gh-proxy.com/https://github.com/Scorpioflz/dsh-cbw-memory/archive/refs/heads/main.tar.gz" --config.package-import-method=copy`，插件热加载后全部路由正常（list/page/policy 均 200）
 - **版本**：v0.4.1（commit `4211c0b`）
 
+#### 4.18 分类半衰期差异化 ✅
+- **改动**：半衰期公式 `H = baseHalfLifeDays × (1 + 2×I)` 增加分类倍率：`H = baseHalfLifeDays × (1 + 2×I) × categoryMult(category)`。`project_context` ×3、`fact`/`user_preference`/`task_state` ×2、其余 ×1。`stable_profile` 不受影响（鲜活度() 提前 return 常数）
+- **效果**：工程上下文（project_context）半衰期从 30 天→90 天，长期事实和用户偏好从 30 天→60 天，日常对话/事件仍为 30 天。无需配置——倍率硬编码在 `CATEGORY_HALF_LIFE_MULT` 常量中
+- **成本**：新增常量+辅助函数（~10 行），修改 3 处 H 计算（各加 `× categoryHalfLifeMult(m.category)`），更新 category 参数描述
+- **版本**：v0.5.0
+
 ---
 
 ## 五、不建议做的升级
@@ -334,7 +340,7 @@ Phase 3 (P2): 4.8 JSONL+category ✅ | 4.7 增量定时沉淀 ✅ | 4.9 管理�
   ↓
 Phase 4 (P3): 4.10 CJK bigram ✅（已有）| 4.11 安全模型增强 ✅ | 4.12 归档索引 ✅ | 4.13 LRU 上调 ✅ | 4.14 归档去重 ✅ | 4.15 FTS5 暂缓
   ↓
-Phase 5 (维护): 4.16 路由前缀统一 ✅（v0.4.1）| 4.17 实机测试 + 插件市场索引 ✅（v0.4.1）
+Phase 5 (维护): 4.16 路由前缀统一 ✅（v0.4.1）| 4.17 实机测试 + 插件市场索引 ✅（v0.4.1）| 4.18 分类半衰期差异化 ✅（v0.5.0）
 ```
 
 每个 Phase 独立可交付，不依赖下一个 Phase。P3 各项也相互独立，可按需挑选实施。
