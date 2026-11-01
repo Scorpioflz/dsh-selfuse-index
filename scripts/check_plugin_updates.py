@@ -20,13 +20,13 @@ logging.basicConfig(
 )
 
 IN_USE = {
-    "dsh-webapi", "dsh-balance-panel", "dsh-bili-scroll", "dsh-chat-manager",
+    "dsh-webapi", "dsh-balance-panel", "dsh-chat-manager",
     "dsh-skills-manager", "dsh-custom-reasoning", "billion-context",
     "dsh-univer-office", "dsh-preset-bridge", "modsearch", "cc-safety-net",
     "dsh-persona-dafeiyu",
 }
 REFERENCE = {
-    "dsh-fish-memory", "dsh-computer-use", "dsh-prompt-persona",
+    "dsh-fish-memory", "dsh-bili-scroll", "dsh-computer-use", "dsh-prompt-persona",
     "dsh-whale-musume-persona", "dsh-soul", "dsh-pet-indesktop-upstream",
     "hermes-pet-bridge",
 }
