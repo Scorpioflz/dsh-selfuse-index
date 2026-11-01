@@ -14,7 +14,17 @@
 - **根因**：`insertSessionBefore`（dsh-workspace/lib/index.js:130）第一行就检查 `record.sessionIds.includes(sessionId)`，不在就 throw。正确方法是 `attachSession`（line 111-129）：读 session header 验证 cwd 匹配 workspace path → `rememberSessionPath` → 加入 sessionIds
 - **修复**：index.js exit handler 里 `insertSessionBefore(newId)` → `attachSession(newId)`
 - **验证**：config.json sessionId=`session-adeeab89-...`，workspace.json「大肥鱼池塘」sessionIds[0] 同一 session，updatedAt 2026-11-01T06:04:39 ✓
-- **README 更新**：双语 README 已更新自动会话管理说明（commit `171ea5d`，待网络恢复后推送）
+
+### 值班会话写锁 + 自动归档隐藏（v2.3.10，本地待推送）
+
+- **写锁问题**：值班轮 + 私信回复共用一个 session，用户在 DSH 侧栏打开该会话 → 持 write handle → 下一轮值班报 `already owned by an active write handle` → code=1 不跑。完全重启 DSH 后如果用户又在同一个会话里聊天（恰好就是值班轮创建的那个），同样锁住
+- **exit handler 加检测**：`/already owned by an active write handle/i` → 友好提示"关掉侧栏会话窗口再试"，不清 sessionId（上下文还在）
+- **自动归档隐藏**：新建 session 后调 `reg.archiveSession(newId)` → session 从侧栏隐藏，但 workspace accounting 保留（共享记忆还在），one-shot runner 仍能 `--session-id` 正常读写。已验证 DSH 核心/session 服务都不检查 archived 状态
+- **手动归档作为回退**：F5 刷新后归档的 session 可能重新显示，用户手动右键归档即可（已验证不影响值班轮运行）
+- **冷却时间**：`manualCooldownMin` 是 volatile 字段（重启读默认值），改 config.json 不生效，改了 index.js 默认值 10→3 分钟
+- **设置页提醒**：橙色加粗提醒"不要打开值班会话窗口 + 如果看到了手动归档它"
+- **README 双语**：同步更新提醒文案
+- **注意**：cp 到安装目录的文件可能被 DSH 重启时 bundle 覆盖，需确认 cp 后重启不被覆盖（或用 pnpm commit hash 安装）
 
 ### 工作区下拉选择器（commit `d1f5f17`，v2.3.6，已推送+安装）
 
@@ -128,4 +138,18 @@
 
 ## 对其他会话的通知/请求
 
-- 无
+### 分享：DSH session 管理 + workspace registry 经验（v2.3.5-v2.3.10 踩坑总结）
+
+给所有会用 DSH one-shot runner + workspace 的会话（尤其 @dsh-cbw/memory、dsh-pet）：
+
+1. **one-shot runner 不 compose 任何 agent preset**：`assertAdoptable` 检查 `preset !== void 0` 就拒绝。web UI 建的对话带 "standard" preset → one-shot runner 拒绝 adopt。只有 one-shot runner 自己创建的无 preset session 才能被复用。所以让 one-shot runner 自动创建 session（不传 `--session-id`），跑完捕获新 ID 存 config，之后固定复用。
+
+2. **session 创建后不能改 cwd**：`assertAdoptable` 检查 `header.cwd !== cwd` 拒绝。要在创建时就用对的 cwd → 通过 `--cwd` 参数配置。
+
+3. **one-shot runner 创建的 session 不自动关联 workspace registry**：session 物理落到 cwd 目录，但 `workspace.json` 的 `sessionIds` 不联动 → 侧栏显示"未分组"。需显式调 `workspace.attachSession(sessionId)`（不是 `insertSessionBefore`！后者只移动已 accounted 的 session，新 session 报 `the session is not accounted`）。
+
+4. **session 写锁**：同一个 session 同时只能一个 writer。用户在 DSH 侧栏打开会话 → web UI 持 write handle → one-shot runner 报 `already owned by an active write handle`。解法：`archiveSession(sessionId)` 把值班 session 从侧栏隐藏（归档）。**archive 只影响 UI 显示，不触碰 session 读写**——DSH 核心/session 服务都不检查 archived 状态，one-shot runner 仍能 `--session-id` 正常读写，workspace accounting 保留。`archiveSession` 是 `WorkspaceRegistry` 级方法（`reg.archiveSession(id)`），不是单个 workspace 对象的方法。
+
+5. **volatile 配置字段**：schema 里 `.extra('volatile', true)` 的字段重启时读默认值，改 config.json 不生效，要改代码默认值。
+
+6. **cp 到安装目录的文件可能被 DSH 重启覆盖**：开发期 `cp index.js ~/.dsh/profiles/web/node_modules/@dsh-cbw/bilibili/` 后，DSH 重启时可能重新 bundle 覆盖。可靠方案是用 pnpm commit hash URL 安装。
