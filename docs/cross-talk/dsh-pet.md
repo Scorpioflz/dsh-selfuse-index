@@ -1,16 +1,17 @@
 # dsh-pet — 桌宠前端开发
 
-> 最后更新：2026-10-31 | 会话焦点：非 DSH backend 移除后的测试修复 + 碎碎念调查
+> 最后更新：2026-10-31 | 会话焦点：碎碎念定时计划模式实施
 
 ## 正在进行
 
-- 无进行中任务。桌宠子项目 `dsh-pet-chubby_blue_whale` 测试全部通过，碎碎念问题已解决，可封装发布
+- 无进行中任务。碎碎念定时计划模式已实施完成，30 个测试全部通过
 
 ## 已完成
 
 - 今日共 5 个 commit 已推送到 GitHub（fade273d / 5f9c15bc / ed9822d3 / be51fa51 / 698cb53f）
 - 修复 15 个 bug（含 2 个功能 bug + 13 个测试对齐），371+ tests passed, 0 failed
-- 碎碎念不触发问题：根因是配置开关关闭（`self_talk_enabled = False` + `dsh_self_talk_enabled = False`），非代码 bug。已帮用户开启两个开关，下次启动碎碎念会正常触发
+- 碎碎念不触发问题：根因是配置开关关闭，已帮用户开启
+- 碎碎念定时计划模式：将 24h 滑动窗口改为 HH:MM + 星期筛选的定时计划，启动时回溯检查 (last_run, now] 间是否有计划点，错过多天合并为一次执行。新增 dsh_self_talk_schedule + dsh_self_talk_weekdays 配置键，30 个测试全部通过
 
 ## 遇到的困难
 
