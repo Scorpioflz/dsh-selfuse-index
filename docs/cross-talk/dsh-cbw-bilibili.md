@@ -8,6 +8,14 @@
 
 ## 已完成
 
+### 自动会话管理 - 去掉 session ID 录入（commit `c39bc17`，v2.3.5，已推送+安装）
+
+- **问题**：one-shot runner 不 compose 任何 agent preset（`assertAdoptable` 检查 `preset !== void 0` 就拒绝）。web UI 建的对话带 "standard" preset → one-shot runner 拒绝
+- **解法**：合并 `fixedSession`/`dutySessionId`/`dmSessionId` → 内部 `sessionId`。第一次不传 `--session-id` 让 one-shot runner 自动创建无 preset session，跑完 `discoverDutySession` 捕获新 ID 存 config，之后固定复用。值班轮 + 私信回复共用一个 session
+- **session 失效处理**：exit handler 检测 stderr 含 "does not exist" 或 "does not compose" → 清 `cfg.sessionId`，下次自动新建（值班轮）/ 即时重试（私信回复）
+- **设置页**：去掉固定会话开关 + 两个 session ID 输入框，加「会话工作区」输入框（可填桌宠工作区路径共享记忆）
+- **session 创建后不能改 cwd**：`assertAdoptable` 检查 `header.cwd !== cwd` 拒绝。要在创建时就用对的 cwd → 通过 `cfg.workspace` 配置
+
 ### 私信监听日志误报 + 值班会话不存在提醒（commit `3547d3d`，v2.3.4，已推送+安装）
 
 - **日志误报 bug**：`dmTick` 里判断"是否只回登录账号自己"用 `cfg.dmOwnerUid`（旧字段=0），但 `dmOwnerUid()` 函数实际用 `cfg.masterUid`（=9833388）⇒ owner 算对了、日志每分钟误刷警告。改成检查 `owner === dmCred.dedeuserid`（owner 是否真的回退到登录账号自己）
