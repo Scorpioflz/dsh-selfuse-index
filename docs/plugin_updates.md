@@ -38,11 +38,10 @@
 ### 参考插件 · 整合建议
 
 - **dsh-bili-scroll**: `a093f559e08d` → `398e4724a481`（3 commits，最近: fix: 合入社区 PR #150 + #162）
-  - 整合建议: **需合入 fork**——`@dsh-cbw/bilibili`（`D:\DSH-Dev\dsh-cbw-bilibili`，v2.3.2）基于 `a093f559e08d` fork，上游新增 3 commits 需评估合入：
-    - `aadcdf7` fix(fav): 自动收藏连续四天全失败——`FavoriteList` 参数错位 + `FavoriteListResource` 已移除，改用 `Video.set_favorite`。fork 有 `lib/favops.py`，**需合入**
-    - `398e472` #150 @ 昵称空格修复——B站只认紧挨着的 @，带空格对方收不到通知。fork index.js 有 mention 逻辑（29 处），**需合入**
-    - `398e472` #162 私信 BV 号记录——私信发送后记下实际 BV 号让筛选能认出。fork 有私信投递逻辑，**需合入**
-    - `a4941cb` chore(2.4.0) 版本 bump——fork 有独立版本号，**无需合入**
-  - fork 当前状态：v2.3.2，已实现画像深度增强（时间权重+视频Tag+UP主签名）+ UP主偏好时间权重 + 画像兴趣词修复 + bili_comment 修复 + 四项功能改进。fork 仓库：github.com/Scorpioflz/dsh-cbw-bilibili
+  - 整合建议: ✅ **已合入 fork**（`@dsh-cbw/bilibili` v2.3.3，commit `d710fa2`，已推送+安装）：
+    - `aadcdf7` 自动收藏 bug：改用 `Video.set_favorite` ✅
+    - `398e472` #150 @ 昵称空格修复：`_normalize_mention` + `check-mention.py` ✅
+    - `398e472` #162 私信 BV 号记录：`BILI_DUTY_RUN_DAY` + `dm-deliveries.jsonl` ✅
+    - `a4941cb` 版本 bump：fork 有独立版本号，无需合入
 - **dsh-fish-memory**: `44f3db3b1c43` → `2a25e04a3d19`（2 commits，最近: 1.4.9：检查更新改成多源取最大、能一键装，命令行那套删了）
   - 整合建议: **无需整合**。1.4.9 是上游的更新检查机制（多源取最大）+ 安装流程（一键装）+ CLI 删除改动。@dsh-cbw/memory 有独立的安装/更新流程（已发布到插件市场，用 gh-proxy tarball URL 安装），不依赖上游的更新检查机制。@dsh-cbw/memory 无命令行接口，"命令行那套删了"不影响 ✅
