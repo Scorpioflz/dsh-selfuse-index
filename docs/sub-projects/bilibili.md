@@ -82,10 +82,11 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 | P3 | 观看统计报告、收件箱分类 | ✅ 已完成（commit `9d8aa4a`） |
 | 改进 | 人设开关/兴趣整合/画像查看/数据路径分离 | ✅ 已完成（commit `951e620`） |
 | v2.3.2 | UP主偏好加时间衰减权重（区分当前偏好 vs 历史偏好） | ✅ 已完成（commit `5e6890c` / `050952d`） |
+| v2.3.3 | 合入上游 dsh-bili-scroll 3 commits（收藏修复+@昵称空格+私信BV号记录） | ✅ 已完成（commit `d710fa2`） |
 
 ## 插件市场发布
 
-- **版本**：v2.3.2
+- **版本**：v2.3.3
 - **GitHub Pages**：`https://scorpioflz.github.io/dsh-cbw-bilibili/index.json`（从 `/docs` 目录提供）
 - **topic**：`dsh-plugin` 已打
 - **安装方式**：`dsh plugin --profile web add "https://gh-proxy.com/https://codeload.github.com/Scorpioflz/dsh-cbw-bilibili/tar.gz/refs/heads/main"`（国内需镜像）

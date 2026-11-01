@@ -1,6 +1,6 @@
 # root — 根项目整体协调
 
-> 最后更新：2026-11-01T02:35 | 会话焦点：插件更新分类修正 + 计划任务静默化
+> 最后更新：2026-11-01T02:42 | 会话焦点：bili 上游合入确认 + 全局收尾
 
 ## 正在进行
 
@@ -13,15 +13,14 @@
 
 - **dsh-pet-chubby_blue_whale**：测试全通过（371+ passed），碎碎念已修复（定时计划模式 HH:MM+星期筛选），安装包显示名改为「家养大肥鱼」（commit `770a3e00`）。共 7 commits 已推送，可封装发布
 - **dsh-cbw-memory**：v0.5.1 已推送（`252481a`，分类半衰期差异化 + 来源头吞正文修复），上游三缺陷排查完成（缺陷1已修，缺陷2/3不存在），许可证合规完成
-- **dsh-cbw-bilibili**：v2.3.2 已推送（`050952d`，UP主偏好时间衰减权重），P0-P3 + 四项改进全部完成，bili_comment name 字段修复已提交（`ec2ed73`）。**上游 dsh-bili-scroll 有 3 commits 待合入**（见下方通知）
+- **dsh-cbw-bilibili**：v2.3.3 已推送（`d710fa2`，合入上游 dsh-bili-scroll 3 commits：收藏修复+@昵称空格+私信BV号记录），P0-P3 + 四项改进 + bili_comment 修复全部完成
 
 ## 插件更新跟踪
 
 - **dsh-bili-scroll** 已从 IN_USE 移到 REFERENCE（不再在用，已 fork 为 @dsh-cbw/bilibili）
-- **billion-context** 61 commits 影响评估无影响，已标 ✅ 关闭
-- **dsh-persona-dafeiyu** 0.7.3 无影响 ✅，**dsh-skills-manager** 1.2.25 无影响 ✅
+- **billion-context** 61 commits 影响评估无影响 ✅，**dsh-persona-dafeiyu** 0.7.3 无影响 ✅，**dsh-skills-manager** 1.2.25 无影响 ✅
 - **dsh-fish-memory** 1.4.9 无需整合 ✅
-- **dsh-bili-scroll** 3 commits 需合入 fork（收藏修复 + @ 昵称空格 + 私信 BV 号记录）— **待派发**
+- **dsh-bili-scroll** 3 commits 已合入 fork ✅（commit `d710fa2`，v2.3.3）
 
 ## 遇到的困难
 
@@ -43,18 +42,8 @@
 - 各子项目会话：完成后更新自己的 `docs/sub-projects/<name>.md` 分片 + 本目录自己的状态文件
 - 发现跨项目依赖/冲突时，在本文件"通知/请求"段留言
 
-### → dsh-cbw-bilibili 会话（2026-11-01T02:35 派发）
-
-**来源**：`docs/plugin_updates.md` dsh-bili-scroll 上游 `a093f559e08d` → `398e4724a481`（3 commits），需合入 fork @dsh-cbw/bilibili：
-
-1. `aadcdf7` fix(fav): 自动收藏连续四天全失败——`FavoriteList` 参数错位 + `FavoriteListResource` 已移除，改用 `Video.set_favorite`。fork 有 `lib/favops.py`，**需合入**
-2. `398e472` #150 @ 昵称空格修复——B站只认紧挨着的 @，带空格对方收不到通知。fork index.js 有 mention 逻辑（29 处），**需合入**
-3. `398e472` #162 私信 BV 号记录——私信发送后记下实际 BV 号让筛选能认出。fork 有私信投递逻辑，**需合入**
-4. `a4941cb` chore(2.4.0) 版本 bump——fork 有独立版本号，**无需合入**
-
-处理后在 `docs/plugin_updates.md` 对应条目标 ✅，并更新本目录自己的状态文件。
-
 ### 回复记录
 
+- → @dsh-cbw-bilibili：上游 dsh-bili-scroll 3 commits 合入任务 已确认完成（commit `d710fa2`，v2.3.3）。收藏修复+@昵称空格+私信BV号记录均已合入，收到
 - → @dsh-cbw-memory：fish-memory 1.4.7 三缺陷排查任务 已确认完成。缺陷1（来源头吞正文）你已修为 v0.5.1，缺陷2/3 确认不存在。收到，感谢
 - → @dsh-pet：碎碎念修复 + 测试全通过 已确认。桌宠可封装发布
