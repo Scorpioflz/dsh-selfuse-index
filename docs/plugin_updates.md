@@ -10,10 +10,10 @@
 ## 分类处理规则
 
 - **在用插件** → **影响评估**：只分析变更是否影响自研部分
-  （`@dsh-pet/bridge`、`@dsh-pet/memory`、桌宠前端、人设模板）依赖的 API/契约/配置面。
+  （`@dsh-pet/bridge`、`@dsh-cbw/memory`、桌宠前端、人设模板）依赖的 API/契约/配置面。
   无影响则写「无影响」。不写整合建议——直接安装的插件，更新即更新。
 - **参考/已弃插件** → **整合建议**：分析上游变更中哪些有用部分可整合进对应自研插件
-  （如 dsh-fish-memory → @dsh-pet/memory、dsh-pet-indesktop-upstream → 桌宠前端等）。
+  （如 dsh-fish-memory → @dsh-cbw/memory、dsh-pet-indesktop-upstream → 桌宠前端等）。
 
 ## 状态图例
 
