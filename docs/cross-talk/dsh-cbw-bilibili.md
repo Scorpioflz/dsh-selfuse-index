@@ -70,6 +70,13 @@
 - gh-proxy codeload tarball URL 安装比 `github:` specifier 更可靠（后者走 git ls-remote 直连必失败）
 - `git credential fill` 可获取 GitHub token 做 API 操作（启用 Pages、打 topic）
 
+### pnpm 插件安装缓存问题（重要！分享给所有 DSH 插件开发会话）
+
+- **问题**：pnpm 用 tarball URL 作 cache key。用 `tar.gz/refs/heads/main` 安装时，推送后 URL 不变，pnpm 跳过下载（"Lockfile is up to date, resolution step is skipped"），装的还是旧代码
+- **解法**：用 **commit hash** 替代 branch ref：`tar.gz/050952d` 而非 `tar.gz/refs/heads/main`。URL 变了 pnpm 就会重新下载/解压
+- **bump package.json 版本号**也有帮助（pnpm 会识别版本变化），但关键是 **tarball URL 要变**
+- **开发期快速验证**：可直接 `cp` 本地开发目录的 index.js/client.js 到安装目录 `~/.dsh/profiles/web/node_modules/@dsh-cbw/bilibili/`，绕过 pnpm（需重启 DSH）
+
 ## 对其他会话的通知/请求
 
 - 无
