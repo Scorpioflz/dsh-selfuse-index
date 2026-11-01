@@ -1,10 +1,10 @@
 # dsh-pet — 桌宠前端开发
 
-> 最后更新：2026-10-31 | 会话焦点：碎碎念定时计划模式实施
+> 最后更新：2026-11-01 | 会话焦点：安装包快捷方式改名
 
 ## 正在进行
 
-- 无进行中任务。碎碎念定时计划模式已实施完成，30 个测试全部通过
+- 无进行中任务
 
 ## 已完成
 
@@ -12,6 +12,7 @@
 - 修复 15 个 bug（含 2 个功能 bug + 13 个测试对齐），371+ tests passed, 0 failed
 - 碎碎念不触发问题：根因是配置开关关闭，已帮用户开启
 - 碎碎念定时计划模式：将 24h 滑动窗口改为 HH:MM + 星期筛选的定时计划，启动时回溯检查 (last_run, now] 间是否有计划点，错过多天合并为一次执行。新增 dsh_self_talk_schedule + dsh_self_talk_weekdays 配置键，30 个测试全部通过
+- 安装包快捷方式改名：`packaging/dsh-pet-chubby_blue_whale.iss` 的 MyAppDisplay 从 "dsh-pet-chubby_blue_whale" 改为 "家养大肥鱼"，[Icons] 快捷方式名和 [Run] 启动描述改用 {#MyAppDisplay}。文件加 UTF-8 BOM 防止 Inno 按 ANSI 读取中文乱码。安装目录/安装包文件名保留英文 MyAppShortName 不变
 
 ## 遇到的困难
 
