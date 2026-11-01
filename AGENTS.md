@@ -24,6 +24,7 @@
 - **逐条执行**：不要 chained `&&`，逐条 add → commit → push，每步确认成功
 - **暂存**：只 `git add` 相关文件，**不要 `git add -A`**
 - **push 前 rebase**：`git pull --rebase origin main` 后再 push，避免并行冲突
+- **push 用 `fgit push` 不带 `origin main`**：带 `-C` 参数或显式 refspec 时 fgit 可能走不同代码路径受透明代理影响导致 407；纯 `fgit push`（不带参数）用 fgit 自己的网络栈绕过代理。在 bash 工具里用 workdir 参数切换目录，不用 `-C`
 - **克隆**：用 `https://gh-proxy.com/https://github.com/...` 镜像前缀
 - **fgit 超时不一定是失败**：可能已推送完成，下次 fgit 同命令显示 up-to-date 即可确认
 

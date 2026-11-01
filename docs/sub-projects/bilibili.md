@@ -88,10 +88,11 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 | v2.3.7 | discoverDutySession 未定义崩溃修复 | ✅ 已完成（commit `7f21f43`） |
 | v2.3.8 | insertSessionBefore 关联工作区（失败，v2.3.9 修复） | ✅ 已完成（commit `6c73159`） |
 | v2.3.9 | attachSession 替代 insertSessionBefore 修复 | ✅ 已完成（commit `b835a64`） |
+| v2.3.10 | 值班会话写锁提醒 + 自动归档隐藏（防侧栏误点锁住）+ manualCooldownMin 默认 10→3 分钟 | ✅ 已完成（commit `7f6e3b0`） |
 
 ## 插件市场发布
 
-- **版本**：v2.3.9
+- **版本**：v2.3.10
 - **GitHub Pages**：`https://scorpioflz.github.io/dsh-cbw-bilibili/index.json`（从 `/docs` 目录提供）
 - **topic**：`dsh-plugin` 已打
 - **安装方式**：`dsh plugin --profile web add "https://gh-proxy.com/https://codeload.github.com/Scorpioflz/dsh-cbw-bilibili/tar.gz/refs/heads/main"`（国内需镜像）

@@ -8,6 +8,13 @@
 
 ## 已完成
 
+### v2.3.10 值班会话写锁 + 自动归档隐藏（commit `7f6e3b0`，已推送）
+
+- **值班会话写锁提醒**：值班轮检测到 write handle 锁住时给友好提示（而非静默失败）
+- **自动归档隐藏**：值班会话跑完自动归档隐藏，防侧栏误点锁住；设置页加手动归档回退说明
+- **manualCooldownMin 默认调整**：10→3 分钟
+- README + 设置页文档同步更新
+
 ### attachSession 关联工作区修复（commit `b835a64`，v2.3.9，已推送+安装+验证通过）
 
 - **问题**：v2.3.8 用 `insertSessionBefore` 关联新建 session 到工作区，报 `the session is not accounted`——该方法只能移动已 accounted 的 session 顺序，新 session 不在 registry 里直接拒绝
