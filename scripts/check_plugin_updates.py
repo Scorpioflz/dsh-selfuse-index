@@ -23,12 +23,12 @@ IN_USE = {
     "dsh-webapi", "dsh-balance-panel", "dsh-chat-manager",
     "dsh-skills-manager", "dsh-custom-reasoning", "billion-context",
     "dsh-univer-office", "dsh-preset-bridge", "modsearch", "cc-safety-net",
-    "dsh-persona-dafeiyu",
+    "dsh-persona-dafeiyu", "dsh-knowledge", "dsh-session-bridge",
 }
 REFERENCE = {
     "dsh-fish-memory", "dsh-bili-scroll", "dsh-computer-use", "dsh-prompt-persona",
     "dsh-whale-musume-persona", "dsh-soul", "dsh-pet-indesktop-upstream",
-    "hermes-pet-bridge",
+    "dsh-liketavern",
 }
 
 HEADER = """# DSH 插件更新跟踪
