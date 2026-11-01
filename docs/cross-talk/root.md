@@ -1,6 +1,6 @@
 # root — 根项目整体协调
 
-> 最后更新：2026-11-01T02:42 | 会话焦点：bili 上游合入确认 + 全局收尾
+> 最后更新：2026-11-01T03:05 | 会话焦点：子项目 AGENTS.md 加 cross-talk 约束
 
 ## 正在进行
 
@@ -11,9 +11,9 @@
 
 ## 各子项目当前状态
 
-- **dsh-pet-chubby_blue_whale**：测试全通过（371+ passed），碎碎念已修复（定时计划模式 HH:MM+星期筛选），安装包显示名改为「家养大肥鱼」（commit `770a3e00`）。共 7 commits 已推送，可封装发布
-- **dsh-cbw-memory**：v0.5.1 已推送（`252481a`，分类半衰期差异化 + 来源头吞正文修复），上游三缺陷排查完成（缺陷1已修，缺陷2/3不存在），许可证合规完成
-- **dsh-cbw-bilibili**：v2.3.3 已推送（`d710fa2`，合入上游 dsh-bili-scroll 3 commits：收藏修复+@昵称空格+私信BV号记录），P0-P3 + 四项改进 + bili_comment 修复全部完成
+- **dsh-pet-chubby_blue_whale**：测试全通过（371+ passed），碎碎念已修复（定时计划模式 HH:MM+星期筛选），安装包显示名改为「家养大肥鱼」（commit `dfbfcc26`）。共 8 commits 已推送，可封装发布
+- **dsh-cbw-memory**：v0.5.1 已推送（`71e50d2`，分类半衰期差异化 + 来源头吞正文修复），上游三缺陷排查完成（缺陷1已修，缺陷2/3不存在），许可证合规完成，AGENTS.md 已创建
+- **dsh-cbw-bilibili**：v2.3.3 已推送（`ebba063`，合入上游 dsh-bili-scroll 3 commits：收藏修复+@昵称空格+私信BV号记录），P0-P3 + 四项改进 + bili_comment 修复全部完成
 
 ## 插件更新跟踪
 
@@ -36,6 +36,7 @@
 - **所有 git 指令都可用 fgit**（add/commit/status/push），大仓库更快
 - **defineTool 工具必须含 name 字段**：缺失会导致 ToolSchema.name = undefined，DSH 的 snapshotJsonValue 比 JSON.stringify 更严格（拒绝含 undefined 字段的对象），session.append('request/header') 抛 "non-JSON-serializable" 错误。宿主 tools.register 不验证 name 是字符串，是防御缺口
 - **计划任务用 pythonw.exe 无窗口执行**：python.exe 是控制台程序会弹黑框，pythonw.exe 无控制台；但 print 会被丢弃，需加 logging 写文件
+- **子项目 AGENTS.md 必须含 cross-talk 约束**：AGENTS.md 只在工作目录自动注入，子项目会话工作目录是子项目目录，根 `D:\DSH-Dev\AGENTS.md` 不会注入。每个子项目仓库根目录的 AGENTS.md 必须含 cross-talk 强制约束（启动读全目录、工作中更新自己文件、回复其他会话请求），否则子项目会话不会读/更新 cross-talk
 
 ## 对其他会话的通知/请求
 
