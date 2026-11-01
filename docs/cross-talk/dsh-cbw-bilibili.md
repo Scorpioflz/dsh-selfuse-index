@@ -8,6 +8,20 @@
 
 ## 已完成
 
+### 私信监听日志误报 + 值班会话不存在提醒（commit `3547d3d`，v2.3.4，已推送+安装）
+
+- **日志误报 bug**：`dmTick` 里判断"是否只回登录账号自己"用 `cfg.dmOwnerUid`（旧字段=0），但 `dmOwnerUid()` 函数实际用 `cfg.masterUid`（=9833388）⇒ owner 算对了、日志每分钟误刷警告。改成检查 `owner === dmCred.dedeuserid`（owner 是否真的回退到登录账号自己）
+- **值班会话不存在提醒**：DSH CLI 遇到不存在的 session-id 会 code=1 退出（不自动新建）。按用户要求：不自动新建（避免丢上下文），而是在 exit handler 检测 stderr 含 "does not exist" 时打醒目提示，让用户去 DSH 侧栏新建对话、填 session ID 到配置
+- **git push 代理 407 问题**：git 走了某个透明代理（user `08df1844-...`），环境变量/git config/WinHTTP/IE 代理都没配但仍然 407。解法：`no_proxy="*" NO_PROXY="*" git push` 强制绕过
+
+### 合入上游 dsh-bili-scroll 3 commits（commit `d710fa2`，v2.3.3，已推送+安装）
+
+| 上游 commit | 修复 | 改动文件 |
+|------------|------|---------|
+| `aadcdf7` | 自动收藏连续四天全失败（`FavoriteList` 参数错位 → 改用 `Video.set_favorite`） | `lib/favops.py` |
+| `398e472` #150 | @ 昵称空格修复（B站只认紧挨着的 @） | `mcp_server.py`（`_normalize_mention`）+ `tools/check-mention.py` |
+| `398e472` #162 | 私信 BV 号记录（让筛选能认出私信投递） | `mcp_server.py`（`dm-deliveries.jsonl`）+ `index.js`（`BILI_DUTY_RUN_DAY` + `dmDelivered`） |
+
 ### UP 主偏好时间权重（commit `5e6890c`，已推送+验证通过）
 
 - 问题：`preferredUploaders` 原按收藏总数纯计数排序，凉风Kaze(24个)等历史收藏多的 UP 排前面，即使最近没收藏他们的视频
@@ -76,6 +90,12 @@
 - **解法**：用 **commit hash** 替代 branch ref：`tar.gz/050952d` 而非 `tar.gz/refs/heads/main`。URL 变了 pnpm 就会重新下载/解压
 - **bump package.json 版本号**也有帮助（pnpm 会识别版本变化），但关键是 **tarball URL 要变**
 - **开发期快速验证**：可直接 `cp` 本地开发目录的 index.js/client.js 到安装目录 `~/.dsh/profiles/web/node_modules/@dsh-cbw/bilibili/`，绕过 pnpm（需重启 DSH）
+
+### git push 透明代理 407 问题
+
+- **现象**：`git push` 报 `CONNECT tunnel failed, response 407`，git 走了某个透明代理（Proxy auth user `08df1844-...`），但环境变量/git config/WinHTTP/IE 代理设置都没配。`curl github.com` 直连正常（200）
+- **解法**：`no_proxy="*" NO_PROXY="*" git push origin main` 强制绕过代理直连
+- **排查**：`GIT_CURL_VERBOSE=1 git push 2>&1 | grep -i proxy` 可看代理来源
 
 ## 对其他会话的通知/请求
 
