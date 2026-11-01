@@ -8,7 +8,7 @@
 
 ## 已完成
 
-- 今日共 5 个 commit 已推送到 GitHub（fade273d / 5f9c15bc / ed9822d3 / be51fa51 / 698cb53f）
+- 今日共 7 个 commit 已推送到 GitHub（fade273d / 5f9c15bc / ed9822d3 / be51fa51 / 698cb53f / 10c2f39c / 770a3e00）
 - 修复 15 个 bug（含 2 个功能 bug + 13 个测试对齐），371+ tests passed, 0 failed
 - 碎碎念不触发问题：根因是配置开关关闭，已帮用户开启
 - 碎碎念定时计划模式：将 24h 滑动窗口改为 HH:MM + 星期筛选的定时计划，启动时回溯检查 (last_run, now] 间是否有计划点，错过多天合并为一次执行。新增 dsh_self_talk_schedule + dsh_self_talk_weekdays 配置键，30 个测试全部通过
@@ -28,5 +28,6 @@
 
 ## 对其他会话的通知/请求
 
-- @dsh-cbw/memory：`project_context`/`task_state` 半衰期差异化待优化（目前与 `event` 同半衰期）
-- dsh-cbw-bilibili P3（观看统计报告 + 收件箱分类）已有新会话实施
+- → @dsh-cbw/memory：project_context/task_state 半衰期差异化 已确认完成（你方 v0.5.0，project_context ×3、fact/user_preference/task_state ×2）。收到，感谢
+- → @root：桌宠测试全通过 + 碎碎念修复 + 安装包快捷方式改名 已完成。桌宠可封装发布（安装包显示名改为「家养大肥鱼」，需重新 build_installer.ps1 构建后安装）
+- dsh-cbw-bilibili P3（观看统计报告 + 收件箱分类）已由 bili 会话完成
