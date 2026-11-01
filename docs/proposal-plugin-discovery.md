@@ -4,7 +4,7 @@
 > 桌宠现有功能模块：weather / divination / todo / festival / voice / music / chat / file_interpret / vision / proactive / agent_link / dynamic_island / quick_launch / system_tools
 > 桌宠角色：shenshen（鲸鱼娘，帧序列 `lossless-frame-v1`，非 Live2D），动作 7 类（click/drag/events/idle/move/random/turn）
 > 桌宠 TTS：4 引擎（doubao/edge/mimo/sapi），缺 ASR 语音输入
-> 已安装 DSH 插件：dsh-webapi / dsh-balance-panel / @dsh-cbw/bilibili / dsh-chat-manager / dsh-skills-manager / dsh-custom-reasoning / billion-context / dsh-univer-office / dsh-preset-bridge / modsearch / cc-safety-net / dsh-persona-dafeiyu / @dsh-cbw/memory / dsh-codex-style-computer-use / **dsh-knowledge（2026-11-01 新装）**
+> 已安装 DSH 插件：dsh-webapi / dsh-balance-panel / @dsh-cbw/bilibili / dsh-chat-manager / dsh-skills-manager / dsh-custom-reasoning / billion-context / dsh-univer-office / dsh-preset-bridge / modsearch / cc-safety-net / dsh-persona-dafeiyu / @dsh-cbw/memory / dsh-codex-style-computer-use / **dsh-knowledge（2026-11-01 新装）** / **dsh-session-bridge（2026-11-01 新装）**
 >
 > **重新评估说明（2026-11-01）**：一~四章已按用户要求重新过滤/评估：
 > - **一、桌宠**：过滤掉其他角色资源（petdex/Live2D 系列），只保留能丰富 shenshen 的思路；新增自研建议（动作类型扩展/成就系统/工作姿态联动）
@@ -220,10 +220,11 @@
 ## 十一、上下文/会话管理（跨会话、侧边栏）
 
 > **DSH 自身已提供 Agent Team 多智能体协作功能**，故 dsh-agent-teams 参考移除。
+> **已安装**：`dsh-session-bridge`（2026-11-01，跨会话驱动，15 个 session_bridge_* 工具）。
 
 | 插件 | ★ | 说明 | 优先级 | 推荐理由 |
 |---|---|---|---|---|
-| [heartmove/dsh-session-bridge](https://github.com/heartmove/dsh-session-bridge) | 8 | 跨会话驱动：创建/发送/等待/读取-恢复/跨工作区查找 | **高** | 桌宠 agent_link 可借此驱动其他 DSH 会话 |
+| [heartmove/dsh-session-bridge](https://github.com/heartmove/dsh-session-bridge) | 8 | 跨会话驱动：创建/发送/等待/读取-恢复/跨工作区查找 | **高** | 桌宠 agent_link 可借此驱动其他 DSH 会话。**已安装（2026-11-01）** |
 | [Fei2411/DS-Bot](https://github.com/Fei2411/DS-Bot) | 4751 | 长生命周期 bot 团队：主 bot + bot 间消息 | 中 | 长生命周期 agent 思路 |
 | [bowenliang123/dsh-context](https://github.com/bowenliang123/dsh-context) | 3941 | 上下文洞察和管理 | 中 | 上下文管理参考 |
 | [omdsh-dev/DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar) | 4790 | 侧边栏底座：文件渲染/终端/对话/Git/子代理 | 低 | 侧边栏增强，与桌宠形态不同 |
@@ -283,10 +284,9 @@
 | 8 | omdsh-dev/dsh-office | 文档 | 29 | Office 三件套 | 独立并存，与 dsh-univer-office 互补 |
 | 9 | wsz987/dsh-channels | 消息 | 13 | 微信/QQ/钉钉/飞书/Telegram 接入 | 独立并存 |
 | 10 | Lxiayu/DshCockpit | 监控 | 40 | token 用量/成本追踪 | 独立并存 |
-| 11 | heartmove/dsh-session-bridge | 会话 | 8 | 跨会话驱动 | 独立并存，桌宠 agent_link 可借驱动 |
-| 12 | gychen-NJU/dsh-game-daily | 游戏 | 34 | 游戏日常代理 | 独立并存 |
+| 11 | gychen-NJU/dsh-game-daily | 游戏 | 34 | 游戏日常代理 | 独立并存 |
 
-> 已移除：`NanmiCoder/dsh-agent-teams`（DSH 自身已提供 Agent Team 多智能体协作）
+> 已移除：`NanmiCoder/dsh-agent-teams`（DSH 自身已提供 Agent Team 多智能体协作）、`heartmove/dsh-session-bridge`（2026-11-01 已安装）
 
 ### 第二梯队（中优先级，按需安装）
 
