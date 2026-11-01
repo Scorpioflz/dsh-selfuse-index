@@ -1,6 +1,7 @@
 import subprocess
 import json
 import re
+import logging
 from pathlib import Path
 from datetime import datetime
 
@@ -9,6 +10,14 @@ PLUGINS = ROOT / "_plugin-references"
 OUT_JSON = ROOT / "docs" / ".plugin_updates_last.json"
 OUT_MD = ROOT / "docs" / "plugin_updates.md"
 TIMEOUT = 180
+
+LOG_FILE = ROOT / "logs" / "plugin_update.log"
+LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+logging.basicConfig(
+    filename=str(LOG_FILE),
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
 
 IN_USE = {
     "dsh-webapi", "dsh-balance-panel", "dsh-bili-scroll", "dsh-chat-manager",
@@ -34,10 +43,10 @@ HEADER = """# DSH 插件更新跟踪
 ## 分类处理规则
 
 - **在用插件** → **影响评估**：只分析变更是否影响自研部分
-  （`@dsh-pet/bridge`、`@dsh-pet/memory`、桌宠前端、人设模板）依赖的 API/契约/配置面。
+  （`@dsh-pet/bridge`、`@dsh-cbw/memory`、桌宠前端、人设模板）依赖的 API/契约/配置面。
   无影响则写「无影响」。不写整合建议——直接安装的插件，更新即更新。
 - **参考/已弃插件** → **整合建议**：分析上游变更中哪些有用部分可整合进对应自研插件
-  （如 dsh-fish-memory → @dsh-pet/memory、dsh-pet-indesktop-upstream → 桌宠前端等）。
+  （如 dsh-fish-memory → @dsh-cbw/memory、dsh-pet-indesktop-upstream → 桌宠前端等）。
 
 ## 状态图例
 
@@ -241,16 +250,16 @@ def auto_commit_push():
     """git add + commit + push（用于 --commit 模式，系统定时任务调用）。"""
     r = git(["add", "docs/plugin_updates.md", "docs/.plugin_updates_last.json"], ROOT)
     if r.returncode != 0:
-        print(f"git add failed: {r.stderr}")
+        logging.error(f"git add failed: {r.stderr}")
         return
     r = git(["diff", "--cached", "--quiet"], ROOT)
     if r.returncode == 0:
-        print("No changes to commit.")
+        logging.info("No changes to commit.")
         return
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
     r = git(["commit", "-m", f"chore: plugin update check {timestamp}"], ROOT)
     if r.returncode != 0:
-        print(f"git commit failed: {r.stderr}")
+        logging.error(f"git commit failed: {r.stderr}")
         return
     fgit = ROOT / "D:" / "Tool" / "fgit" / "fgit.exe"
     fgit_path = r"D:\Tool\fgit\fgit.exe"
@@ -264,9 +273,9 @@ def auto_commit_push():
         errors="replace",
     )
     if push_cmd.returncode == 0:
-        print("Pushed via fgit.")
+        logging.info("Pushed via fgit.")
     else:
-        print(f"fgit push failed: {push_cmd.stderr[:200]}")
+        logging.error(f"fgit push failed: {push_cmd.stderr[:200]}")
 
 
 def main():
@@ -293,7 +302,7 @@ def main():
     OUT_MD.write_text(md, encoding="utf-8")
 
     n_updated = len([r for r in results if r["status"] == "updated"])
-    print(f"Checked {len(results)} plugins, {n_updated} updated. md rewritten.")
+    logging.info(f"Checked {len(results)} plugins, {n_updated} updated. md rewritten.")
 
     if do_commit:
         auto_commit_push()
