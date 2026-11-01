@@ -29,13 +29,13 @@
 ### 在用插件 · 影响评估
 
 - **billion-context**: `7578e8184f91` → `aeda157a0abc`（16 commits，最近: Merge pull request #5419 from ranxianglei/2026-11-01_release-v0.1.211）
-  - 影响评估: [待分析]
+  - 影响评估: 无影响。v0.1.211 release，纯内部 storage/kernel 修复（async ingest drift-latch #5412、abort starvation #5415、frozen-envelope recovery #5408、golden test #5368）。billion-context 是寄生式压缩代理，自研部分不依赖其内部实现
 - **dsh-skills-manager**: （无新更新，仍有未完成建议）
   - 影响评估: 无影响。纯 UI 响应式布局修复（`fix(ui): improve responsive layout on mobile and narrow viewports`），只改 client 端 `lib/client.js`/`src/client.ts`，不涉及自研部分依赖的 API/契约/配置面
 
 ### 参考插件 · 整合建议
 
 - **dsh-fish-memory**: `2a25e04a3d19` → `003716b0f682`（2 commits，最近: 1.5.1：生成档案把助手自己的事标成 ta.*；管理接口只认本人）
-  - 整合建议: [待分析]
+  - 整合建议: 无需整合。两变更（合并预览 UI 位置 #26、归档来源标记 ta.* + 管理接口鉴权）@dsh-cbw/memory 已有来源标记（P1 升级）和自管 client UI，无需借鉴
 - **dsh-soul**: `8a953010bdc9` → `382d8072f057`（1 commits，最近: release: DSH Soul 2.0.0 with independent memory and issue fixes）
-  - 整合建议: [待分析]
+  - 整合建议: 暂不整合。2.0.0 大重构（+4341 行：独立记忆+图记忆 graph-memory.js+记忆动态 memory-dynamics.js+整合 consolidation.js）。核心评估不变：图记忆/经验编译对桌宠场景过重，@dsh-cbw/memory 的 bigram+半衰期更适合对话记忆。"独立记忆"思路 @dsh-cbw/memory 已具备
