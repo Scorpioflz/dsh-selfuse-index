@@ -2,10 +2,12 @@ import subprocess
 import json
 import re
 import logging
+import sys
 from pathlib import Path
 from datetime import datetime
 
 ROOT = Path(__file__).resolve().parents[1]
+CREATEFLAGS = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
 PLUGINS = ROOT / "_plugin-references"
 OUT_JSON = ROOT / "docs" / ".plugin_updates_last.json"
 OUT_MD = ROOT / "docs" / "plugin_updates.md"
@@ -67,6 +69,7 @@ def git(args, cwd):
             timeout=TIMEOUT,
             encoding="utf-8",
             errors="replace",
+            creationflags=CREATEFLAGS,
         )
     except subprocess.TimeoutExpired:
         return subprocess.CompletedProcess(args, 124, "", "timeout")
@@ -271,6 +274,7 @@ def auto_commit_push():
         timeout=120,
         encoding="utf-8",
         errors="replace",
+        creationflags=CREATEFLAGS,
     )
     if push_cmd.returncode == 0:
         logging.info("Pushed via fgit.")
