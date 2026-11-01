@@ -1,59 +1,33 @@
 {
-  "timestamp": "2026-11-01T18:00:44",
+  "timestamp": "2026-11-01T22:03:51",
   "root": "D:\\DSH-Dev",
   "results": [
     {
       "name": "billion-context",
       "status": "updated",
-      "old": "7578e8184f91",
-      "new": "aeda157a0abc",
+      "old": "aeda157a0abc",
+      "new": "760c24c55d02",
       "commits": [
-        "aeda157a|2026-11-01 17:47:52 +0800|Merge pull request #5419 from ranxianglei/2026-11-01_release-v0.1.211",
-        "3e3f1fc9|2026-11-01 17:33:12 +0800|test(golden): regenerate storage-render goldens under the pinned suite environment (corrects 9eb1aa3cc)",
-        "9eb1aa3c|2026-11-01 17:00:35 +0800|test(golden): regenerate storage-render goldens for default-on message timestamps (#5368)",
-        "4e5dcbc1|2026-11-01 16:43:24 +0800|Merge branch 'master' into 2026-11-01_release-v0.1.211",
-        "c78ecb4b|2026-11-01 16:43:15 +0800|Merge pull request #5420 from ranxianglei/fix/5412-async-latch-parity",
-        "e10ecc2b|2026-11-01 16:43:07 +0800|Merge branch 'master' into fix/5412-async-latch-parity",
-        "b26ac056|2026-11-01 16:37:00 +0800|fix(storage): async ingest twin sweeps foreign rows while drift-latched (#5412)",
-        "5cab70e2|2026-11-01 08:36:45 +0000|release v0.1.211",
-        "6ab1c891|2026-11-01 16:33:45 +0800|Merge pull request #5416 from ranxianglei/2026-11-01_abort-absorb-starvation",
-        "1ef7bd29|2026-11-01 16:32:42 +0800|Merge pull request #5409 from ranxianglei/2026-11-01_frozen-compression-recovery",
-        "fb2f3855|2026-11-01 16:26:45 +0800|chore: trailing newline in kernel/package-lock.json (lock-sync)",
-        "c91ef1a8|2026-11-01 16:17:17 +0800|kernel: abort-heavy sessions stop starving the nudge cadence (#5415)",
-        "aee0efc7|2026-11-01 15:49:48 +0800|style: unexport ATTACH_SILENCE_MS — internal-only constant (unused-exports gate, #5408)",
-        "1a5ee7fd|2026-11-01 15:43:45 +0800|style: normalize 5-space indent on frozenEnvelopeIds field (#5408 review nit)",
-        "2ec334dd|2026-11-01 15:29:17 +0800|test: pin frozen-recovery behavior for #5408 (visibility, sweep-while-latched, heartbeat, stale guards)",
-        "9b16a749|2026-11-01 15:29:17 +0800|fix: make the frozen-envelope state visible and healable after drift escalation (#5408)"
+        "760c24c5|2026-11-01 20:12:56 +0800|Merge pull request #5457 from ranxianglei/2026-11-01_fix-raw-sync-bookkeeping",
+        "adb63f13|2026-11-01 20:06:56 +0800|fix(release): land the raw-publish bump as a commit before tagging/syncing",
+        "9ddc5d1d|2026-11-01 19:43:08 +0800|Merge pull request #5447 from ranxianglei/2026-11-01_restore-emergency-channel",
+        "2c93c086|2026-11-01 19:07:18 +0800|fix(release): restore the raw_publish/skip_ci_gate emergency channel (#5430) on top of the reverted flow, with four regressions fixed",
+        "f248a9ef|2026-11-01 19:05:04 +0800|Merge pull request #5446 from ranxianglei/ci5",
+        "6459f1e3|2026-11-01 19:00:49 +0800|恢复老的ci release manal",
+        "3411b1a6|2026-11-01 18:47:05 +0800|Merge pull request #5444 from ranxianglei/ci4",
+        "dc56aa3d|2026-11-01 18:45:47 +0800|手动取消傻逼ai限制",
+        "ebfb422f|2026-11-01 18:33:18 +0800|Merge pull request #5436 from ranxianglei/2026-11-01_nuclear-no-ci",
+        "1246c4ef|2026-11-01 18:28:11 +0800|fix(release): nuclear path does plain deps download + build + publish only; add local zero-install publish script (#5430)",
+        "e226544f|2026-11-01 18:05:03 +0800|Merge pull request #5431 from ranxianglei/2026-11-01_emergency-skip-gate-fallback",
+        "4816ed9b|2026-11-01 18:02:56 +0800|feat(release): add raw_publish nuclear option — npm ci + build only, straight to npm (#5430)",
+        "89835ec4|2026-11-01 17:51:36 +0800|fix(release): honor skip_ci_gate on the fallback-PR path (#5430)"
       ],
       "changed_files": [
-        ".agents/plugins/marketplace.json",
-        ".claude-plugin/marketplace.json",
-        ".claude-plugin/plugin.json",
-        "CHANGELOG.md",
-        "kernel/package-lock.json",
-        "kernel/package.json",
-        "kernel/src/compress.ts",
-        "kernel/src/types.ts",
-        "kernel/tests/issue5415-absorb-debt-nudge.test.ts",
-        "package-lock.json",
-        "package.json",
-        "plugins/codex/.codex-plugin/plugin.json",
-        "src/attach-heartbeat.ts",
-        "src/persist.ts",
-        "src/preflight.ts",
-        "src/server.ts",
-        "src/session.ts",
-        "src/storage/runtime-status.ts",
-        "src/storage/shadow.ts",
-        "tests/golden/storage-render/anthropic.json",
-        "tests/golden/storage-render/chat.json",
-        "tests/golden/storage-render/google.json",
-        "tests/golden/storage-render/responses.json",
-        "tests/issue5408-frozen-recovery.test.ts",
-        "tests/issue5412-async-drift-latch-parity.test.ts",
-        "tests/issue5415-absorb-debt.test.ts"
+        ".github/workflows/release-manual.yml",
+        "reference/release.md",
+        "scripts/emergency-publish.mjs"
       ],
-      "diffstat": ".agents/plugins/marketplace.json                 |   2 +-\n .claude-plugin/marketplace.json                  |   2 +-\n .claude-plugin/plugin.json                       |   2 +-\n CHANGELOG.md                                     |   3 +\n kernel/package-lock.json                         |   4 +-\n kernel/package.json                              |   2 +-\n kernel/src/compress.ts                           |  46 ++-\n kernel/src/types.ts                              |  14 +\n kernel/tests/issue5415-absorb-debt-nudge.test.ts | 198 +++++++++\n package-lock.json                                |   6 +-\n package.json                                     |   2 +-\n plugins/codex/.codex-plugin/plugin.json          |   2 +-\n src/attach-heartbeat.ts                          |  83 ++++\n src/persist.ts                                   |  41 ++\n src/preflight.ts                                 |  13 +\n src/server.ts                                    |   4 +\n src/session.ts                                   |  17 +-\n src/storage/runtime-status.ts                    |   9 +\n src/storage/shadow.ts                            | 103 ++++-\n tests/golden/storage-render/anthropic.json       |   8 +-\n tests/golden/storage-render/chat.json            |   8 +-\n tests/golden/storage-render/google.json          |   8 +-\n tests/golden/storage-render/responses.json       |   8 +-\n tests/issue5408-frozen-recovery.test.ts          | 488 +++++++++++++++++++++++\n tests/issue5412-async-drift-latch-parity.test.ts | 166 ++++++++\n tests/issue5415-absorb-debt.test.ts              |  91 +++++\n 26 files changed, 1285 insertions(+), 45 deletions(-)"
+      "diffstat": ".github/workflows/release-manual.yml | 126 +++++++++++++++++++++++++++++++++--\n reference/release.md                 |  27 ++++++++\n scripts/emergency-publish.mjs        |  85 +++++++++++++++++++++++\n 3 files changed, 234 insertions(+), 4 deletions(-)"
     },
     {
       "name": "cc-safety-net",
@@ -87,20 +61,18 @@
     },
     {
       "name": "dsh-fish-memory",
-      "status": "updated",
-      "old": "2a25e04a3d19",
-      "new": "003716b0f682",
-      "commits": [
-        "003716b|2026-11-01 17:34:15 +0800|1.5.1：生成档案把助手自己的事标成 ta.*；管理接口只认本人",
-        "cccfd0a|2026-11-01 14:29:46 +0800|1.5.0：合并预览挪到主面板（#26）；补 engines"
-      ],
-      "changed_files": [
-        "CHANGELOG.md",
-        "lib/client.js",
-        "lib/index.js",
-        "package.json"
-      ],
-      "diffstat": "CHANGELOG.md  | 36 +++++++++++++++++++++++++\n lib/client.js | 87 +++++++++++++++++++++++++++++++----------------------------\n lib/index.js  | 41 ++++++++++++++++++++++++++--\n package.json  |  6 ++++-\n 4 files changed, 126 insertions(+), 44 deletions(-)"
+      "status": "up_to_date",
+      "head": "003716b0f682"
+    },
+    {
+      "name": "dsh-knowledge",
+      "status": "up_to_date",
+      "head": "4fda81e7b423"
+    },
+    {
+      "name": "dsh-liketavern",
+      "status": "up_to_date",
+      "head": "b61a05ff4f43"
     },
     {
       "name": "dsh-mnemon",
@@ -109,8 +81,22 @@
     },
     {
       "name": "dsh-persona-dafeiyu",
-      "status": "up_to_date",
-      "head": "fb81f4c366ee"
+      "status": "updated",
+      "old": "fb81f4c366ee",
+      "new": "ec706c087277",
+      "commits": [
+        "ec706c0|2026-11-01 21:21:56 +0800|Persist session picks so a restart stops wiping every session's persona"
+      ],
+      "changed_files": [
+        "CHANGELOG.md",
+        "README.md",
+        "assets/banner.png",
+        "lib/client.js",
+        "lib/index.js",
+        "package.json",
+        "test/verify.mjs"
+      ],
+      "diffstat": "CHANGELOG.md      |  38 ++++++++++++-\n README.md         |  12 +++-\n assets/banner.png | Bin 0 -> 97500 bytes\n lib/client.js     |   4 +-\n lib/index.js      | 163 +++++++++++++++++++++++++++++++++++++++++++++++++++---\n package.json      |   2 +-\n test/verify.mjs   | 119 ++++++++++++++++++++++++++++++++++++++-\n 7 files changed, 323 insertions(+), 15 deletions(-)"
     },
     {
       "name": "dsh-pet-indesktop-upstream",
@@ -128,62 +114,19 @@
       "head": "de1c814724d1"
     },
     {
+      "name": "dsh-session-bridge",
+      "status": "up_to_date",
+      "head": "4a20e3219fa8"
+    },
+    {
       "name": "dsh-skills-manager",
       "status": "up_to_date",
       "head": "09510fe0bdb5"
     },
     {
       "name": "dsh-soul",
-      "status": "updated",
-      "old": "8a953010bdc9",
-      "new": "382d8072f057",
-      "commits": [
-        "382d807|2026-11-01 17:54:12 +0800|release: DSH Soul 2.0.0 with independent memory and issue fixes"
-      ],
-      "changed_files": [
-        "CHANGELOG.md",
-        "README.md",
-        "RELEASE-2.0.md",
-        "bench/compaction-loss.mjs",
-        "bench/compat.mjs",
-        "bench/consolidation.mjs",
-        "bench/continuation.mjs",
-        "bench/graph-memory.mjs",
-        "bench/memory-dynamics.mjs",
-        "compaction.js",
-        "cordis.patch.yml",
-        "index.js",
-        "package.json",
-        "scripts/compaction-demo.mjs",
-        "scripts/test-host.mjs",
-        "src/compaction.js",
-        "src/components.js",
-        "src/consolidation.js",
-        "src/directory.js",
-        "src/graph-memory.js",
-        "src/memory-dynamics.js",
-        "src/memory.js",
-        "src/skeleton.js",
-        "src/span-index.js",
-        "src/store.js",
-        "src/util.js",
-        "tests/compaction-entry.test.mjs",
-        "tests/compaction-host.test.mjs",
-        "tests/compaction.test.mjs",
-        "tests/dynamics.test.mjs",
-        "tests/graph-memory.test.mjs",
-        "tests/issue-2-3.test.mjs",
-        "tests/lesson.test.mjs",
-        "tests/mem-command.test.mjs",
-        "tests/memory-host.test.mjs",
-        "tests/memory.test.mjs",
-        "tests/plugin.test.mjs",
-        "tests/projection.test.mjs",
-        "tests/review-regressions.test.mjs",
-        "tests/skeleton.test.mjs",
-        "tests/span-index.test.mjs"
-      ],
-      "diffstat": "CHANGELOG.md                      |  66 ++++++\n README.md                         |  67 +++++-\n RELEASE-2.0.md                    |  50 ++++\n bench/compaction-loss.mjs         |   2 +-\n bench/compat.mjs                  | 155 +++++++++++++\n bench/consolidation.mjs           | 179 +++++++++++++++\n bench/continuation.mjs            | 208 +++++++++++++++++\n bench/graph-memory.mjs            | 221 ++++++++++++++++++\n bench/memory-dynamics.mjs         | 325 ++++++++++++++++++++++++++\n compaction.js                     |  48 ++--\n cordis.patch.yml                  |   4 +-\n index.js                          | 178 +++++++++++---\n package.json                      |  19 +-\n scripts/compaction-demo.mjs       |   2 +-\n scripts/test-host.mjs             |   2 +-\n src/compaction.js                 |   8 +\n src/components.js                 |   7 +-\n src/consolidation.js              | 258 +++++++++++++++++++++\n src/directory.js                  |   2 +-\n src/graph-memory.js               | 472 ++++++++++++++++++++++++++++++++++++++\n src/memory-dynamics.js            | 297 ++++++++++++++++++++++++\n src/memory.js                     | 319 ++++++++++++++++++++++++--\n src/skeleton.js                   |  84 +++++--\n src/span-index.js                 |   8 +-\n src/store.js                      | 123 +++++++++-\n src/util.js                       |   4 +-\n tests/compaction-entry.test.mjs   |   9 +\n tests/compaction-host.test.mjs    |  19 +-\n tests/compaction.test.mjs         |   2 +-\n tests/dynamics.test.mjs           | 202 ++++++++++++++++\n tests/graph-memory.test.mjs       | 194 ++++++++++++++++\n tests/issue-2-3.test.mjs          |  83 +++++++\n tests/lesson.test.mjs             |   2 +-\n tests/mem-command.test.mjs        | 163 +++++++++++++\n tests/memory-host.test.mjs        |  71 ++++++\n tests/memory.test.mjs             | 139 ++++++++++-\n tests/plugin.test.mjs             |  45 +++-\n tests/projection.test.mjs         | 398 ++++++++++++++++++++++++++++++++\n tests/review-regressions.test.mjs |   2 +-\n tests/skeleton.test.mjs           |   2 +-\n tests/span-index.test.mjs         |  47 ++++\n 41 files changed, 4341 insertions(+), 145 deletions(-)"
+      "status": "up_to_date",
+      "head": "382d8072f057"
     },
     {
       "name": "dsh-univer-office",
