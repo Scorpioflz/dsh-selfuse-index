@@ -8,12 +8,13 @@
 
 ## 已完成
 
-### attachSession 关联工作区修复（commit `b835a64`，v2.3.9，已推送+安装，待用户重启验证）
+### attachSession 关联工作区修复（commit `b835a64`，v2.3.9，已推送+安装+验证通过）
 
 - **问题**：v2.3.8 用 `insertSessionBefore` 关联新建 session 到工作区，报 `the session is not accounted`——该方法只能移动已 accounted 的 session 顺序，新 session 不在 registry 里直接拒绝
 - **根因**：`insertSessionBefore`（dsh-workspace/lib/index.js:130）第一行就检查 `record.sessionIds.includes(sessionId)`，不在就 throw。正确方法是 `attachSession`（line 111-129）：读 session header 验证 cwd 匹配 workspace path → `rememberSessionPath` → 加入 sessionIds
 - **修复**：index.js exit handler 里 `insertSessionBefore(newId)` → `attachSession(newId)`
-- **状态**：已推送+安装，config.json 的 sessionId 已清空，待用户完全重启 DSH + 点"跑一轮"验证日志显示 `已把值班会话归到工作区：大肥鱼池塘`
+- **验证**：config.json sessionId=`session-adeeab89-...`，workspace.json「大肥鱼池塘」sessionIds[0] 同一 session，updatedAt 2026-11-01T06:04:39 ✓
+- **README 更新**：双语 README 已更新自动会话管理说明（commit `171ea5d`，待网络恢复后推送）
 
 ### 工作区下拉选择器（commit `d1f5f17`，v2.3.6，已推送+安装）
 
