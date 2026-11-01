@@ -139,9 +139,26 @@
 
 ---
 
+### 15. dsh-session-bridge — `dsh-session-bridge`（跨会话桥接）⭐ 2026-11-01 新装
+
+| 项 | 内容 |
+|---|---|
+| GitHub | heartmove/dsh-session-bridge |
+| 版本 | 0.7.0 |
+| Stars | 8 |
+| 用途 | 跨会话驱动：通过提示词创建新主会话、向任意会话发消息、等待下一条回复、读取消息、按名/id 跨工作区查找会话；监控/调度主任务（含思维链循环检测→自动中断并转移到新会话）、子代理处置、归档/取消归档会话 |
+| 形式 | function plugin（纯工具，无 UI） |
+| 暴露 | 15 个工具：`session_bridge_create`/`_send`/`_resume`/`_wait`/`_segments`/`_read`/`_find`/`_monitor_start`/`_monitor_stop`/`_monitor_list`/`_status`/`_cancel`/`_archive`/`_unarchive`/`_archived` |
+| 依赖 | peer: `@deepseek-ai/dsh-agent`/`dsh-session`/`dsh-session-persistence`/`dsh-workspace`/`dsh-tools`/`dsh-llm` 等（均 `>=0.1.7-0` 下限）；MIT；node>=20 |
+| 兼容性 | `engines.dsh: >=0.1.7-0`（纯下限，向后兼容 0.2.x/0.3.x/1.x） |
+| 与桌宠关系 | 桌宠 `agent_link` 可借此驱动其他 DSH 会话（创建/发送/等待/读取/恢复/跨工作区查找），补齐"跨会话编排"维度 |
+| 关键文件 | `lib/index.js`（tsdown 自包含 bundle，内联所有非 node: 依赖）、`src/tools.ts`（15 工具定义）、`cordis.patch.yml` |
+
+---
+
 ## 二、人设/Persona 参考插件（未安装，供参考）
 
-### 15. dsh-persona-dafeiyu — `dsh-persona-dafeiyu` ⭐ 推荐安装
+### 16. dsh-persona-dafeiyu — `dsh-persona-dafeiyu` ⭐ 推荐安装
 
 | 项 | 内容 |
 |---|---|
@@ -158,7 +175,7 @@
 | 与桌宠关系 | **推荐替代当前 prompt_sync 人设注入方式**。桌宠前端已于 2026-10-31（commit `cc881933`）移除 `dsh_provider.py` 的 `prompt_sync`/`system_sent` 逻辑，`PromptBuilder.build_messages()` 只返回用户消息，`default_system_prompt` 默认空串。安装本插件后人设由 `systemPrompt.section()` 注入（可被 prompt caching 缓存） |
 | 关键文件 | `lib/index.js`（1177 行）、`lib/client.js`、`cordis.patch.yml`、`README.md` |
 
-### 16. dsh-whale-musume-persona — `dsh-whale-musume-persona`
+### 17. dsh-whale-musume-persona — `dsh-whale-musume-persona`
 
 | 项 | 内容 |
 |---|---|
@@ -167,7 +184,7 @@
 | 用途 | DeepSeek Harness 全局鲸鱼娘（大肥鱼）人设插件 |
 | 与桌宠关系 | 鲸鱼娘专用人设，可作为灵感参考 |
 
-### 17. dsh-prompt-persona — `@xilin3/dsh-prompt-persona`
+### 18. dsh-prompt-persona — `@xilin3/dsh-prompt-persona`
 
 | 项 | 内容 |
 |---|---|
@@ -178,7 +195,7 @@
 | 特点 | 简单直接，只编辑 deployment persona，无工作区分档 |
 | 关键文件 | `lib/index.js`、`lib/config.js`、`lib/web.js`、`lib/client.js`、`cordis.patch.yml` |
 
-### 18. dsh-soul — `dsh-soul`（仅分析，未安装）
+### 19. dsh-soul — `dsh-soul`（仅分析，未安装）
 
 | 项 | 内容 |
 |---|---|
@@ -190,7 +207,7 @@
 
 ## 三、桌宠上游与源码参考
 
-### 19. dsh-pet-indesktop（桌宠上游）
+### 20. dsh-pet-indesktop（桌宠上游）
 
 | 项 | 内容 |
 |---|---|
@@ -199,7 +216,7 @@
 | 路径 | `_plugin-references/dsh-pet-indesktop-upstream/` |
 | 合并策略 | `git remote add upstream https://github.com/MerZlin/dsh-pet-indesktop.git && git fetch upstream && git merge upstream/main` |
 
-### 20. DSH 原生 persona 包 — `@deepseek-ai/dsh-persona`
+### 21. DSH 原生 persona 包 — `@deepseek-ai/dsh-persona`
 
 | 项 | 内容 |
 |---|---|
@@ -208,7 +225,7 @@
 | 限制 | **配置驱动，无终端用户运行时编辑 API**（README 明确声明） |
 | 与 dsh-persona-dafeiyu 关系 | dafeiyu 插件通过注册同名 section shadow 原生 persona，并增加了运行时编辑/导入/三档切换 |
 
-### 21. DSH systemPrompt 核心包 — `@deepseek-ai/dsh-system-prompt`
+### 22. DSH systemPrompt 核心包 — `@deepseek-ai/dsh-system-prompt`
 
 | 项 | 内容 |
 |---|---|
@@ -238,6 +255,7 @@
 | dsh-univer-office | function | 14 | schemastery ✓ | **是** | 跨平台 |
 | dsh-preset-bridge | function | 0 | schemastery ✓ | 部分 | 跨平台 |
 | dsh-knowledge | function+UI | 1 | 无（自管） | 部分 | 跨平台 |
+| dsh-session-bridge | function | 15 | 无（自管） | **是** | 跨平台 |
 | dsh-soul | function | 2+ | ✓ | 部分 | 跨平台 |
 | **dsh-persona-dafeiyu** | function+UI | 0 | 无（自管） | 部分 | 跨平台 |
 | dsh-whale-musume-persona | function | 0 | — | — | 跨平台 |
