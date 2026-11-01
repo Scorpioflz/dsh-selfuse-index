@@ -24,13 +24,18 @@
 
 ## 当前待处理建议
 
-> 最后检查：2026-11-01T14:01:28 | 1 个有更新，18 个已最新
+> 最后检查：2026-11-01T18:00:44 | 3 个有更新，16 个已最新
 
 ### 在用插件 · 影响评估
 
-- **dsh-skills-manager**: `0cf5fb60ebcc` → `09510fe0bdb5`（2 commits，最近: chore(release): 1.2.26）
+- **billion-context**: `7578e8184f91` → `aeda157a0abc`（16 commits，最近: Merge pull request #5419 from ranxianglei/2026-11-01_release-v0.1.211）
+  - 影响评估: [待分析]
+- **dsh-skills-manager**: （无新更新，仍有未完成建议）
   - 影响评估: 无影响。纯 UI 响应式布局修复（`fix(ui): improve responsive layout on mobile and narrow viewports`），只改 client 端 `lib/client.js`/`src/client.ts`，不涉及自研部分依赖的 API/契约/配置面
 
 ### 参考插件 · 整合建议
 
-（无待处理项）
+- **dsh-fish-memory**: `2a25e04a3d19` → `003716b0f682`（2 commits，最近: 1.5.1：生成档案把助手自己的事标成 ta.*；管理接口只认本人）
+  - 整合建议: [待分析]
+- **dsh-soul**: `8a953010bdc9` → `382d8072f057`（1 commits，最近: release: DSH Soul 2.0.0 with independent memory and issue fixes）
+  - 整合建议: [待分析]

@@ -1,11 +1,59 @@
 {
-  "timestamp": "2026-11-01T14:01:28",
+  "timestamp": "2026-11-01T18:00:44",
   "root": "D:\\DSH-Dev",
   "results": [
     {
       "name": "billion-context",
-      "status": "up_to_date",
-      "head": "7578e8184f91"
+      "status": "updated",
+      "old": "7578e8184f91",
+      "new": "aeda157a0abc",
+      "commits": [
+        "aeda157a|2026-11-01 17:47:52 +0800|Merge pull request #5419 from ranxianglei/2026-11-01_release-v0.1.211",
+        "3e3f1fc9|2026-11-01 17:33:12 +0800|test(golden): regenerate storage-render goldens under the pinned suite environment (corrects 9eb1aa3cc)",
+        "9eb1aa3c|2026-11-01 17:00:35 +0800|test(golden): regenerate storage-render goldens for default-on message timestamps (#5368)",
+        "4e5dcbc1|2026-11-01 16:43:24 +0800|Merge branch 'master' into 2026-11-01_release-v0.1.211",
+        "c78ecb4b|2026-11-01 16:43:15 +0800|Merge pull request #5420 from ranxianglei/fix/5412-async-latch-parity",
+        "e10ecc2b|2026-11-01 16:43:07 +0800|Merge branch 'master' into fix/5412-async-latch-parity",
+        "b26ac056|2026-11-01 16:37:00 +0800|fix(storage): async ingest twin sweeps foreign rows while drift-latched (#5412)",
+        "5cab70e2|2026-11-01 08:36:45 +0000|release v0.1.211",
+        "6ab1c891|2026-11-01 16:33:45 +0800|Merge pull request #5416 from ranxianglei/2026-11-01_abort-absorb-starvation",
+        "1ef7bd29|2026-11-01 16:32:42 +0800|Merge pull request #5409 from ranxianglei/2026-11-01_frozen-compression-recovery",
+        "fb2f3855|2026-11-01 16:26:45 +0800|chore: trailing newline in kernel/package-lock.json (lock-sync)",
+        "c91ef1a8|2026-11-01 16:17:17 +0800|kernel: abort-heavy sessions stop starving the nudge cadence (#5415)",
+        "aee0efc7|2026-11-01 15:49:48 +0800|style: unexport ATTACH_SILENCE_MS — internal-only constant (unused-exports gate, #5408)",
+        "1a5ee7fd|2026-11-01 15:43:45 +0800|style: normalize 5-space indent on frozenEnvelopeIds field (#5408 review nit)",
+        "2ec334dd|2026-11-01 15:29:17 +0800|test: pin frozen-recovery behavior for #5408 (visibility, sweep-while-latched, heartbeat, stale guards)",
+        "9b16a749|2026-11-01 15:29:17 +0800|fix: make the frozen-envelope state visible and healable after drift escalation (#5408)"
+      ],
+      "changed_files": [
+        ".agents/plugins/marketplace.json",
+        ".claude-plugin/marketplace.json",
+        ".claude-plugin/plugin.json",
+        "CHANGELOG.md",
+        "kernel/package-lock.json",
+        "kernel/package.json",
+        "kernel/src/compress.ts",
+        "kernel/src/types.ts",
+        "kernel/tests/issue5415-absorb-debt-nudge.test.ts",
+        "package-lock.json",
+        "package.json",
+        "plugins/codex/.codex-plugin/plugin.json",
+        "src/attach-heartbeat.ts",
+        "src/persist.ts",
+        "src/preflight.ts",
+        "src/server.ts",
+        "src/session.ts",
+        "src/storage/runtime-status.ts",
+        "src/storage/shadow.ts",
+        "tests/golden/storage-render/anthropic.json",
+        "tests/golden/storage-render/chat.json",
+        "tests/golden/storage-render/google.json",
+        "tests/golden/storage-render/responses.json",
+        "tests/issue5408-frozen-recovery.test.ts",
+        "tests/issue5412-async-drift-latch-parity.test.ts",
+        "tests/issue5415-absorb-debt.test.ts"
+      ],
+      "diffstat": ".agents/plugins/marketplace.json                 |   2 +-\n .claude-plugin/marketplace.json                  |   2 +-\n .claude-plugin/plugin.json                       |   2 +-\n CHANGELOG.md                                     |   3 +\n kernel/package-lock.json                         |   4 +-\n kernel/package.json                              |   2 +-\n kernel/src/compress.ts                           |  46 ++-\n kernel/src/types.ts                              |  14 +\n kernel/tests/issue5415-absorb-debt-nudge.test.ts | 198 +++++++++\n package-lock.json                                |   6 +-\n package.json                                     |   2 +-\n plugins/codex/.codex-plugin/plugin.json          |   2 +-\n src/attach-heartbeat.ts                          |  83 ++++\n src/persist.ts                                   |  41 ++\n src/preflight.ts                                 |  13 +\n src/server.ts                                    |   4 +\n src/session.ts                                   |  17 +-\n src/storage/runtime-status.ts                    |   9 +\n src/storage/shadow.ts                            | 103 ++++-\n tests/golden/storage-render/anthropic.json       |   8 +-\n tests/golden/storage-render/chat.json            |   8 +-\n tests/golden/storage-render/google.json          |   8 +-\n tests/golden/storage-render/responses.json       |   8 +-\n tests/issue5408-frozen-recovery.test.ts          | 488 +++++++++++++++++++++++\n tests/issue5412-async-drift-latch-parity.test.ts | 166 ++++++++\n tests/issue5415-absorb-debt.test.ts              |  91 +++++\n 26 files changed, 1285 insertions(+), 45 deletions(-)"
     },
     {
       "name": "cc-safety-net",
@@ -39,8 +87,20 @@
     },
     {
       "name": "dsh-fish-memory",
-      "status": "up_to_date",
-      "head": "2a25e04a3d19"
+      "status": "updated",
+      "old": "2a25e04a3d19",
+      "new": "003716b0f682",
+      "commits": [
+        "003716b|2026-11-01 17:34:15 +0800|1.5.1：生成档案把助手自己的事标成 ta.*；管理接口只认本人",
+        "cccfd0a|2026-11-01 14:29:46 +0800|1.5.0：合并预览挪到主面板（#26）；补 engines"
+      ],
+      "changed_files": [
+        "CHANGELOG.md",
+        "lib/client.js",
+        "lib/index.js",
+        "package.json"
+      ],
+      "diffstat": "CHANGELOG.md  | 36 +++++++++++++++++++++++++\n lib/client.js | 87 +++++++++++++++++++++++++++++++----------------------------\n lib/index.js  | 41 ++++++++++++++++++++++++++--\n package.json  |  6 ++++-\n 4 files changed, 126 insertions(+), 44 deletions(-)"
     },
     {
       "name": "dsh-mnemon",
@@ -69,28 +129,61 @@
     },
     {
       "name": "dsh-skills-manager",
-      "status": "updated",
-      "old": "0cf5fb60ebcc",
-      "new": "09510fe0bdb5",
-      "commits": [
-        "09510fe|2026-11-01 11:31:37 +0800|chore(release): 1.2.26",
-        "f7868b2|2026-11-01 11:23:56 +0800|fix(ui): improve responsive layout on mobile and narrow viewports"
-      ],
-      "changed_files": [
-        "CHANGELOG.md",
-        "CHANGELOG.zh-CN.md",
-        "README.md",
-        "README.zh-CN.md",
-        "lib/client.js",
-        "package.json",
-        "src/client.ts"
-      ],
-      "diffstat": "CHANGELOG.md       |  7 +++++++\n CHANGELOG.zh-CN.md |  7 +++++++\n README.md          |  4 ++--\n README.zh-CN.md    |  4 ++--\n lib/client.js      | 16 ++++++++--------\n package.json       |  2 +-\n src/client.ts      |  4 ++--\n 7 files changed, 29 insertions(+), 15 deletions(-)"
+      "status": "up_to_date",
+      "head": "09510fe0bdb5"
     },
     {
       "name": "dsh-soul",
-      "status": "up_to_date",
-      "head": "8a953010bdc9"
+      "status": "updated",
+      "old": "8a953010bdc9",
+      "new": "382d8072f057",
+      "commits": [
+        "382d807|2026-11-01 17:54:12 +0800|release: DSH Soul 2.0.0 with independent memory and issue fixes"
+      ],
+      "changed_files": [
+        "CHANGELOG.md",
+        "README.md",
+        "RELEASE-2.0.md",
+        "bench/compaction-loss.mjs",
+        "bench/compat.mjs",
+        "bench/consolidation.mjs",
+        "bench/continuation.mjs",
+        "bench/graph-memory.mjs",
+        "bench/memory-dynamics.mjs",
+        "compaction.js",
+        "cordis.patch.yml",
+        "index.js",
+        "package.json",
+        "scripts/compaction-demo.mjs",
+        "scripts/test-host.mjs",
+        "src/compaction.js",
+        "src/components.js",
+        "src/consolidation.js",
+        "src/directory.js",
+        "src/graph-memory.js",
+        "src/memory-dynamics.js",
+        "src/memory.js",
+        "src/skeleton.js",
+        "src/span-index.js",
+        "src/store.js",
+        "src/util.js",
+        "tests/compaction-entry.test.mjs",
+        "tests/compaction-host.test.mjs",
+        "tests/compaction.test.mjs",
+        "tests/dynamics.test.mjs",
+        "tests/graph-memory.test.mjs",
+        "tests/issue-2-3.test.mjs",
+        "tests/lesson.test.mjs",
+        "tests/mem-command.test.mjs",
+        "tests/memory-host.test.mjs",
+        "tests/memory.test.mjs",
+        "tests/plugin.test.mjs",
+        "tests/projection.test.mjs",
+        "tests/review-regressions.test.mjs",
+        "tests/skeleton.test.mjs",
+        "tests/span-index.test.mjs"
+      ],
+      "diffstat": "CHANGELOG.md                      |  66 ++++++\n README.md                         |  67 +++++-\n RELEASE-2.0.md                    |  50 ++++\n bench/compaction-loss.mjs         |   2 +-\n bench/compat.mjs                  | 155 +++++++++++++\n bench/consolidation.mjs           | 179 +++++++++++++++\n bench/continuation.mjs            | 208 +++++++++++++++++\n bench/graph-memory.mjs            | 221 ++++++++++++++++++\n bench/memory-dynamics.mjs         | 325 ++++++++++++++++++++++++++\n compaction.js                     |  48 ++--\n cordis.patch.yml                  |   4 +-\n index.js                          | 178 +++++++++++---\n package.json                      |  19 +-\n scripts/compaction-demo.mjs       |   2 +-\n scripts/test-host.mjs             |   2 +-\n src/compaction.js                 |   8 +\n src/components.js                 |   7 +-\n src/consolidation.js              | 258 +++++++++++++++++++++\n src/directory.js                  |   2 +-\n src/graph-memory.js               | 472 ++++++++++++++++++++++++++++++++++++++\n src/memory-dynamics.js            | 297 ++++++++++++++++++++++++\n src/memory.js                     | 319 ++++++++++++++++++++++++--\n src/skeleton.js                   |  84 +++++--\n src/span-index.js                 |   8 +-\n src/store.js                      | 123 +++++++++-\n src/util.js                       |   4 +-\n tests/compaction-entry.test.mjs   |   9 +\n tests/compaction-host.test.mjs    |  19 +-\n tests/compaction.test.mjs         |   2 +-\n tests/dynamics.test.mjs           | 202 ++++++++++++++++\n tests/graph-memory.test.mjs       | 194 ++++++++++++++++\n tests/issue-2-3.test.mjs          |  83 +++++++\n tests/lesson.test.mjs             |   2 +-\n tests/mem-command.test.mjs        | 163 +++++++++++++\n tests/memory-host.test.mjs        |  71 ++++++\n tests/memory.test.mjs             | 139 ++++++++++-\n tests/plugin.test.mjs             |  45 +++-\n tests/projection.test.mjs         | 398 ++++++++++++++++++++++++++++++++\n tests/review-regressions.test.mjs |   2 +-\n tests/skeleton.test.mjs           |   2 +-\n tests/span-index.test.mjs         |  47 ++++\n 41 files changed, 4341 insertions(+), 145 deletions(-)"
     },
     {
       "name": "dsh-univer-office",
