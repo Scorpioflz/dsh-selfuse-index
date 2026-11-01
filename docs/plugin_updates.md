@@ -30,8 +30,13 @@
 
 - **billion-context**: `1876186c9912` → `7578e8184f91`（61 commits，最近: Merge pull request #5389 from ranxianglei/2026-11-01_blog-frequent-compression）
   - 影响评估: 无影响（对自研代码）。billion-context 是 DSH 平台层上下文压缩代理（npm `bili` CLI），自研部分（@dsh-pet/bridge、@dsh-cbw/memory、桌宠前端、人设模板）不直接调用其 API/CLI/配置面（grep 确认三个自研仓库均无 `billion-context` 引用）。57 commits 均为插件内部改进（pack editor #5345、estimate safety clamp #5291、CI runner queue optimize #5333、foreign block sweep #5343、cost USD restore #5338、zod bump #4880、launcher test xdg isolation #4960 等），不触及自研部分依赖的对外契约。
-- **dsh-bili-scroll**: （无新更新，仍有未完成建议）
-  - 影响评估: **需关注**——已 fork 为 `@dsh-cbw/bilibili`（`D:\DSH-Dev\dsh-cbw-bilibili`，v2.3.1 已发布到插件市场）。上游 commit `3bd4868` 新增四项功能：(1) 值班轮可指定模型；(2) 「刷过的视频」按工作区显示；(3) 会话归工作区 + 兜底归档；(4) 超时看门狗。fork 已合入这些功能（基于 `a093f559e08d` fork），并额外实现四项改进（人设开关/兴趣整合/画像查看/数据路径分离）。**后续上游若有新提交，需评估是否值得 rebase 合入 fork**。fork 仓库：github.com/Scorpioflz/dsh-cbw-bilibili
+- **dsh-bili-scroll**: `a093f559e08d` → `398e4724a481`（3 commits，最近: fix: 合入社区 PR #150 + #162）
+  - 影响评估: **需合入**——已 fork 为 `@dsh-cbw/bilibili`（`D:\DSH-Dev\dsh-cbw-bilibili`，v2.3.2 已发布到插件市场）。fork 基于 `a093f559e08d`，上游新增 3 commits 需评估合入：
+    - `aadcdf7` fix(fav): 自动收藏连续四天全失败——`FavoriteList` 参数错位 + `FavoriteListResource` 已移除，改用 `Video.set_favorite`。fork 有 `lib/favops.py`，**需合入**
+    - `398e472` #150 @ 昵称空格修复——B站只认紧挨着的 @，带空格对方收不到通知。fork index.js 有 mention 逻辑（29 处），**需合入**
+    - `398e472` #162 私信 BV 号记录——私信发送后记下实际 BV 号让筛选能认出。fork 有私信投递逻辑，**需合入**
+    - `a4941cb` chore(2.4.0) 版本 bump——fork 有独立版本号，**无需合入**
+  - fork 当前状态：v2.3.2，已实现画像深度增强（时间权重+视频Tag+UP主签名）+ UP主偏好时间权重 + 画像兴趣词修复 + bili_comment 修复 + 四项功能改进。fork 仓库：github.com/Scorpioflz/dsh-cbw-bilibili
 - **dsh-persona-dafeiyu**: `d939e74de288` → `fb81f4c366ee`（1 commits，最近: Release 0.7.3: hover feedback, and long text that no longer breaks the layout）
   - 影响评估: **无影响**。Release 0.7.3 纯前端 UI 改动（人设卡片 hover 反馈 + 长文本布局修复），不触及 API/契约/配置面。人设模板（`docs/大肥鱼_蓝鲸女仆人设模板.md`）是纯文本文件，不受插件 UI 改动影响。用户直接更新插件即可 ✅
 - **dsh-skills-manager**: `3e7dc3a6e7cc` → `0cf5fb60ebcc`（14 commits，最近: chore(release): 1.2.25）
