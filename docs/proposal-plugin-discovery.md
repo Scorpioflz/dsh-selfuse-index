@@ -272,21 +272,22 @@
 
 ### 第一梯队（高优先级，建议近期安装）
 
+> 已安装：`dsh-knowledge`（2026-11-01，知识库 & RAG）、`dsh-session-bridge`（2026-11-01，跨会话驱动）
+
 | # | 插件 | 类别 | ★ | 核心价值 | 整合方式 |
 |---|---|---|---|---|---|
-| 1 | Soren-ABT/dsh-knowledge | 记忆/知识 | 86 | 知识库 & RAG，补齐文档知识维度 | 独立并存，与 @dsh-cbw/memory 职责互补 |
-| 2 | Alterssss/dsh-bili-whale | B站 | 823 | 按作息刷 B 站 + 双日记 | 借鉴思路到 @dsh-cbw/bilibili |
-| 3 | titanwings/dsh-automation | 自动化 | 103 | 编码任务按计划自动运行 | 独立并存 |
-| 4 | GooDAnDReaDY/dsh-cron | 自动化 | 13 | 通用定时 cron 任务 | 独立并存 |
-| 5 | john-walks-slow/dsh-proactive | 自动化 | 8 | 主动跟进 + 闹钟调度 | 独立并存，与桌宠 proactive 互补 |
-| 6 | Clizo1209/dsh-playwright-browser | 浏览器 | 16 | Playwright 浏览器自动化 | 独立并存 |
-| 7 | HuanLinOTO/dsh-plugin-mineru | 文档 | 51 | MinerU 多格式文档解析 | 独立并存，补齐 file_interpret |
-| 8 | omdsh-dev/dsh-office | 文档 | 29 | Office 三件套 | 独立并存，与 dsh-univer-office 互补 |
-| 9 | wsz987/dsh-channels | 消息 | 13 | 微信/QQ/钉钉/飞书/Telegram 接入 | 独立并存 |
-| 10 | Lxiayu/DshCockpit | 监控 | 40 | token 用量/成本追踪 | 独立并存 |
-| 11 | gychen-NJU/dsh-game-daily | 游戏 | 34 | 游戏日常代理 | 独立并存 |
+| 1 | Alterssss/dsh-bili-whale | B站 | 823 | 按作息刷 B 站 + 双日记 | 借鉴思路到 @dsh-cbw/bilibili |
+| 2 | titanwings/dsh-automation | 自动化 | 103 | 编码任务按计划自动运行 | 独立并存 |
+| 3 | GooDAnDReaDY/dsh-cron | 自动化 | 13 | 通用定时 cron 任务 | 独立并存 |
+| 4 | john-walks-slow/dsh-proactive | 自动化 | 8 | 主动跟进 + 闹钟调度 | 独立并存，与桌宠 proactive 互补 |
+| 5 | Clizo1209/dsh-playwright-browser | 浏览器 | 16 | Playwright 浏览器自动化 | 独立并存 |
+| 6 | HuanLinOTO/dsh-plugin-mineru | 文档 | 51 | MinerU 多格式文档解析 | 独立并存，补齐 file_interpret |
+| 7 | omdsh-dev/dsh-office | 文档 | 29 | Office 三件套 | 独立并存，与 dsh-univer-office 互补 |
+| 8 | wsz987/dsh-channels | 消息 | 13 | 微信/QQ/钉钉/飞书/Telegram 接入 | 独立并存 |
+| 9 | Lxiayu/DshCockpit | 监控 | 40 | token 用量/成本追踪 | 独立并存 |
+| 10 | gychen-NJU/dsh-game-daily | 游戏 | 34 | 游戏日常代理 | 独立并存 |
 
-> 已移除：`NanmiCoder/dsh-agent-teams`（DSH 自身已提供 Agent Team 多智能体协作）、`heartmove/dsh-session-bridge`（2026-11-01 已安装）
+> 已移除：`NanmiCoder/dsh-agent-teams`（DSH 自身已提供 Agent Team 多智能体协作）、`Soren-ABT/dsh-knowledge`（2026-11-01 已安装）、`heartmove/dsh-session-bridge`（2026-11-01 已安装）
 
 ### 第二梯队（中优先级，按需安装）
 
