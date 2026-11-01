@@ -1,6 +1,6 @@
 # root — 根项目整体协调
 
-> 最后更新：2026-11-01T03:05 | 会话焦点：子项目 AGENTS.md 加 cross-talk 约束
+> 最后更新：2026-11-01T06:20 | 会话焦点：plugin_updates 分析 + bili v2.3.9 同步
 
 ## 正在进行
 
@@ -13,12 +13,12 @@
 
 - **dsh-pet-chubby_blue_whale**：测试全通过（371+ passed），碎碎念已修复（定时计划模式 HH:MM+星期筛选），安装包显示名改为「家养大肥鱼」（commit `dfbfcc26`）。共 8 commits 已推送，可封装发布
 - **dsh-cbw-memory**：v0.5.1 已推送（`71e50d2`，分类半衰期差异化 + 来源头吞正文修复），上游三缺陷排查完成（缺陷1已修，缺陷2/3不存在），许可证合规完成，AGENTS.md 已创建
-- **dsh-cbw-bilibili**：v2.3.3 已推送（`ebba063`，合入上游 dsh-bili-scroll 3 commits：收藏修复+@昵称空格+私信BV号记录），P0-P3 + 四项改进 + bili_comment 修复全部完成
+- **dsh-cbw-bilibili**：v2.3.9 已推送（`171ea5d`，自动会话管理+工作区关联+工作区下拉选择器），P0-P3 + 四项改进 + v2.3.4-v2.3.9 全部完成
 
 ## 插件更新跟踪
 
 - **dsh-bili-scroll** 已从 IN_USE 移到 REFERENCE（不再在用，已 fork 为 @dsh-cbw/bilibili）
-- **billion-context** 61 commits 影响评估无影响 ✅，**dsh-persona-dafeiyu** 0.7.3 无影响 ✅，**dsh-skills-manager** 1.2.25 无影响 ✅
+- **billion-context** 61 commits 影响评估无影响 ✅，**dsh-persona-dafeiyu** 0.7.3 无影响 ✅，**dsh-skills-manager** 1.2.25 无影响 ✅，**dsh-skills-manager** 1.2.26 无影响 ✅（纯 UI 响应式布局修复）
 - **dsh-fish-memory** 1.4.9 无需整合 ✅
 - **dsh-bili-scroll** 3 commits 已合入 fork ✅（commit `d710fa2`，v2.3.3）
 

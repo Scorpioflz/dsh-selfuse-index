@@ -22,7 +22,7 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 
 | 方面 | 上游 | 本 fork |
 |---|---|---|
-| 值班会话 | 一次性 CLI spawn，无上下文 | 固定 sessionId 复用（CLI `--session-id`），固定会话下跳过归档 |
+| 值班会话 | 一次性 CLI spawn，无上下文 | 自动会话管理：首次自动创建无 preset session 并 `attachSession` 关联工作区，之后固定复用（值班轮+私信回复共用） |
 | 主人识别 | mentionName（昵称单个）+ dmUid | masterUid（UID）+ mentionNames[]（昵称）+ dmRecipientUids[]（UID） |
 | 爱好分析 | 无 | bili_user_favorites / bili_user_profile / bili_analyze_hobby |
 | 搜索关键词 | 死配置 keywords[] | 自动学习兴趣词 + 半衰期淡忘（learned-interests.json） |
@@ -55,9 +55,8 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 | `masterUid` | `0` | 主人 B站 UID |
 | `mentionNames` | `[]` | 评论 @ 昵称清单（可多个） |
 | `dmRecipientUids` | `[]` | 私信收件人 UID 清单（可多个） |
-| `fixedSession` | `false` | 固定会话开关 |
-| `dutySessionId` | `''` | 值班固定会话 ID（传给 dsh CLI `--session-id`） |
-| `dmSessionId` | `''` | 私信固定会话 ID |
+| `sessionId` | `''` | 内部自动管理：首次自动创建无 preset session，之后固定复用（值班轮+私信回复共用） |
+| `workspace` | `''` | 会话工作区路径（可填桌宠工作区路径共享记忆），session 创建时用此 cwd |
 | `webapiBase` | `''` | web-service 地址（P1 爱好分析工具用） |
 | `webapiKey` | `''` | API Key |
 | `hobbyRefreshDays` | `30` | 画像刷新周期（天） |
@@ -83,10 +82,16 @@ Fork 自 dsh-bili-scroll，自研改进：固定会话延续 + 主人画像分�
 | 改进 | 人设开关/兴趣整合/画像查看/数据路径分离 | ✅ 已完成（commit `951e620`） |
 | v2.3.2 | UP主偏好加时间衰减权重（区分当前偏好 vs 历史偏好） | ✅ 已完成（commit `5e6890c` / `050952d`） |
 | v2.3.3 | 合入上游 dsh-bili-scroll 3 commits（收藏修复+@昵称空格+私信BV号记录） | ✅ 已完成（commit `d710fa2`） |
+| v2.3.4 | 私信监听日志误报修复 + 值班会话不存在提醒 | ✅ 已完成（commit `3547d3d`） |
+| v2.3.5 | 自动会话管理 — 去掉 session ID 录入，自动创建+复用 | ✅ 已完成（commit `c39bc17`） |
+| v2.3.6 | 工作区下拉选择器（文本框→`<select>`） | ✅ 已完成（commit `d1f5f17`） |
+| v2.3.7 | discoverDutySession 未定义崩溃修复 | ✅ 已完成（commit `7f21f43`） |
+| v2.3.8 | insertSessionBefore 关联工作区（失败，v2.3.9 修复） | ✅ 已完成（commit `6c73159`） |
+| v2.3.9 | attachSession 替代 insertSessionBefore 修复 | ✅ 已完成（commit `b835a64`） |
 
 ## 插件市场发布
 
-- **版本**：v2.3.3
+- **版本**：v2.3.9
 - **GitHub Pages**：`https://scorpioflz.github.io/dsh-cbw-bilibili/index.json`（从 `/docs` 目录提供）
 - **topic**：`dsh-plugin` 已打
 - **安装方式**：`dsh plugin --profile web add "https://gh-proxy.com/https://codeload.github.com/Scorpioflz/dsh-cbw-bilibili/tar.gz/refs/heads/main"`（国内需镜像）

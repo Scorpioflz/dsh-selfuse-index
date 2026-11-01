@@ -29,7 +29,7 @@
 ### 在用插件 · 影响评估
 
 - **dsh-skills-manager**: `0cf5fb60ebcc` → `09510fe0bdb5`（2 commits，最近: chore(release): 1.2.26）
-  - 影响评估: [待分析]
+  - 影响评估: 无影响。纯 UI 响应式布局修复（`fix(ui): improve responsive layout on mobile and narrow viewports`），只改 client 端 `lib/client.js`/`src/client.ts`，不涉及自研部分依赖的 API/契约/配置面
 
 ### 参考插件 · 整合建议
 

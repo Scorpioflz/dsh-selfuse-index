@@ -87,7 +87,7 @@ flowchart LR
 | dsh-web-service (dsh-webapi) | **REST API 网关** — 经 HTTP/SSE 暴露 DSH 会话；桌宠接入 DSH 的唯一入口。 | 在用 | [toddpan/dsh-webapi](https://github.com/toddpan/dsh-webapi) |
 | @dsh-pet/bridge | **桌宠状态桥接**（继承自 [MerZLin/dsh-pet-indesktop](https://github.com/MerZLin/dsh-pet-indesktop)）— 在前端与 DSH 间同步桌宠屏幕/窗口状态。 | 在用 | 本地（桌宠 `integrations/dsh-pet-bridge/`） |
 | @dsh-cbw/memory | **记忆后端**（自研，基于 dsh-fish-memory 衍生）— 按工作区隔离的记忆，打分 + 半衰期 + P0-P3 升级（请求检测、bigram 去重、recall 工具、自动归档、来源标记、JSONL+category、定时沉淀、安全模型、归档索引、CJK bigram），经 `systemPrompt.context` 注入。 | 在用 | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) |
-| @dsh-cbw/bilibili | **B站值班**（自研，fork 自 dsh-bili-scroll v2.3.1）— 固定会话复用（`--session-id`）、主人画像分析、兴趣学习+半衰期淡忘、分镜多格图、评论三层硬禁区、观看统计报告、收件箱分类。P0-P3 全部完成。 | 在用 | [Scorpioflz/dsh-cbw-bilibili](https://github.com/Scorpioflz/dsh-cbw-bilibili) |
+| @dsh-cbw/bilibili | **B站值班**（自研，fork 自 dsh-bili-scroll v2.3.1）— 自动会话管理（自动创建+复用+工作区关联）、主人画像分析、兴趣学习+半衰期淡忘、分镜多格图、评论三层硬禁区、观看统计报告、收件箱分类。P0-P3 + v2.3.4-v2.3.9 全部完成。 | 在用 | [Scorpioflz/dsh-cbw-bilibili](https://github.com/Scorpioflz/dsh-cbw-bilibili) |
 | dsh-persona-dafeiyu | **人设注入** — 经 `systemPrompt.section()` 注入角色人设；替代桌宠原前端人设拼接。使用上游第三方插件（v0.7.1），已放弃自研人设插件，改为配合自写的人设模板（见 `docs/大肥鱼_蓝鲸女仆人设模板.md`）。 | 在用 | [huaizhuanghub/dsh-persona-dafeiyu](https://github.com/huaizhuanghub/dsh-persona-dafeiyu) |
 | @wycto/dsh-balance-panel | 余额/额度查询面板。 | 在用 | [wycto/dsh-balance-panel](https://github.com/wycto/dsh-balance-panel) |
 | dsh-bili-scroll | B站滚动任务。**@dsh-cbw/bilibili 的 fork 基线**（v2.3.1），未在 profile 安装——已被 fork 替代。上游 commit `3bd4868` 新增会话归工作区+兜底归档、值班轮指定模型、超时看门狗。 | 参考 / 已弃 | [c1overzz/dsh-bili-scroll](https://github.com/c1overzz/dsh-bili-scroll) |
@@ -127,7 +127,7 @@ flowchart LR
 | --- | --- | --- | --- |
 | dsh-pet-chubby_blue_whale | DSH 桌宠前端（PySide6，Python 3.14+），通过 `dsh-web-service` 会话 API 接入 DSH。 | [Scorpioflz/dsh-pet-chubby_blue_whale](https://github.com/Scorpioflz/dsh-pet-chubby_blue_whale) | [分片](docs/sub-projects/dsh-pet-chubby_blue_whale.md) |
 | dsh-cbw-memory | DSH 长期记忆插件（半衰期衰减、情感加权、按工作区隔离共享、分类半衰期差异化）。基于 Yuuyuko-uu/dsh-fish-memory 衍生。v0.5.1。 | [Scorpioflz/dsh-cbw-memory](https://github.com/Scorpioflz/dsh-cbw-memory) | [分片](docs/sub-projects/dsh-cbw-memory.md) |
-| dsh-cbw-bilibili | DSH B站值班插件（fork 自 dsh-bili-scroll v2.3.1）。固定会话复用、主人画像分析、兴趣学习、评论闸门、观看统计、UP主偏好时间衰减权重、上游合入（收藏修复+@昵称空格+私信BV号记录）。v2.3.3。 | [Scorpioflz/dsh-cbw-bilibili](https://github.com/Scorpioflz/dsh-cbw-bilibili) | [分片](docs/sub-projects/bilibili.md) |
+| dsh-cbw-bilibili | DSH B站值班插件（fork 自 dsh-bili-scroll v2.3.1）。自动会话管理+工作区关联、主人画像分析、兴趣学习、评论闸门、观看统计、UP主偏好时间衰减权重、上游合入。v2.3.9。 | [Scorpioflz/dsh-cbw-bilibili](https://github.com/Scorpioflz/dsh-cbw-bilibili) | [分片](docs/sub-projects/bilibili.md) |
 
 > 新增子项目时：在上表追加一行，创建 `docs/sub-projects/<name>.md`，并将其文件夹加入 `.gitignore`。
 
