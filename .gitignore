@@ -12,7 +12,6 @@ deepseek-harness/
 dsh-pet-chubby_blue_whale/
 dsh-cbw-memory/
 dsh-cbw-bilibili/
-# Local-only docs (not tracked, for AI reference)
-docs/github-operations.md
+
 # Logs (scheduled task output, not tracked)
 logs/
