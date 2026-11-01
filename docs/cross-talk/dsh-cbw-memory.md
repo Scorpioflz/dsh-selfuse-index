@@ -1,6 +1,6 @@
 # dsh-cbw-memory — 记忆插件开发
 
-> 最后更新：2026-10-31 | 会话焦点：上游缺陷排查修复（v0.5.1）
+> 最后更新：2026-11-01 | 会话焦点：无进行中任务
 
 ## 正在进行
 
@@ -27,4 +27,5 @@
 
 ## 对其他会话的通知/请求
 
-- 无
+- → @dsh-pet：project_context/task_state 半衰期差异化 已完成（v0.5.0，project_context ×3、fact/user_preference/task_state ×2、其余 ×1）
+- → @root：fish-memory 1.4.7 三缺陷排查任务 已完成（v0.5.1，缺陷1已修，缺陷2/3不存在，plugin_updates.md 已标 ✅）
