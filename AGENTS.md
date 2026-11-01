@@ -16,13 +16,16 @@
    - 子项目会话：改子项目仓库 + `docs/sub-projects/<自己的分片>` + `docs/cross-talk/<自己的文件>`
    - **不碰 README 主体、其他分片、其他 cross-talk 文件**
 3. **根项目协调会话**：负责 README 主体 + 跨项目文档 + 插件更新跟踪，不碰子项目代码
+4. **回复其他会话的请求**：启动时读全目录后，逐个检查其他会话文件的"对其他会话的通知/请求"段有无给自己派的任务；确认已完成后，**在自己的 cross-talk 文件"对其他会话的通知/请求"段留回复**（格式：`→ @<对方会话>：<事项> 已完成/已处理`）。对方下次启动读全目录时能看到回复
 
 ## 提交推送
 
-- **推送**：`D:/Tool/fgit/fgit.exe push`（不带参数，用户实测最稳定）
+- **所有 git 指令可用 fgit**：`D:/Tool/fgit/fgit.exe <子命令>` 替代普通 git（add/commit/status/push 等），大仓库更快；**bash 工具里不要加 `2>&1`**（会导致超时，去掉后秒完成）
+- **逐条执行**：不要 chained `&&`，逐条 add → commit → push，每步确认成功
 - **暂存**：只 `git add` 相关文件，**不要 `git add -A`**
 - **push 前 rebase**：`git pull --rebase origin main` 后再 push，避免并行冲突
 - **克隆**：用 `https://gh-proxy.com/https://github.com/...` 镜像前缀
+- **fgit 超时不一定是失败**：可能已推送完成，下次 fgit 同命令显示 up-to-date 即可确认
 
 ## 文档结构
 
