@@ -8,6 +8,26 @@
 
 ## 已完成
 
+### attachSession 关联工作区修复（commit `b835a64`，v2.3.9，已推送+安装，待用户重启验证）
+
+- **问题**：v2.3.8 用 `insertSessionBefore` 关联新建 session 到工作区，报 `the session is not accounted`——该方法只能移动已 accounted 的 session 顺序，新 session 不在 registry 里直接拒绝
+- **根因**：`insertSessionBefore`（dsh-workspace/lib/index.js:130）第一行就检查 `record.sessionIds.includes(sessionId)`，不在就 throw。正确方法是 `attachSession`（line 111-129）：读 session header 验证 cwd 匹配 workspace path → `rememberSessionPath` → 加入 sessionIds
+- **修复**：index.js exit handler 里 `insertSessionBefore(newId)` → `attachSession(newId)`
+- **状态**：已推送+安装，config.json 的 sessionId 已清空，待用户完全重启 DSH + 点"跑一轮"验证日志显示 `已把值班会话归到工作区：大肥鱼池塘`
+
+### 工作区下拉选择器（commit `d1f5f17`，v2.3.6，已推送+安装）
+
+- host 加 `GET /api/dsh-cbw-bili/workspaces` 路由，返回 `workspaceRegistry.list()`
+- client 工作区从文本框改为 `<select>`，选项：「无工作区（插件家）」+ 所有已登记工作区
+
+### 崩溃修复 discoverDutySession is not defined（v2.3.7，已推送+安装）
+
+- v2.3.5 引入 `discoverDutySession` 函数名但代码里只有 `discoverDmSession`，改成 `discoverDmSession`（通用 session 发现逻辑）
+
+### insertSessionBefore 关联工作区（v2.3.8，已推送+安装，但失败）
+
+- 尝试用 `insertSessionBefore` 关联新建 session → 报 `the session is not accounted` → v2.3.9 修复
+
 ### 自动会话管理 - 去掉 session ID 录入（commit `c39bc17`，v2.3.5，已推送+安装）
 
 - **问题**：one-shot runner 不 compose 任何 agent preset（`assertAdoptable` 检查 `preset !== void 0` 就拒绝）。web UI 建的对话带 "standard" preset → one-shot runner 拒绝
