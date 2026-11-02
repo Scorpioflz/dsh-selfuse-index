@@ -24,16 +24,18 @@
 
 ## 当前待处理建议
 
-> 最后检查：2026-11-01T22:03:51 | 2 个有更新，20 个已最新
+> 最后检查：2026-11-02T22:03:44 | 4 个有更新，18 个已最新
 
 ### 在用插件 · 影响评估
 
-- **billion-context**: `aeda157a0abc` → `760c24c55d02`（13 commits，最近: Merge pull request #5457 from ranxianglei/2026-11-01_fix-raw-sync-bookkeeping）
+- **billion-context**: `760c24c55d02` → `00006b553cbd`（48 commits，最近: Merge pull request #5535 from ranxianglei/2026-11-02_fix-stranded-reasoning-resi）
   - 影响评估: 无影响。v0.1.211 release，纯内部 storage/kernel 修复（async ingest drift-latch #5412、abort starvation #5415、frozen-envelope recovery #5408、golden test #5368）。billion-context 是寄生式压缩代理，自研部分不依赖其内部实现
-- **dsh-persona-dafeiyu**: `fb81f4c366ee` → `ec706c087277`（1 commits，最近: Persist session picks so a restart stops wiping every session's persona）
+- **cc-safety-net**: `24b5e018d20f` → `e18b82d5ce7c`（8 commits，最近: release: v2.7.2）
   - 影响评估: [待分析]
 - **dsh-skills-manager**: （无新更新，仍有未完成建议）
   - 影响评估: 无影响。纯 UI 响应式布局修复（`fix(ui): improve responsive layout on mobile and narrow viewports`），只改 client 端 `lib/client.js`/`src/client.ts`，不涉及自研部分依赖的 API/契约/配置面
+- **dsh-univer-office**: `c59332186fbd` → `df9dba0891f4`（3 commits，最近: docs(agents): keep cross-repository package copies in sync (#147)）
+  - 影响评估: [待分析]
 
 ### 参考插件 · 整合建议
 
